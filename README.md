@@ -12,6 +12,8 @@ FILES
 System Requirements
 ===================
 - must be run using Python 3.x
+- numpy v 1.12.1
+- pandas v 0.21.0
 
 
 How to Run
