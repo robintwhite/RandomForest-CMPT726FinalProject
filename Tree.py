@@ -6,55 +6,56 @@ import pandas as pd
 import numpy as np
 
 class Tree():
-   """
-   Class to hold logic for a tree in a random forest.
+    """
+    Class to hold logic for a tree in a random forest.
 
-   """
+    """
 
     def __init__(self, tree_id,dataset,max_depth,min_size,n_features):
-       """
-       Initialize resources for a tree.
+        """
+        Initialize resources for a tree.
 
-       @param tree_id - TODO: Replace parameters with what we need.
+        @param tree_id - TODO: Replace parameters with what we need.
 
-       """
-       # TODO: Add code here as necessary.
-       self.id = tree_id
-       self.dataset = dataset
-       self.max_depth = max_depth
-       self.min_size = min_size
-       self.n_features = n_features
+        """
+        # TODO: Add code here as necessary.
+        self.id = tree_id
+        self.dataset = dataset
+        self.max_depth = max_depth
+        self.min_size = min_size
+        self.n_features = n_features
 
     def printID(self):
-       """
-       TODO: Remove this method and add methods needed for a tree in a random forest.
+        """
+        TODO: Remove this method and add methods needed for a tree in a random forest.
 
-       """
-       print("I am tree number: {}".format(self.id))
+        """
+        print("I am tree number: {}".format(self.id))
 
-    #optimized test_split function using numpy array. Split dataset into groups less than or greater than
-    #an attribut value.
-    #Created by: Jae Lee
+    #optimized test_split function using numpy array.
     def test_split(index,value,dataset_t):
-
+        """
+        Split dataset into groups less than or greater than
+        an attribute value.
+        """
         left =dataset_t[dataset_t[:,index]<value]
 
         right =dataset_t[dataset_t[:,index]>=value]
 
         return left, right
 
-    #Calculate gini_index score for groups split based on whether sample's specific attribute
-    #value is greater than or equal to a chosen split point value
-    #Created by: Jae Lee
     def gini_index(groups):
-
+        """
+        Calculate gini_index score for groups split based on whether sample's specific attribute
+        value is greater than or equal to a chosen split point value
+        """
         # count all samples at split point
         n_instances = float(sum([len(group) for group in groups]))
 
         # sum weighted Gini index for each group
         gini = 0.0
 
-        for group in groups: 
+        for group in groups:
             # score the group based on the score for each class
             score_t = gini_index_grp_score(group)
 
@@ -62,11 +63,11 @@ class Tree():
 
         return gini
 
-    #Calculate group score by split - apply- combine samples by labels and counting number of each labels.
-    #Score is the sum of each count divided by the total size of the group squared. 
-    #Created by: Jae Lee
     def gini_index_grp_score(group_t):
-
+        """
+        Calculate group score by split - apply- combine samples by labels and counting number of each labels.
+        Score is the sum of each count divided by the total size of the group squared.
+        """
         size = float(len(group_t))
             # avoid divide by zero
         if size == 0:
@@ -80,31 +81,32 @@ class Tree():
 
         return score_t
 
-    #get gini_score for dataset split on each row's indexed attribute value
-    #created by: Jae Lee
     def get_row_score(row,index,dataset):
-
+        """
+        get gini_score for dataset split on each row's indexed attribute value
+        """
         groups = test_split(index, row[index], dataset)
 
         gini = gini_index(groups)
 
         return gini
 
-    # Select the best split point for a dataset. This routine and related subroutines convert the dataset
+    #This routine and related subroutines convert the dataset
     #into a 2D numpy array. Rest of the functions are still using dataset in a python list format.
     #So extra computation time is taken at the end of the function to convert dataset back into a python list.
     #I think switching rest of the functions to use dataset in the numpy array format will improve runtime.
-    #created by: Jae Lee
     def get_split(dataset, n_features):
-
+        """
+        Select the best split point for a dataset.
+        """
         b_index, b_value, b_score, b_groups = 999, 999, 999, None
 
         count_all_features = len(dataset[0])-1
 
         #randomly select number of features. More concise method of generating random int array.
-        #But I have commented this out for now since we need to obtain same results as the tutorial for 
+        #But I have commented this out for now since we need to obtain same results as the tutorial for
         #testing purposes
-        #features = np.random.randint(count_all_features,size=n_features)        
+        #features = np.random.randint(count_all_features,size=n_features)
 
         features = list()
         while len(features) < n_features:
@@ -142,7 +144,8 @@ class Tree():
 
         return {'index':b_index, 'value':b_value, 'groups':b_groups}
 
-    #util function to split child nodes starting from root
     def tree_build_util(root):
-    
-    
+        """
+        util function to split child nodes starting from root
+        """
+        pass
