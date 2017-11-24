@@ -9,23 +9,15 @@ class Tree():
 
     """
 
-    def __init__(self, tree_id, dataset, max_depth, min_size, n_features):
+    def __init__(self, tree_id):
         """
         Initialize resources for a tree.
 
         @param tree_id - id of tree
-        @param dataset - training dataset
-        @param max_depth - maximum tree depth
-        @param min_size -
-        @param n_features - number of features to be used when building each tree
 
         """
         # TODO: Add code here as necessary.
         self.id = tree_id
-        self.dataset = dataset
-        self.max_depth = max_depth
-        self.min_size = min_size
-        self.n_features = n_features
 
     def printID(self):
         """
@@ -181,15 +173,12 @@ class Tree():
     def tree_build_util(self, train, max_depth, min_size, n_features):
         """
         util function to build tree
+        @param train - training dataset
+        @param max_depth - maximum tree depth
+        @param min_size -
+        @param n_features - number of features to be used when building each tree
         """
         tree = self.get_split(train, n_features)
         self.split(tree, max_depth, min_size, n_features, 1)
         return tree
 
-#idx = 0
-#dataset = dataset
-#max_depth = 1
-#min_size = 1
-#n_features = 3
-#tree = Tree(idx, dataset, max_depth, min_size, n_features)
-#tree.tree_build_util(dataset, max_depth, min_size, n_features)
