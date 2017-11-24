@@ -56,8 +56,8 @@ def process(dataset_file):
     x_test = standardize(x_test, col_list_test)
 
     #Insert w0 term for weight vector matrix
-    x_train.insert(0, 'w0', np.ones(len(x_train), dtype=np.int))
-    x_test.insert(0, 'w0', np.ones(len(x_test), dtype=np.int))
+    #x_train.insert(0, 'w0', np.ones(len(x_train), dtype=np.int))
+    #x_test.insert(0, 'w0', np.ones(len(x_test), dtype=np.int))
 
     """  target value for training and testing dataset"""
     t_train = df_train[class_name]
