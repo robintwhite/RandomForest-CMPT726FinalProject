@@ -18,7 +18,7 @@ class RandomForest():
         self.trees = []
 
         for value in range(number_of_trees):
-            self.trees.append(Tree(value))
+            self.trees.append(Tree(value)) #What params are given to Tree here then?
 
         # TODO: Remove this printing stuff since it's just a placeholder.
         for tree in self.trees:
