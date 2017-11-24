@@ -1,8 +1,6 @@
 from random import seed
 from random import randrange
-from csv import reader
 from math import sqrt
-import pandas as pd
 import numpy as np
 
 class Tree():
@@ -37,7 +35,7 @@ class Tree():
         print("I am tree number: {}".format(self.id))
 
     #optimized test_split function using numpy array.
-    def test_split(index,value,dataset_t):
+    def test_split(self, index,value,dataset_t):
         """
         Split dataset into groups less than or greater than
         an attribute value.
@@ -48,7 +46,7 @@ class Tree():
 
         return left, right
 
-    def gini_index(groups):
+    def gini_index(self, groups):
         """
         Calculate gini_index score for groups split based on whether sample's specific attribute
         value is greater than or equal to a chosen split point value
@@ -61,13 +59,13 @@ class Tree():
 
         for group in groups:
             # score the group based on the score for each class
-            score_t = gini_index_grp_score(group)
+            score_t = self.gini_index_grp_score(group)
 
             gini += (1.0 - score_t) * (float(len(group)) / n_instances)
 
         return gini
 
-    def gini_index_grp_score(group_t):
+    def gini_index_grp_score(self, group_t):
         """
         Calculate group score by split - apply- combine samples by labels and counting number of each labels.
         Score is the sum of each count divided by the total size of the group squared.
@@ -85,13 +83,13 @@ class Tree():
 
         return score_t
 
-    def get_row_score(row,index,dataset):
+    def get_row_score(self, row,index,dataset):
         """
         get gini_score for dataset split on each row's indexed attribute value
         """
-        groups = test_split(index, row[index], dataset)
+        groups = self.test_split(index, row[index], dataset)
 
-        gini = gini_index(groups)
+        gini = self.gini_index(groups)
 
         return gini
 
@@ -99,7 +97,7 @@ class Tree():
     #into a 2D numpy array. Rest of the functions are still using dataset in a python list format.
     #So extra computation time is taken at the end of the function to convert dataset back into a python list.
     #I think switching rest of the functions to use dataset in the numpy array format will improve runtime.
-    def get_split(dataset, n_features):
+    def get_split(self, dataset, n_features):
         """
         Select the best split point for a dataset.
         """
@@ -123,13 +121,13 @@ class Tree():
         for index in features:
 
             #returns all gini index scores of each row for the selected feature
-            scores = np.apply_along_axis(get_row_score,1,dataset_t,index,dataset_t)
+            scores = np.apply_along_axis(self.get_row_score,1,dataset_t,index,dataset_t)
 
             current_b_score = np.min(scores)
 
             current_b_row = np.argmin(scores)
 
-            groups = test_split(index, dataset_t[current_b_row,index], dataset_t)
+            groups = self.test_split(index, dataset_t[current_b_row,index], dataset_t)
 
             current_value = dataset_t[current_b_row,index]
 
@@ -148,8 +146,50 @@ class Tree():
 
         return {'index':b_index, 'value':b_value, 'groups':b_groups}
 
-    def tree_build_util(root):
+    # Create a terminal node value
+    def to_terminal(self, group):
+        outcomes = [row[-1] for row in group]
+        return max(set(outcomes), key=outcomes.count) #majority vote
+
+    def split(self, node, max_depth, min_size, n_features, depth):
         """
-        util function to split child nodes starting from root
+        split child nodes starting from root
         """
-        pass
+        left, right = node['groups']
+        del(node['groups'])
+        # check for a no split
+        if not left or not right:
+            node['left'] = node['right'] = self.to_terminal(left + right)
+            return
+        # check for max depth
+        if depth >= max_depth:
+            node['left'], node['right'] = self.to_terminal(left), self.to_terminal(right)
+            return
+        # process left child
+        if len(left) <= min_size:
+            node['left'] = self.to_terminal(left)
+        else:
+            node['left'] = self.get_split(left, n_features)
+            self.split(node['left'], max_depth, min_size, n_features, depth+1)
+        # process right child
+        if len(right) <= min_size:
+            node['right'] = self.to_terminal(right)
+        else:
+            node['right'] = self.get_split(right, n_features)
+            self.split(node['right'], max_depth, min_size, n_features, depth+1)
+
+    def tree_build_util(self, train, max_depth, min_size, n_features):
+        """
+        util function to build tree
+        """
+        tree = self.get_split(train, n_features)
+        self.split(tree, max_depth, min_size, n_features, 1)
+        return tree
+
+#idx = 0
+#dataset = dataset
+#max_depth = 1
+#min_size = 1
+#n_features = 3
+#tree = Tree(idx, dataset, max_depth, min_size, n_features)
+#tree.tree_build_util(dataset, max_depth, min_size, n_features)
