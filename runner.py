@@ -55,11 +55,11 @@ def main():
     else:
         preprocessor = BreastCancerPP
 
-    train_data_x, train_data_y, test_data_x, test_data_y = preprocessor.process(dataset_file)
+    train_data, test_data  = preprocessor.process(dataset_file)
 
-    random_forest = RandomForest(arguments.number_of_trees)
-    random_forest.train(train_data_x, train_data_y)
-    results = random_forest.predict(test_data_x)
+    random_forest = RandomForest()
+    trees = random_forest.train(train_data, arguments.number_of_trees)
+    results = random_forest.predict(test_data, trees)
 
     # TODO: Add code to check accuracy.
 

@@ -11,11 +11,15 @@ class Tree():
 
     """
 
-    def __init__(self, tree_id,dataset,max_depth,min_size,n_features):
+    def __init__(self, tree_id, dataset, max_depth, min_size, n_features):
         """
         Initialize resources for a tree.
 
-        @param tree_id - TODO: Replace parameters with what we need.
+        @param tree_id - id of tree
+        @param dataset - training dataset
+        @param max_depth - maximum tree depth
+        @param min_size -
+        @param n_features - number of features to be used when building each tree
 
         """
         # TODO: Add code here as necessary.
