@@ -13,6 +13,8 @@ class RandomForest():
 
         """
 
+        self.number_of_trees = number_of_trees
+
     def train(self, train_data, number_of_trees):
         """
         Train the random forest on the given data.
