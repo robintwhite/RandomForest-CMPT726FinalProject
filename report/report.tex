@@ -49,7 +49,17 @@ TODO: Decide if we need this section.
 TODO: Adjust titles as necessary and add content specifying other papers.
 
 \subsection{Ensemble Learning}
-TODO: Adjust titles as necessary and add content specifying other papers.
+\textbf{Bootstrap Aggregating (Bagging)}
+
+Bootstrap aggregating or bagging is an ensemble learning technique that attempts to reduce variance of the model without increasing the bias by attempting to remove correlation between individual trees. Each tree is limited to evaluating only a random fractional sample of the actual dataset such that no two samples are the same. Bagging has been demonstrated empirically to improve model accuracy. [2]\\
+
+From the actual dataset D of size n, k bootstrap samples, \[ D_1,D_2,..D_k  \] are randomly selected with repetition from D. 
+
+Then the variance of the ensemble is the average of the sum of the individual trees' variances.
+
+\[ var(L) = \frac{\sum_{i=1}^k var(L_i)}{k}\] where L is the ensemble of individual learners (trees).\\
+
+Each datapoint in D has a probability of \[1-\left(\frac{1}{n}\right)^n = e^{-1} \approx 36.8 \% \] of not being selected in  a sample D\textsubscript{i} and therefore approximately 63.2\% probability of being in a training set D\textsubscript{i}.
 
 \subsection{Random Forests}
 TODO: Adjust titles as necessary and add content specifying other papers.
@@ -70,24 +80,24 @@ TODO: Add content.
 
 \textbf{Random Subspace Method}
 
-Random Forest uses a modified splitting algorithm that attempts to further reduce correlation between individual trees. For example, if few attributes are strong predictors of the target label, these attributes will be selected in many trees leading to high correlation and greater generalization error.  Generalization error of an ensemble converges to the following expression:
+Random forest uses a modified splitting algorithm that attempts to further reduce correlation between individual trees. For example, if few attributes are strong predictors of the target label, these attributes will be selected in many trees leading to high correlation and greater generalization error.  Generalization error of an ensemble converges to the following expression:
 
 \[Generalization\ error \leq \frac{corr(1-s^2)}{s^2}\] where corr is the average correlation among the trees and s is the average performance of individual classifiers. Thus, reducing correlation among the individual trees will also lower the generalization error.
 
- Work by Ho has demonstrated that average tree agreement or between trees is significantly lowered using the Random subspace method. [3] 
+ Work by Ho has demonstrated that average tree agreement between trees is significantly lowered using the Random subspace method. [3] 
 Estimating tree agreement between trees i and j as s\textsubscript{i,j}
 
 \[ s_{i,j} = \frac{1}{n}\sum_{k=1}^{n}f(x_k)\]
 \
 \[ where \ f(x_k) = \begin{cases} 
-      1 & if class\ decision_i(x_k) = class \ decision_j(x_k) \\
+      1 & if\ class\ decision_i(x_k) = class \ decision_j(x_k) \\
       0 & otherwise
    \end{cases}
 \]
 
-Ho's reults showed average of s\textsubscript{i,j} of random subspaces method was lower than that of bootstrapping and boosting methods alone. [3]
+Ho's reult showed average of s\textsubscript{i,j} of random subspaces method was lower than that of bootstrapping and boosting methods alone. [3]
 
- Thus, limiting a tree's evaluation to only a subset of the actual feature set and  randomizing this subset during the tree's splitting  process helps to reduce correlation among each trees. The modified splitting algorithm will then split on a single feature with the best information gain ratio.
+ Thus, limiting a tree's evaluation to only a subset of the actual feature set and randomizing this subset during the tree's splitting process helps to reduce correlation among each trees. The modified splitting algorithm will then split on a single feature with the best information gain ratio to reduce correlation among trees.
 
 \subsubsection{Entropy}
 TODO: Add content.
