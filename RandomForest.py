@@ -7,11 +7,13 @@ class RandomForest():
 
     """
 
-    def __init__(self):
+    def __init__(self, number_of_trees):
         """
         Initialize instance of a RandomForest.
 
         """
+        
+        self.number_of_trees = number_of_trees
 
     def train(self, train_data, number_of_trees):
         """
