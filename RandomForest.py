@@ -18,22 +18,25 @@ class RandomForest():
         self.trees = []
 
         for value in range(number_of_trees):
-            self.trees.append(Tree(value)) #What params are given to Tree here then?
+            self.trees.append(Tree(value)) #Still don't know what to give here, just id then?
 
         # TODO: Remove this printing stuff since it's just a placeholder.
         for tree in self.trees:
             tree.printID()
 
-    def train(self, train_data):
+    def train(self, train_data, max_depth, min_size, n_features):
         """
         Train the random forest on the given data.
 
         @param train_data - feature information for the training data.
 
         """
-        # TODO: Train self.trees
+        # Make set of trees
+        
+        for tree in self.trees:
+            tree.tree_build_util(train_data, max_depth, min_size, n_features)
 
-    def predict(self, test_data, trees):
+    def predict(self, test_data):
         """
         Predict the values in the given data using the parameters learned by the random forest.
 
@@ -47,3 +50,10 @@ class RandomForest():
         test_data_y = test_data[:,-1]
 
         # TODO: Add logic here.
+        for tree in self.trees:
+            predictions = tree.predict(test_data_x)
+            
+            #TODO: Aggregating voting logic here
+            #prediction = max(set(predictions, key=predictions.count)) #Maybe?
+        
+        return prediction
