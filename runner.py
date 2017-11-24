@@ -57,9 +57,9 @@ def main():
 
     train_data, test_data  = preprocessor.process(dataset_file)
 
-    random_forest = RandomForest()
-    trees = random_forest.train(train_data, arguments.number_of_trees)
-    results = random_forest.predict(test_data, trees)
+    random_forest = RandomForest(arguments.number_of_trees)
+    random_forest.train(train_data)
+    results = random_forest.predict(test_data)
 
     # TODO: Add code to check accuracy.
 

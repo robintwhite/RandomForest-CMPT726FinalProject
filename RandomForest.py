@@ -7,34 +7,31 @@ class RandomForest():
 
     """
 
-    def __init__(self):
+
+    def __init__(self, number_of_trees):
         """
         Initialize instance of a RandomForest.
 
+        @param number_of_trees - number of trees to create for the forest.
+
         """
+        self.trees = []
 
-        self.number_of_trees = number_of_trees
+        for value in range(number_of_trees):
+            self.trees.append(Tree(value))
 
-    def train(self, train_data, number_of_trees):
+        # TODO: Remove this printing stuff since it's just a placeholder.
+        for tree in self.trees:
+            tree.printID()
+
+    def train(self, train_data):
         """
         Train the random forest on the given data.
 
         @param train_data - feature information for the training data.
-        @param number_of_trees - number of trees to create for the forest.
 
         """
-        trees = []
-
-        for value in range(number_of_trees):
-            trees.append(Tree(value, train_data, max_depth, min_size, n_features))
-
-        # TODO: Remove this printing stuff since it's just a placeholder.
-        for tree in trees:
-            tree.printID()
-        print("Training on the given dataset!")
-
-        return trees
-
+        # TODO: Train self.trees
 
     def predict(self, test_data, trees):
         """
