@@ -43,7 +43,21 @@ class Tree():
         right =dataset_t[dataset_t[:,index]>=value]
 
         return left, right
+   
+    def entropy_index(group,num_labels):
+         n_instances = float(sum([len(group) for group in groups]))
 
+        # sum weighted Gini index for each group
+        entropy = 0.0
+
+        for group in groups:
+            # score the group based on the score for each class
+            score_t = gini_index_grp_score(group,num_labels)
+    
+            entropy += (-1*math.log(score_t,2)*score_t) * (float(len(group)) / n_instances)
+
+        return entropy
+    
     def gini_index(groups,num_labels):
         """
         Calculate gini_index score for groups split based on whether sample's specific attribute
@@ -62,22 +76,20 @@ class Tree():
             gini += (1.0 - score_t) * (float(len(group)) / n_instances)
 
         return gini
-
+ 
     def gini_index_grp_score(group_t,num_labels):
-        """
-        Calculate group score by split - apply- combine samples by labels and counting number of each labels.
-        Score is the sum of each count divided by the total size of the group squared.
-        """
+
         size = float(len(group_t))
             # avoid divide by zero
         if size == 0:
             return 0.0
 
         #count number of unique labels (column -1) and return total number of counts
-        #labels, counts = np.unique(group_t[:,-1],return_counts=True)
+	
+        labels, counts = np.unique(group_t[:,-1],return_counts=True)
 
         #score is equal to sum((each_label_count/size_group)^2)
-        score_t = ((num_labels/size)**2).sum()
+        score_t = ((counts/size)**2).sum()
 
         return score_t
 
