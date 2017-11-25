@@ -9,15 +9,21 @@ class Tree():
 
     """
 
-    def __init__(self, tree_id):
+    def __init__(self, tree_id, max_depth, min_split_size, n_features):
         """
         Initialize resources for a tree.
 
-        @param tree_id - id of tree
+        @param tree_id - id of tree.
+        @param max_depth - maximum depth of the tree.
+        @param min_split_size - the minimum number of samples required at a node to allow for further splitting.
+        @param n_features - the number of features to be used when building each tree.
 
         """
-        # TODO: Add code here as necessary.
         self.id = tree_id
+        self.max_depth = max_depth
+        self.min_split_size = min_split_size
+        self.n_features = n_features
+        self.root = None
 
     def printID(self):
         """
@@ -96,6 +102,8 @@ class Tree():
         b_index, b_value, b_score, b_groups = 999, 999, 999, None
 
         count_all_features = len(dataset[0])-1
+        if not n_features:
+            n_features = count_all_features
 
         #randomly select number of features. More concise method of generating random int array.
         #But I have commented this out for now since we need to obtain same results as the tutorial for
@@ -154,7 +162,7 @@ class Tree():
             node['left'] = node['right'] = self.to_terminal(left + right)
             return
         # check for max depth
-        if depth >= max_depth:
+        if max_depth is not None and depth >= max_depth:
             node['left'], node['right'] = self.to_terminal(left), self.to_terminal(right)
             return
         # process left child
@@ -170,15 +178,18 @@ class Tree():
             node['right'] = self.get_split(right, n_features)
             self.split(node['right'], max_depth, min_size, n_features, depth+1)
 
-    def tree_build_util(self, train, max_depth, min_size, n_features):
+    def tree_build_util(self, train_data, target_class):
         """
         util function to build tree
-        @param train - training dataset
-        @param max_depth - maximum tree depth
-        @param min_size -
-        @param n_features - number of features to be used when building each tree
-        """
-        tree = self.get_split(train, n_features)
-        self.split(tree, max_depth, min_size, n_features, 1)
-        return tree
+        @param train_data - training dataset
+        @param target_class - the column we want to be able to predict
 
+        Note: This method is basically the fit() method.
+
+        """
+        split_point = self.get_split(train_data, self.n_features)
+        self.root = self.split(split_point, self.max_depth, self.min_split_size, self.n_features, 1)
+
+    def predict(self, test_x):
+        # TODO: Add logic to use built tree to predict target class for given test data.
+        pass
