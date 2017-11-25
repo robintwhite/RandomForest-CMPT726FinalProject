@@ -71,10 +71,14 @@ def main():
         preprocessor = BreastCancerPP
 
     train_data, test_data  = preprocessor.process(dataset_file)
-    
-    # TODO: Update passed values 
-    random_forest = RandomForest(arguments.number_of_trees)
-    random_forest.train(train_data, max_depth, min_size, n_features)
+
+    random_forest = RandomForest(
+        arguments.number_of_trees,
+        arguments.max_depth,
+        arguments.min_split_size,
+        arguments.n_features
+    )
+    random_forest.train(train_data, "GP_greater_than_0")
     results = random_forest.predict(test_data)
 
     # TODO: Add code to check accuracy.
