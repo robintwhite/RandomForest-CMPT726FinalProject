@@ -44,7 +44,7 @@ class Tree():
 
         return left, right
 
-    def gini_index(groups):
+    def gini_index(groups,num_labels):
         """
         Calculate gini_index score for groups split based on whether sample's specific attribute
         value is greater than or equal to a chosen split point value
@@ -57,13 +57,13 @@ class Tree():
 
         for group in groups:
             # score the group based on the score for each class
-            score_t = gini_index_grp_score(group)
+            score_t = gini_index_grp_score(group,num_labels)
 
             gini += (1.0 - score_t) * (float(len(group)) / n_instances)
 
         return gini
 
-    def gini_index_grp_score(group_t):
+    def gini_index_grp_score(group_t,num_labels):
         """
         Calculate group score by split - apply- combine samples by labels and counting number of each labels.
         Score is the sum of each count divided by the total size of the group squared.
@@ -74,20 +74,20 @@ class Tree():
             return 0.0
 
         #count number of unique labels (column -1) and return total number of counts
-        labels, counts = np.unique(group_t[:,-1],return_counts=True)
+        #labels, counts = np.unique(group_t[:,-1],return_counts=True)
 
         #score is equal to sum((each_label_count/size_group)^2)
-        score_t = ((counts/size)**2).sum()
+        score_t = ((num_labels/size)**2).sum()
 
         return score_t
 
-    def get_row_score(row,index,dataset):
+    def get_row_score(row,index,dataset,num_labels):
         """
         get gini_score for dataset split on each row's indexed attribute value
         """
         groups = test_split(index, row[index], dataset)
 
-        gini = gini_index(groups)
+        gini = gini_index(groups,num_labels)
 
         return gini
 
@@ -102,6 +102,9 @@ class Tree():
         b_index, b_value, b_score, b_groups = 999, 999, 999, None
 
         count_all_features = len(dataset[0])-1
+        
+        #count number of unique labels (column -1) and return total number of counts
+        labels, num_labels = np.unique(group_t[:,-1],return_counts=True)
 
         #randomly select number of features. More concise method of generating random int array.
         #But I have commented this out for now since we need to obtain same results as the tutorial for
@@ -119,7 +122,7 @@ class Tree():
         for index in features:
 
             #returns all gini index scores of each row for the selected feature
-            scores = np.apply_along_axis(get_row_score,1,dataset_t,index,dataset_t)
+            scores = np.apply_along_axis(get_row_score,1,dataset_t,index,dataset_t,num_labels)
 
             current_b_score = np.min(scores)
 
