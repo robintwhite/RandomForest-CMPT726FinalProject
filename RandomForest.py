@@ -40,7 +40,7 @@ class RandomForest():
             tree.tree_build_util(train_data, target_class)
 
 
-    def predict(self, test_data):
+    def bagging_predict(self, test_data):
         """
         Predict the values in the given data using the parameters learned by the random forest.
 
@@ -52,12 +52,16 @@ class RandomForest():
 
         test_data_x = test_data[:,:-1]
         test_data_y = test_data[:,-1]
-
+        idx = 0
         # TODO: Add logic here.
-        for tree in self.trees:
-            predictions = tree.predict(test_data_x)
-
-            #TODO: Aggregating voting logic here
-            #prediction = max(set(predictions, key=predictions.count)) #Maybe?
+        for row in test_data_x:
+            #for each test case, majority vote for trees
+            prediction = [tree.predict(tree.root, row) for tree in self.trees] #array with prediction from each tree
+            predictions[idx] = max(set(prediction, key=prediction.count)) #Majority vote and store prediction
+            idx += 1
 
         return predictions
+
+    def evaluate(self, predictions, test_data_y):
+        #check prediction of each row against test data test_data_y = test_data[:,-1]
+        pass

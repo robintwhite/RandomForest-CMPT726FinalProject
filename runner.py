@@ -79,7 +79,7 @@ def main():
         arguments.n_features
     )
     random_forest.train(train_data, "GP_greater_than_0")
-    results = random_forest.predict(test_data)
+    results = random_forest.bagging_predict(test_data)
 
     # TODO: Add code to check accuracy.
 

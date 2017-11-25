@@ -190,6 +190,16 @@ class Tree():
         split_point = self.get_split(train_data, self.n_features)
         self.root = self.split(split_point, self.max_depth, self.min_split_size, self.n_features, 1)
 
-    def predict(self, test_x):
-        # TODO: Add logic to use built tree to predict target class for given test data.
-        pass
+    def predict(self, node, row):
+        # tree structure is dictionary of index (feature that is split), value (value for left and right)
+        # and output if terminal leaf for left and right or another dictionary of next level
+        if row[node['index']] < node['value']:
+            if isinstance(node['left'], dict): #is it not a termanl node
+                return predict(node['left'], row) #run on this node, working way down tree
+            else:
+                return node['left'] #if terminal, return value either 1 or 0
+        else:
+            if isinstance(node['right'], dict):
+                return predict(node['right'], row)
+            else:
+                return node['right'] #if terminal, return value either 1 or 0
