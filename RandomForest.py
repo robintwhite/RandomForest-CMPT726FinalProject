@@ -57,7 +57,7 @@ class RandomForest():
         for row in test_data_x:
             #for each test case, majority vote for trees
             prediction = [tree.predict(tree.root, row) for tree in self.trees] #array with prediction from each tree
-            predictions[idx] = max(set(prediction, key=prediction.count)) #Majority vote and store prediction
+            predictions[idx] = max(set(prediction), key=prediction.count) #Majority vote and store prediction
             idx += 1
 
         return predictions
