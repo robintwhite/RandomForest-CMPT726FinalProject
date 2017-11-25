@@ -52,13 +52,12 @@ class RandomForest():
 
         test_data_x = test_data[:,:-1]
         test_data_y = test_data[:,-1]
-        idx = 0
+        predictions = []
         # TODO: Add logic here.
         for row in test_data_x:
             #for each test case, majority vote for trees
             prediction = [tree.predict(tree.root, row) for tree in self.trees] #array with prediction from each tree
-            predictions[idx] = max(set(prediction), key=prediction.count) #Majority vote and store prediction
-            idx += 1
+            predictions.append(max(set(prediction), key=prediction.count)) #Majority vote and store prediction
 
         return predictions
 
