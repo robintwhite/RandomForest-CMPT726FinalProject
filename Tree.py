@@ -96,6 +96,8 @@ class Tree():
         b_index, b_value, b_score, b_groups = 999, 999, 999, None
 
         count_all_features = len(dataset[0])-1
+        if not n_features:
+            n_features = count_all_features
 
         #randomly select number of features. More concise method of generating random int array.
         #But I have commented this out for now since we need to obtain same results as the tutorial for
@@ -154,7 +156,7 @@ class Tree():
             node['left'] = node['right'] = self.to_terminal(left + right)
             return
         # check for max depth
-        if depth >= max_depth:
+        if max_depth is not None and depth >= max_depth:
             node['left'], node['right'] = self.to_terminal(left), self.to_terminal(right)
             return
         # process left child
