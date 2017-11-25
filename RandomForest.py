@@ -63,4 +63,8 @@ class RandomForest():
 
     def evaluate(self, predictions, test_data_y):
         #check prediction of each row against test data test_data_y = test_data[:,-1]
-        pass
+        correct = 0
+        for i in range(len(test_data_y)):
+            if test_data_y[i] == predictions[i]:
+                correct += 1
+        return correct / float(len(test_data_y)) * 100.0
