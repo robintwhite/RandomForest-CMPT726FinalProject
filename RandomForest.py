@@ -52,8 +52,8 @@ class RandomForest():
         # TODO: Add logic here.
         for tree in self.trees:
             predictions = tree.predict(test_data_x)
-            
+
             #TODO: Aggregating voting logic here
             #prediction = max(set(predictions, key=predictions.count)) #Maybe?
-        
-        return prediction
+
+        return predictions
