@@ -38,8 +38,23 @@ def main():
         help="File containing the dataset.")
     argument_parser.add_argument(
         '-t', '--number_of_trees',
+        type=int,
         default=4,
         help="The number of trees to create for the random forest.")
+    argument_parser.add_argument(
+        '-m', '--max_depth',
+        type=int,
+        help="The maximum depth of all trees in the random forest.  (default: None).")
+    argument_parser.add_argument(
+        '-s', '--min_split_size',
+        type=int,
+        default=1,
+        help="The threshold number of samples required at a node to stop further splitting.  (default: 1).")
+    argument_parser.add_argument(
+        '-f', '--n_features',
+        type=int,
+        help="The number of features to use when building each tree in the random forest.  Specifying None will use all"
+              " the features (default: None).")
     argument_parser.add_argument(
         '-h', '--help',
         action='help',
@@ -55,11 +70,16 @@ def main():
     else:
         preprocessor = BreastCancerPP
 
-    train_data_x, train_data_y, test_data_x, test_data_y = preprocessor.process(dataset_file)
+    train_data, test_data  = preprocessor.process(dataset_file)
 
-    random_forest = RandomForest(arguments.number_of_trees)
-    random_forest.train(train_data_x, train_data_y)
-    results = random_forest.predict(test_data_x)
+    random_forest = RandomForest(
+        arguments.number_of_trees,
+        arguments.max_depth,
+        arguments.min_split_size,
+        arguments.n_features
+    )
+    random_forest.train(train_data, "GP_greater_than_0")
+    results = random_forest.predict(test_data)
 
     # TODO: Add code to check accuracy.
 
