@@ -107,7 +107,7 @@ class Tree():
 
         #randomly select number of features.
         #seed for testing
-        np.random.seed(7)
+        #np.random.seed(7)
         features = np.random.randint(count_all_features,size=n_features)
 
         dataset_t = np.array(dataset)
