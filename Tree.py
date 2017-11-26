@@ -1,6 +1,8 @@
 from random import seed
 from random import randrange
+from csv import reader
 from math import sqrt
+import pandas as pd
 import numpy as np
 
 class Tree():
@@ -9,21 +11,19 @@ class Tree():
 
     """
 
-    def __init__(self, tree_id, max_depth, min_split_size, n_features):
+    def __init__(self, tree_id,dataset,max_depth,min_size,n_features):
         """
         Initialize resources for a tree.
 
-        @param tree_id - id of tree.
-        @param max_depth - maximum depth of the tree.
-        @param min_split_size - the minimum number of samples required at a node to allow for further splitting.
-        @param n_features - the number of features to be used when building each tree.
+        @param tree_id - TODO: Replace parameters with what we need.
 
         """
+        # TODO: Add code here as necessary.
         self.id = tree_id
+        self.dataset = dataset
         self.max_depth = max_depth
-        self.min_split_size = min_split_size
+        self.min_size = min_size
         self.n_features = n_features
-        self.root = None
 
     def printID(self):
         """
@@ -32,7 +32,7 @@ class Tree():
         """
         print("I am tree number: {}".format(self.id))
    
-    def entropy(groups):
+    def entropy_index(groups):
         """
           Calculate information gain with entropy
         """
@@ -112,7 +112,7 @@ class Tree():
 
         return left, right
     
-    def entropy_row_score(row,index,dataset,parentIG):
+    def entropy_row_score(row,index,dataset,parent_entropy):
         
         """
         get entropy_score for dataset split on each row's indexed attribute value
@@ -120,9 +120,9 @@ class Tree():
         
         groups = test_split(index, row[index], dataset)
  
-        IG = parentIG + entropy(groups,num_labels) 
+        entropy_score = parent_entropy + entropy_index(groups,num_labels) 
 
-        return IG
+        return entropy_score
     
     
     def gini_row_score(row,index,dataset,num_labels):
@@ -174,15 +174,15 @@ class Tree():
             #returns all entropy scores of each row for the selected feature
             else:
                 
-                parentIG = entropy(dataset_t,num_labels)
+                parent_entropy = entropy_index(dataset_t,num_labels)
                 
-                scores = np.apply_along_axis(entropy_row_score,1,dataset_t,index,dataset_t,parentIG)
+                scores = np.apply_along_axis(entropy_row_score,1,dataset_t,index,dataset_t,parent_entropy)
                 
             current_b_score = np.min(scores)
 
             current_b_row = np.argmin(scores)
 
-            groups = self.test_split(index, dataset_t[current_b_row,index], dataset_t)
+            groups = test_split(index, dataset_t[current_b_row,index], dataset_t)
 
             current_value = dataset_t[current_b_row,index]
 
@@ -201,50 +201,8 @@ class Tree():
 
         return {'index':b_index, 'value':b_value, 'groups':b_groups}
 
-    # Create a terminal node value
-    def to_terminal(self, group):
-        outcomes = [row[-1] for row in group]
-        return max(set(outcomes), key=outcomes.count) #majority vote
-
-    def split(self, node, max_depth, min_size, n_features, depth):
+    def tree_build_util(root):
         """
-        split child nodes starting from root
+        util function to split child nodes starting from root
         """
-        left, right = node['groups']
-        del(node['groups'])
-        # check for a no split
-        if not left or not right:
-            node['left'] = node['right'] = self.to_terminal(left + right)
-            return
-        # check for max depth
-        if max_depth is not None and depth >= max_depth:
-            node['left'], node['right'] = self.to_terminal(left), self.to_terminal(right)
-            return
-        # process left child
-        if len(left) <= min_size:
-            node['left'] = self.to_terminal(left)
-        else:
-            node['left'] = self.get_split(left, n_features)
-            self.split(node['left'], max_depth, min_size, n_features, depth+1)
-        # process right child
-        if len(right) <= min_size:
-            node['right'] = self.to_terminal(right)
-        else:
-            node['right'] = self.get_split(right, n_features)
-            self.split(node['right'], max_depth, min_size, n_features, depth+1)
-
-    def tree_build_util(self, train_data, target_class):
-        """
-        util function to build tree
-        @param train_data - training dataset
-        @param target_class - the column we want to be able to predict
-
-        Note: This method is basically the fit() method.
-
-        """
-        split_point = self.get_split(train_data, self.n_features)
-        self.root = self.split(split_point, self.max_depth, self.min_split_size, self.n_features, 1)
-
-    def predict(self, test_x):
-        # TODO: Add logic to use built tree to predict target class for given test data.
         pass
