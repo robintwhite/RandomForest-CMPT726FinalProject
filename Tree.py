@@ -32,9 +32,9 @@ class Tree():
         """
         print("I am tree number: {}".format(self.id))
    
-    def entropy_index(groups):
+    def entropy(groups):
         """
-          Calculate information gain 
+          Calculate information gain with entropy
         """
         n_instances = float(sum([len(group) for group in groups]))
 
@@ -43,13 +43,13 @@ class Tree():
 
         for group in groups:
             # score the group based on the score for each class
-            score_t = gini_index_grp_score(group)
+            score_t = entropy_grp_score(group)
     
             entropy += (score_t) * (float(len(group)) / n_instances)
 
         return entropy
     
-      def entropy_index_grp_score(group_t):
+      def entropy_grp_score(group_t):
 
         size = float(len(group_t))
             # avoid divide by zero
@@ -120,7 +120,7 @@ class Tree():
         
         groups = test_split(index, row[index], dataset)
  
-        IG = parentIG + entropy_index(groups,num_labels) 
+        IG = parentIG + entropy(groups,num_labels) 
 
         return IG
     
@@ -171,10 +171,10 @@ class Tree():
             if gini is True:
                 
                 scores = np.apply_along_axis(gini_row_score,1,dataset_t,index,dataset_t,num_labels)
-            #returns all information gain scores of each row for the selected feature
+            #returns all entropy scores of each row for the selected feature
             else:
                 
-                parentIG = entropy_index(dataset_t,num_labels)
+                parentIG = entropy(dataset_t,num_labels)
                 
                 scores = np.apply_along_axis(entropy_row_score,1,dataset_t,index,dataset_t,parentIG)
                 
