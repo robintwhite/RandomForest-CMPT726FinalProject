@@ -105,16 +105,10 @@ class Tree():
         if not n_features:
             n_features = count_all_features
 
-        #randomly select number of features. More concise method of generating random int array.
-        #But I have commented this out for now since we need to obtain same results as the tutorial for
-        #testing purposes
-        #features = np.random.randint(count_all_features,size=n_features)
-
-        features = list()
-        while len(features) < n_features:
-            index = randrange(len(dataset[0])-1)
-            if index not in features:
-                features.append(index)
+        #randomly select number of features.
+        #seed for testing
+        np.random.seed(7)
+        features = np.random.randint(count_all_features,size=n_features)
 
         dataset_t = np.array(dataset)
 
