@@ -31,32 +31,39 @@ class Tree():
 
         """
         print("I am tree number: {}".format(self.id))
-
-    #optimized test_split function using numpy array.
-    def test_split(index,value,dataset_t):
-        """
-        Split dataset into groups less than or greater than
-        an attribute value.
-        """
-        left =dataset_t[dataset_t[:,index]<value]
-
-        right =dataset_t[dataset_t[:,index]>=value]
-
-        return left, right
    
-    def entropy_index(group,num_labels):
-         n_instances = float(sum([len(group) for group in groups]))
+    def entropy_index(groups):
+        """
+          Calculate information gain 
+        """
+        n_instances = float(sum([len(group) for group in groups]))
 
         # sum weighted Gini index for each group
         entropy = 0.0
 
         for group in groups:
             # score the group based on the score for each class
-            score_t = gini_index_grp_score(group,num_labels)
+            score_t = gini_index_grp_score(group)
     
-            entropy += (-1*math.log(score_t,2)*score_t) * (float(len(group)) / n_instances)
+            entropy += (score_t) * (float(len(group)) / n_instances)
 
         return entropy
+    
+      def entropy_index_grp_score(group_t):
+
+        size = float(len(group_t))
+            # avoid divide by zero
+        if size == 0:
+            return 0.0
+
+        #count number of unique labels (column -1) and return total number of counts
+	
+        labels, counts = np.unique(group_t[:,-1],return_counts=True)
+
+        #score is equal to sum((each_label_count/size_group)^2)
+        score_t = (np.log(counts/size,2)*(counts/size)).sum()*-1
+
+        return score_t
     
     def gini_index(groups,num_labels):
         """
@@ -93,23 +100,49 @@ class Tree():
 
         return score_t
 
-    def get_row_score(row,index,dataset,num_labels):
+    #optimized test_split function using numpy array.
+    def test_split(index,value,dataset_t):
+        """
+        Split dataset into groups less than or greater than
+        an attribute value.
+        """
+        left =dataset_t[dataset_t[:,index]<value]
+
+        right =dataset_t[dataset_t[:,index]>=value]
+
+        return left, right
+    
+    def entropy_row_score(row,index,dataset,parentIG):
+        
+        """
+        get entropy_score for dataset split on each row's indexed attribute value
+        """
+        
+        groups = test_split(index, row[index], dataset)
+ 
+        IG = parentIG + entropy_index(groups,num_labels) 
+
+        return IG
+    
+    
+    def gini_row_score(row,index,dataset,num_labels):
         """
         get gini_score for dataset split on each row's indexed attribute value
         """
         groups = test_split(index, row[index], dataset)
-
+  
         gini = gini_index(groups,num_labels)
 
         return gini
-
-    #This routine and related subroutines convert the dataset
-    #into a 2D numpy array. Rest of the functions are still using dataset in a python list format.
-    #So extra computation time is taken at the end of the function to convert dataset back into a python list.
-    #I think switching rest of the functions to use dataset in the numpy array format will improve runtime.
-    def get_split(dataset, n_features):
+ 
+   
+    def get_split(dataset, n_features,gini=True):
         """
         Select the best split point for a dataset.
+        This routine and related subroutines convert the dataset
+        into a 2D numpy array. Rest of the functions are still using dataset in a python list format.
+        So extra computation time is taken at the end of the function to convert dataset back into a python list.
+        I think switching rest of the functions to use dataset in the numpy array format will improve runtime.
         """
         b_index, b_value, b_score, b_groups = 999, 999, 999, None
 
@@ -132,10 +165,19 @@ class Tree():
         dataset_t = np.array(dataset)
 
         for index in features:
-
+            
+            scores = None
             #returns all gini index scores of each row for the selected feature
-            scores = np.apply_along_axis(get_row_score,1,dataset_t,index,dataset_t,num_labels)
-
+            if gini is True:
+                
+                scores = np.apply_along_axis(gini_row_score,1,dataset_t,index,dataset_t,num_labels)
+            #returns all information gain scores of each row for the selected feature
+            else:
+                
+                parentIG = entropy_index(dataset_t,num_labels)
+                
+                scores = np.apply_along_axis(entropy_row_score,1,dataset_t,index,dataset_t,parentIG)
+                
             current_b_score = np.min(scores)
 
             current_b_row = np.argmin(scores)
