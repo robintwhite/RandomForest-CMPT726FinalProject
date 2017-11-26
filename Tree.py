@@ -105,16 +105,10 @@ class Tree():
         if not n_features:
             n_features = count_all_features
 
-        #randomly select number of features. More concise method of generating random int array.
-        #But I have commented this out for now since we need to obtain same results as the tutorial for
-        #testing purposes
-        #features = np.random.randint(count_all_features,size=n_features)
-
-        features = list()
-        while len(features) < n_features:
-            index = randrange(len(dataset[0])-1)
-            if index not in features:
-                features.append(index)
+        #randomly select number of features.
+        #seed for testing
+        #np.random.seed(7)
+        features = np.random.randint(count_all_features,size=n_features)
 
         dataset_t = np.array(dataset)
 
@@ -188,8 +182,19 @@ class Tree():
 
         """
         split_point = self.get_split(train_data, self.n_features)
-        self.root = self.split(split_point, self.max_depth, self.min_split_size, self.n_features, 1)
+        self.split(split_point, self.max_depth, self.min_split_size, self.n_features, 1)
+        self.root = split_point
 
-    def predict(self, test_x):
-        # TODO: Add logic to use built tree to predict target class for given test data.
-        pass
+    def predict(self, node, row):
+        # tree structure is dictionary of index (feature that is split), value (value for left and right)
+        # and output if terminal leaf for left and right or another dictionary of next level
+        if row[node['index']] < node['value']:
+            if isinstance(node['left'], dict): #is it not a termanl node
+                return self.predict(node['left'], row) #run on this node, working way down tree
+            else:
+                return node['left'] #if terminal, return value either 1 or 0
+        else:
+            if isinstance(node['right'], dict):
+                return self.predict(node['right'], row)
+            else:
+                return node['right'] #if terminal, return value either 1 or 0

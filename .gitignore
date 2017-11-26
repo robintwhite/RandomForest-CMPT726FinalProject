@@ -17,3 +17,6 @@
 *.synctex(busy)
 *.synctex.gz
 *.synctex.gz(busy)
+
+##Python stuff
+__pycache__/
