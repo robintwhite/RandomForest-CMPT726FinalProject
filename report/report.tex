@@ -95,15 +95,18 @@ Estimating tree agreement between trees i and j as s\textsubscript{i,j}
    \end{cases}
 \]
 
-Ho's reult showed average of s\textsubscript{i,j} of random subspaces method was lower than that of bootstrapping and boosting methods alone. [3]
+Ho's result showed average of s\textsubscript{i,j} of random subspaces method was lower than that of bootstrapping and boosting methods alone. [3]
 
- Thus, limiting a tree's evaluation to only a subset of the actual feature set and randomizing this subset during the tree's splitting process helps to reduce correlation among each trees. The modified splitting algorithm will then split on a single feature with the best information gain ratio to reduce correlation among trees.
+ Thus, limiting a tree's evaluation to only a fixed size subset of the actual features and randomizing the elements in the subset during each splitting process helps to reduce correlation among each trees. The modified splitting algorithm will then split on a single feature with the best information gain ratio or gini impurity to reduce correlation among trees.
 
 \subsubsection{Entropy}
 TODO: Add content.
 
 \subsubsection{Gini Index}
-TODO: Add content.
+Gini impurity index measures the probability of incorrectly labeling an element if it was randomly labeled according to the distribution of labels in the leaf node. Gini impurity and Entropy are analogous. Gini impurity is less computationally expensive since it doesn't require calculating logarithmic functions.
+
+Given k classes and fraction of elements in the leaf node with class i, p\textsubscript{i}, the Gini impurity can be calculated as:
+\[G(p) = \sum_{i=1}^{k}p_i \sum_{j=1}^{k}p_j = \sum_{i=1}^{k}(p_i-p_i^2) = 1 - \sum_{i=1}^{k}p_i^2 \]
 
 \subsection{Custom Improvement?}
 
