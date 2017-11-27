@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Script to run runner.py before making a commit so that we enforce people not breaking the project.
+#
+projectRoot=$(git rev-parse --show-toplevel)
+python $projectRoot/runner.py -d preprocessors/hockeydataset.csv --use_hockey_preprocessor
+returnCode=$?
+if [[ ${returnCode} -ne 0 ]]
+then
+  echo -e "\n\nPlease fix the project before committing!\n\n"
+  exit $returnCode
+fi
