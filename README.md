@@ -38,10 +38,10 @@ For Developers
 ==============
 Please ensure that the pre-commit file in this repository is added as a Git hook for this project.
 
-It will ensure that the script is run before making a commit, which will prevent people from breaking the this project.
+It will ensure that the runner.py script is run before making a commit, which will prevent people from breaking the this project.
 
 To add the pre-commit hook, please do the following:
-1) Ensure that you are in the mlclass-1777-randomforest directory.
-2) Run: cp pre-commit .git/hooks -i
+1. Ensure that you are in the mlclass-1777-randomforest directory.
+2. Run: cp pre-commit .git/hooks -i
 
 And you're done!
