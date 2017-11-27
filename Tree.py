@@ -49,7 +49,7 @@ class Tree():
 
         return entropy
     
-      def entropy_grp_score(group_t):
+    def entropy_grp_score(group_t):
 
         size = float(len(group_t))
             # avoid divide by zero
