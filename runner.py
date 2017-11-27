@@ -82,12 +82,12 @@ def main():
         arguments.min_split_size,
         arguments.n_features
     )
-    #random_forest.train(train_data, "GP_greater_than_0")
-    #results = random_forest.bagging_predict(test_data)
+    random_forest.train(train_data, "GP_greater_than_0")
+    results = random_forest.bagging_predict(test_data)
 
     # TODO: Add code to check accuracy.
-    #accuracy = random_forest.evaluate(results, test_data[:,-1])
-    #print('{}{}'.format("Percent correct: ", accuracy))
+    accuracy = random_forest.evaluate(results, test_data[:,-1])
+    print('{}{}'.format("Percent correct: ", accuracy))
 
     if arguments.sklearn_rf is True:
         sk_rf = Sklearn_RF(
