@@ -1,6 +1,3 @@
-from random import seed
-from random import randrange
-from math import sqrt
 import numpy as np
 
 class Tree():
