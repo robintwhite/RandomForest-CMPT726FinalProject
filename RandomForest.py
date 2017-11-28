@@ -1,5 +1,7 @@
 from Tree import Tree
-
+from multiprocessing import Pool
+from multiprocessing import Manager
+from functools import partial
 
 class RandomForest():
     """
@@ -8,7 +10,7 @@ class RandomForest():
     """
 
 
-    def __init__(self, number_of_trees, max_depth, min_split_size, n_features):
+    def __init__(self, number_of_trees, max_depth, min_split_size, n_features, workers):
         """
         Initialize instance of a RandomForest.
 
@@ -18,6 +20,7 @@ class RandomForest():
         @param n_features - the number of features to use when building each tree in the random forest.
 
         """
+        self.workers = workers
         self.trees = []
 
         for value in range(number_of_trees):
@@ -26,6 +29,22 @@ class RandomForest():
         # TODO: Remove this printing stuff since it's just a placeholder.
         for tree in self.trees:
             tree.printID()
+
+    def _build_tree(self, tree, train_data, target_class, trained_trees):
+        """
+        Helper function to use for multi-processing trees during training.
+
+        @param tree - the tree to build.
+        @param train_data - the training data to train each tree in the forest on.
+        @param target_class - the target class we want to predict using the random forest.
+        @param trained_trees - shared multiprocessing.Manager().list() to return trained trees.
+
+        IMPORTANT: Using the multiprocess version currently will result in lower accuracy, but that's okay since this
+                   enhancement is mostly to speed up developement.
+
+        """
+        tree.tree_build_util(train_data, target_class)
+        trained_trees.append(tree)
 
 
     def train(self, train_data, target_class):
@@ -36,8 +55,15 @@ class RandomForest():
         @param target_class - column we want to be able to predict.
 
         """
-        for tree in self.trees:
-            tree.tree_build_util(train_data, target_class)
+        if self.workers:
+            trained_trees = Manager().list()
+            partial_function = partial(self._build_tree, train_data=train_data, target_class=target_class, trained_trees=trained_trees)
+            with Pool(processes=self.workers) as workers:
+                workers.map(partial_function, self.trees)
+            self.trees = trained_trees
+        else:
+            for tree in self.trees:
+                tree.tree_build_util(train_data, target_class)
 
 
     def bagging_predict(self, test_data):

@@ -7,6 +7,7 @@ from argparse import ArgumentParser
 from Sklearn_RF import Sklearn_RF
 import preprocessors.HockeyDataSetPreprocessor as HockeyPP
 import preprocessors.BreastCancerDataSetPreprocessor as BreastCancerPP
+import preprocessors.Preprocessor as pp
 
 
 
@@ -59,6 +60,10 @@ def main():
         '-k','--sklearn_rf',
         action='store_true',
         help='Train and test dataset on SKlearn Random Forest')
+        '-w', '--number_of_workers',
+        type=int,
+        help="The number of workers to spawn during training of the random forest.  Specifying None will disable this"
+             "feature. (default: None).")
     argument_parser.add_argument(
         '-h', '--help',
         action='help',
@@ -75,12 +80,14 @@ def main():
         preprocessor = BreastCancerPP
 
     train_data, test_data  = preprocessor.process(dataset_file)
+    train_x, train_y, test_x, test_y = pp.process(dataset_file, "DraftYear", [2004, 2005, 2006], 2007, "GP_greater_than_0")
 
     random_forest = RandomForest(
         arguments.number_of_trees,
         arguments.max_depth,
         arguments.min_split_size,
-        arguments.n_features
+        arguments.n_features,
+        arguments.number_of_workers
     )
     random_forest.train(train_data, "GP_greater_than_0")
     results = random_forest.bagging_predict(test_data)
