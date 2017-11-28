@@ -56,6 +56,11 @@ def main():
         help="The number of features to use when building each tree in the random forest.  Specifying None will use all"
               " the features (default: None).")
     argument_parser.add_argument(
+        '-w', '--number_of_workers',
+        type=int,
+        help="The number of workers to spawn during training of the random forest.  Specifying None will disable this"
+             "feature. (default: None).")
+    argument_parser.add_argument(
         '-h', '--help',
         action='help',
         help="Show this message and exit.")
@@ -76,7 +81,8 @@ def main():
         arguments.number_of_trees,
         arguments.max_depth,
         arguments.min_split_size,
-        arguments.n_features
+        arguments.n_features,
+        arguments.number_of_workers
     )
     random_forest.train(train_data, "GP_greater_than_0")
     results = random_forest.bagging_predict(test_data)
