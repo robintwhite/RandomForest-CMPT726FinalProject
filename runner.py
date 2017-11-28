@@ -7,6 +7,7 @@ from argparse import ArgumentParser
 
 import preprocessors.HockeyDataSetPreprocessor as HockeyPP
 import preprocessors.BreastCancerDataSetPreprocessor as BreastCancerPP
+import preprocessors.Preprocessor as pp
 
 
 
@@ -71,6 +72,7 @@ def main():
         preprocessor = BreastCancerPP
 
     train_data, test_data  = preprocessor.process(dataset_file)
+    train_x, train_y, test_x, test_y = pp.process(dataset_file, "DraftYear", [2004, 2005, 2006], 2007, "GP_greater_than_0")
 
     random_forest = RandomForest(
         arguments.number_of_trees,
