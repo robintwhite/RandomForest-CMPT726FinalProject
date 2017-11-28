@@ -32,7 +32,7 @@ class Tree():
         """
         print("I am tree number: {}".format(self.id))
 
-    def entropy_index(groups):
+    def entropy_index(self, groups):
         """
           Calculate information gain with entropy
         """
@@ -49,7 +49,7 @@ class Tree():
 
         return entropy
 
-    def entropy_grp_score(group_t):
+    def entropy_grp_score(self, group_t):
 
         size = float(len(group_t))
             # avoid divide by zero
@@ -65,7 +65,7 @@ class Tree():
 
         return score_t
 
-    def gini_index(groups,num_labels):
+    def gini_index(self, groups, num_labels):
         """
         Calculate gini_index score for groups split based on whether sample's specific attribute
         value is greater than or equal to a chosen split point value
@@ -84,7 +84,7 @@ class Tree():
 
         return gini
 
-    def gini_index_grp_score(group_t,num_labels):
+    def gini_index_grp_score(self, group_t, num_labels):
 
         size = float(len(group_t))
             # avoid divide by zero
@@ -101,7 +101,7 @@ class Tree():
         return score_t
 
     #optimized test_split function using numpy array.
-    def test_split(index,value,dataset_t):
+    def test_split(self, index, value, dataset_t):
         """
         Split dataset into groups less than or greater than
         an attribute value.
@@ -112,7 +112,7 @@ class Tree():
 
         return left, right
 
-    def entropy_row_score(row,index,dataset,parent_entropy):
+    def entropy_row_score(self, row, index, dataset, parent_entropy):
 
         """
         get entropy_score for dataset split on each row's indexed attribute value
@@ -125,7 +125,7 @@ class Tree():
         return entropy_score
 
 
-    def gini_row_score(row,index,dataset,num_labels):
+    def gini_row_score(self, row, index, dataset, num_labels):
         """
         get gini_score for dataset split on each row's indexed attribute value
         """
@@ -136,7 +136,7 @@ class Tree():
         return gini
 
 
-    def get_split(dataset, n_features,gini=True):
+    def get_split(self, dataset, n_features, gini=True):
         """
         Select the best split point for a dataset.
         This routine and related subroutines convert the dataset
