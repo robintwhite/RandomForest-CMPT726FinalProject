@@ -142,18 +142,18 @@ class Tree():
         I think switching rest of the functions to use dataset in the numpy array format will improve runtime.
         """
         b_index, b_value, b_score, b_groups = 999, 999, 999, None
-
+        dataset_t = np.array(dataset)
         count_all_features = len(dataset[0])-1
+        if not n_features:
+            n_features = count_all_features
 
         #count number of unique labels (column -1) and return total number of counts
-        labels, num_labels = np.unique(dataset[:,-1], return_counts=True)
+        labels, num_labels = np.unique(dataset_t[:,-1], return_counts=True)
 
         #randomly select number of features.
         #seed for testing
         #np.random.seed(7)
         features = np.random.randint(count_all_features,size=n_features)
-
-        dataset_t = np.array(dataset)
 
         for index in features:
 
@@ -173,11 +173,10 @@ class Tree():
 
             current_b_row = np.argmin(scores)
 
-            groups = self.test_split(index, dataset_t[current_b_row,index], dataset_t)
-
             current_value = dataset_t[current_b_row,index]
 
             if current_b_score < b_score:
+                groups = self.test_split(index, dataset_t[current_b_row,index], dataset_t)
                 groups_t = []
 
                 #have to convert np array back to python list since rest of the functions take data as a list
