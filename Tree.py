@@ -55,7 +55,7 @@ class Tree():
 
         #count number of unique labels (column -1) and return total number of counts
 
-        labels, counts = np.unique(group_t[:,-1],return_counts=True)
+        labels, counts = np.unique(group_t,return_counts=True)
 
         #score is equal to sum((each_label_count/size_group)^2)
         score_t = (np.log(counts/size,2)*(counts/size)).sum()*-1
@@ -90,13 +90,25 @@ class Tree():
 
         #count number of unique labels (column -1) and return total number of counts
 
-        labels, counts = np.unique(group_t[:,-1],return_counts=True)
+        labels, counts = np.unique(group_t,return_counts=True)
 
         #score is equal to sum((each_label_count/size_group)^2)
         score_t = ((counts/size)**2).sum()
 
         return score_t
 
+    def test_split_justlabels(self,index,value,dataset_t):
+        """
+        Split dataset into groups less than or greater than
+        an attribute value.
+        """
+        left =dataset_t[dataset_t[:,index]<value][:,-1]
+
+        right =dataset_t[dataset_t[:,index]>=value][:,-1]
+
+        return left, right
+
+        
     #optimized test_split function using numpy array.
     def test_split(self, index, value, dataset_t):
         """
@@ -106,6 +118,7 @@ class Tree():
         left =dataset_t[dataset_t[:,index]<value]
 
         right =dataset_t[dataset_t[:,index]>=value]
+     
 
         return left, right
 
@@ -115,7 +128,7 @@ class Tree():
         get entropy_score for dataset split on each row's indexed attribute value
         """
 
-        groups = self.test_split(index, row[index], dataset)
+        groups = self.test_split_justlabels(index, row[index], dataset)
 
         entropy_score = parent_entropy + self.entropy_index(groups,num_labels)
 
@@ -126,7 +139,7 @@ class Tree():
         """
         get gini_score for dataset split on each row's indexed attribute value
         """
-        groups = self.test_split(index, row[index], dataset)
+        groups = self.test_split_justlabels(index, row[index], dataset)
 
         gini = self.gini_index(groups,num_labels)
 
@@ -177,15 +190,8 @@ class Tree():
 
             if current_b_score < b_score:
                 groups = self.test_split(index, dataset_t[current_b_row,index], dataset_t)
-                groups_t = []
 
-                #have to convert np array back to python list since rest of the functions take data as a list
-                #If rest of the functions are converted to use the data in np array format, I can get rid of this
-                for g in groups:
-                    group = g.tolist()
-                    groups_t.append(group)
-
-                groups_t = tuple(groups_t)
+                groups_t = tuple(groups)
 
                 b_index, b_value, b_score, b_groups = index, current_value, current_b_score, groups_t
 
@@ -204,8 +210,9 @@ class Tree():
         left, right = node['groups']
         del(node['groups'])
         # check for a no split
-        if not left or not right:
-            node['left'] = node['right'] = self.to_terminal(left + right)
+        if not left.any() or not right.any():
+            arr = np.vstack((left,right))
+            node['left'] = node['right'] = self.to_terminal(arr)
             return
         # check for max depth
         if max_depth is not None and depth >= max_depth:
