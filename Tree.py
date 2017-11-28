@@ -43,7 +43,7 @@ class Tree():
 
         for group in groups:
             # score the group based on the score for each class
-            score_t = entropy_grp_score(group)
+            score_t = self.entropy_grp_score(group)
 
             entropy += (score_t) * (float(len(group)) / n_instances)
 
@@ -78,7 +78,7 @@ class Tree():
 
         for group in groups:
             # score the group based on the score for each class
-            score_t = gini_index_grp_score(group,num_labels)
+            score_t = self.gini_index_grp_score(group,num_labels)
 
             gini += (1.0 - score_t) * (float(len(group)) / n_instances)
 
@@ -118,9 +118,9 @@ class Tree():
         get entropy_score for dataset split on each row's indexed attribute value
         """
 
-        groups = test_split(index, row[index], dataset)
+        groups = self.test_split(index, row[index], dataset)
 
-        entropy_score = parent_entropy + entropy_index(groups,num_labels)
+        entropy_score = parent_entropy + self.entropy_index(groups,num_labels)
 
         return entropy_score
 
@@ -129,9 +129,9 @@ class Tree():
         """
         get gini_score for dataset split on each row's indexed attribute value
         """
-        groups = test_split(index, row[index], dataset)
+        groups = self.test_split(index, row[index], dataset)
 
-        gini = gini_index(groups,num_labels)
+        gini = self.gini_index(groups,num_labels)
 
         return gini
 
@@ -164,19 +164,19 @@ class Tree():
             #returns all gini index scores of each row for the selected feature
             if gini is True:
 
-                scores = np.apply_along_axis(gini_row_score,1,dataset_t,index,dataset_t,num_labels)
+                scores = np.apply_along_axis(self.gini_row_score,1,dataset_t,index,dataset_t,num_labels)
             #returns all entropy scores of each row for the selected feature
             else:
 
-                parent_entropy = entropy_index(dataset_t,num_labels)
+                parent_entropy = self.entropy_index(dataset_t,num_labels)
 
-                scores = np.apply_along_axis(entropy_row_score,1,dataset_t,index,dataset_t,parent_entropy)
+                scores = np.apply_along_axis(self.entropy_row_score,1,dataset_t,index,dataset_t,parent_entropy)
 
             current_b_score = np.min(scores)
 
             current_b_row = np.argmin(scores)
 
-            groups = test_split(index, dataset_t[current_b_row,index], dataset_t)
+            groups = self.test_split(index, dataset_t[current_b_row,index], dataset_t)
 
             current_value = dataset_t[current_b_row,index]
 
