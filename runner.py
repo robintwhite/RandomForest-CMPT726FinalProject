@@ -4,7 +4,7 @@ Script to help run the RandomForest program.
 """
 from RandomForest import RandomForest
 from argparse import ArgumentParser
-
+from Sklearn_RF import Sklearn_RF
 import preprocessors.HockeyDataSetPreprocessor as HockeyPP
 import preprocessors.BreastCancerDataSetPreprocessor as BreastCancerPP
 import preprocessors.Preprocessor as pp
@@ -57,6 +57,9 @@ def main():
         help="The number of features to use when building each tree in the random forest.  Specifying None will use all"
               " the features (default: None).")
     argument_parser.add_argument(
+        '-k','--sklearn_rf',
+        action='store_true',
+        help='Train and test dataset on SKlearn Random Forest')
         '-w', '--number_of_workers',
         type=int,
         help="The number of workers to spawn during training of the random forest.  Specifying None will disable this"
@@ -93,5 +96,19 @@ def main():
     accuracy = random_forest.evaluate(results, test_data[:,-1])
     print('{}{}'.format("Percent correct: ", accuracy))
 
+    if arguments.sklearn_rf is True:
+        sk_rf = Sklearn_RF(
+         arguments.number_of_trees,
+         arguments.max_depth,
+         arguments.min_split_size,
+         arguments.n_features  
+        )
+        
+        sk_rf.train(train_data,"GP_greater_than_0")
+        
+        accuracy_sk = sk_rf.evaluate(test_data)
+        
+        print('{}{}'.format('sklearn rf Percent correct: ',accuracy_sk))
+        
 if __name__ == '__main__':
     main()
