@@ -18,7 +18,7 @@ System Requirements
 
 How to Run
 ==========
-python runner.py -d <inputfile> --use_hockey_preprocessor
+python runner.py -d \<inputfile\> --use_hockey_preprocessor
 
 
 Output
