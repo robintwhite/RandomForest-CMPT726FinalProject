@@ -109,7 +109,7 @@ class Tree():
 
         return left, right
 
-    def entropy_row_score(self, row, index, dataset, parent_entropy):
+    def entropy_row_score(self, row, index, dataset, parent_entropy, num_labels):
 
         """
         get entropy_score for dataset split on each row's indexed attribute value
@@ -146,7 +146,7 @@ class Tree():
         count_all_features = len(dataset[0])-1
 
         #count number of unique labels (column -1) and return total number of counts
-        labels, num_labels = np.unique(group_t[:,-1],return_counts=True)
+        labels, num_labels = np.unique(dataset[:,-1], return_counts=True)
 
         #randomly select number of features.
         #seed for testing
@@ -167,7 +167,7 @@ class Tree():
 
                 parent_entropy = self.entropy_index(dataset_t,num_labels)
 
-                scores = np.apply_along_axis(self.entropy_row_score,1,dataset_t,index,dataset_t,parent_entropy)
+                scores = np.apply_along_axis(self.entropy_row_score,1,dataset_t,index,dataset_t,parent_entropy, num_labels)
 
             current_b_score = np.min(scores)
 
