@@ -44,11 +44,11 @@ class Tree():
         for group in groups:
             # score the group based on the score for each class
             score_t = entropy_grp_score(group)
-    
+
             entropy += (score_t) * (float(len(group)) / n_instances)
 
         return entropy
-    
+
     def entropy_grp_score(group_t):
 
         size = float(len(group_t))
@@ -57,14 +57,14 @@ class Tree():
             return 0.0
 
         #count number of unique labels (column -1) and return total number of counts
-	
+
         labels, counts = np.unique(group_t[:,-1],return_counts=True)
 
         #score is equal to sum((each_label_count/size_group)^2)
         score_t = (np.log(counts/size,2)*(counts/size)).sum()*-1
 
         return score_t
-    
+
     def gini_index(groups,num_labels):
         """
         Calculate gini_index score for groups split based on whether sample's specific attribute
@@ -83,7 +83,7 @@ class Tree():
             gini += (1.0 - score_t) * (float(len(group)) / n_instances)
 
         return gini
- 
+
     def gini_index_grp_score(group_t,num_labels):
 
         size = float(len(group_t))
@@ -92,7 +92,7 @@ class Tree():
             return 0.0
 
         #count number of unique labels (column -1) and return total number of counts
-	
+
         labels, counts = np.unique(group_t[:,-1],return_counts=True)
 
         #score is equal to sum((each_label_count/size_group)^2)
@@ -111,31 +111,31 @@ class Tree():
         right =dataset_t[dataset_t[:,index]>=value]
 
         return left, right
-    
+
     def entropy_row_score(row,index,dataset,parent_entropy):
-        
+
         """
         get entropy_score for dataset split on each row's indexed attribute value
         """
-        
+
         groups = test_split(index, row[index], dataset)
- 
-        entropy_score = parent_entropy + entropy_index(groups,num_labels) 
+
+        entropy_score = parent_entropy + entropy_index(groups,num_labels)
 
         return entropy_score
-    
-    
+
+
     def gini_row_score(row,index,dataset,num_labels):
         """
         get gini_score for dataset split on each row's indexed attribute value
         """
         groups = test_split(index, row[index], dataset)
-  
+
         gini = gini_index(groups,num_labels)
 
         return gini
- 
-   
+
+
     def get_split(dataset, n_features,gini=True):
         """
         Select the best split point for a dataset.
@@ -147,7 +147,7 @@ class Tree():
         b_index, b_value, b_score, b_groups = 999, 999, 999, None
 
         count_all_features = len(dataset[0])-1
-        
+
         #count number of unique labels (column -1) and return total number of counts
         labels, num_labels = np.unique(group_t[:,-1],return_counts=True)
 
@@ -159,19 +159,19 @@ class Tree():
         dataset_t = np.array(dataset)
 
         for index in features:
-            
+
             scores = None
             #returns all gini index scores of each row for the selected feature
             if gini is True:
-                
+
                 scores = np.apply_along_axis(gini_row_score,1,dataset_t,index,dataset_t,num_labels)
             #returns all entropy scores of each row for the selected feature
             else:
-                
+
                 parent_entropy = entropy_index(dataset_t,num_labels)
-                
+
                 scores = np.apply_along_axis(entropy_row_score,1,dataset_t,index,dataset_t,parent_entropy)
-                
+
             current_b_score = np.min(scores)
 
             current_b_row = np.argmin(scores)
