@@ -60,6 +60,7 @@ def main():
         '-k','--sklearn_rf',
         action='store_true',
         help='Train and test dataset on SKlearn Random Forest')
+    argument_parser.add_argument(
         '-w', '--number_of_workers',
         type=int,
         help="The number of workers to spawn during training of the random forest.  Specifying None will disable this"
@@ -101,14 +102,14 @@ def main():
          arguments.number_of_trees,
          arguments.max_depth,
          arguments.min_split_size,
-         arguments.n_features  
+         arguments.n_features
         )
-        
+
         sk_rf.train(train_data,"GP_greater_than_0")
-        
+
         accuracy_sk = sk_rf.evaluate(test_data)
-        
-        print('{}{}'.format('sklearn rf Percent correct: ',accuracy_sk))
-        
+
+        print('{}{}'.format('sklearn rf Percent correct: ',accuracy_sk*100))
+
 if __name__ == '__main__':
     main()
