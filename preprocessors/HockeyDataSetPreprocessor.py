@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import copy
 
-def process(dataset_file):
+def process(dataset_file,classname):
     """
     Process the given hockey dataset so that it can be consumed by the Random Forest.
 
@@ -12,6 +12,7 @@ def process(dataset_file):
 
     """
     print("Processing the data using Hockey Dataset Preprocessor...")
+    
 
     train = None
     test = None
@@ -22,7 +23,7 @@ def process(dataset_file):
     df = df.reindex(np.random.permutation(df.index))
     df = df.reset_index(drop=True)
 
-    class_name = "GP_greater_than_0"
+    class_name = classname
 
     ##Seperate into training and test set
     #Training from yrs 2004, 2005, 2006
@@ -31,10 +32,14 @@ def process(dataset_file):
                             (df['DraftYear'] == 2006)]
 
     df_test = df.loc[(df['DraftYear'] == 2007)]
-
-    list_of_dropped_vars = ["id","PlayerName","DraftYear","Country",
+    if class_name == 'GP_greater_than_0':
+        list_of_dropped_vars = ["id","PlayerName","DraftYear","Country",
                           "Overall","sum_7yr_TOI","sum_7yr_GP"]
-
+        
+    elif class_name == 'sum_7yr_GP':
+        list_of_dropped_vars = ["id","PlayerName","DraftYear","Country",
+                          "Overall","sum_7yr_TOI","GP_greater_than_0"]
+        
     #Drop columns as given on course website, returns new dataset
     df_train = df_train.drop(list_of_dropped_vars, axis=1)
     df_test = df_test.drop(list_of_dropped_vars, axis=1)
@@ -63,14 +68,15 @@ def process(dataset_file):
     t_train = df_train[class_name]
     t_test = df_test[class_name]
 
-    # Target values, 0 for no, 1 for yes.
-    t_train = t_train.map(dict(yes=1, no=0)).values
-    t_test = t_test.map(dict(yes=1, no=0)).values
+    # Target values, 0 for no, 1 for yes. Only for classification.
+    if class_name == 'GP_greater_than_0':
+        t_train = t_train.map(dict(yes=1, no=0)).values
+        t_test = t_test.map(dict(yes=1, no=0)).values
 
     #Append target variables back to last column
     x_train.insert(len(x_train.columns), class_name, t_train)
     x_test.insert(len(x_test.columns), class_name, t_test)
-
+    
     train = x_train.values
     test = x_test.values
 

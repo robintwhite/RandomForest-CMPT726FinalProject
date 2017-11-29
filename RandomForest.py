@@ -30,7 +30,7 @@ class RandomForest():
         for tree in self.trees:
             tree.printID()
 
-    def _build_tree(self, tree, train_data, target_class, trained_trees):
+    def _build_tree(self, tree, train_data, target_class, trained_trees,splitf):
         """
         Helper function to use for multi-processing trees during training.
 
@@ -43,11 +43,11 @@ class RandomForest():
                    enhancement is mostly to speed up developement.
 
         """
-        tree.tree_build_util(train_data, target_class)
+        tree.tree_build_util(train_data, target_class,splitf)
         trained_trees.append(tree)
 
-
-    def train(self, train_data, target_class):
+    #Specify split function (splitf) parameter for classification or regression: gini, entropy, variance
+    def train(self, train_data, target_class,splitf):
         """
         Train the random forest on the given data.
 
@@ -57,13 +57,13 @@ class RandomForest():
         """
         if self.workers:
             trained_trees = Manager().list()
-            partial_function = partial(self._build_tree, train_data=train_data, target_class=target_class, trained_trees=trained_trees)
+            partial_function = partial(self._build_tree, train_data=train_data, target_class=target_class,  trained_trees=trained_trees,splitf=splitf)
             with Pool(processes=self.workers) as workers:
                 workers.map(partial_function, self.trees)
             self.trees = trained_trees
         else:
             for tree in self.trees:
-                tree.tree_build_util(train_data, target_class)
+                tree.tree_build_util(train_data, target_class,splitf)
 
 
     def bagging_predict(self, test_data):
