@@ -24,6 +24,10 @@ def main():
         '--use_entropy',
         action='store_true',
         help="Use entropy for attribute splitting in the decision trees.")
+    mutually_exclusive_group.add_argument(
+        '--use_variance',
+        action='store_true',
+        help="Use entropy for attribute splitting in the decision trees.")
     mutually_exclusive_group2 = argument_parser.add_mutually_exclusive_group()
     mutually_exclusive_group2.add_argument(
         '--use_hockey_preprocessor',
@@ -66,6 +70,11 @@ def main():
         help="The number of workers to spawn during training of the random forest.  Specifying None will disable this"
              "feature. (default: None).")
     argument_parser.add_argument(
+        '-c', '--target_label',
+        type=str,
+        required=True,
+        help="Target label that we want to predict.")
+    argument_parser.add_argument(
         '-h', '--help',
         action='help',
         help="Show this message and exit.")
@@ -79,9 +88,22 @@ def main():
         preprocessor = HockeyPP
     else:
         preprocessor = BreastCancerPP
-
-    train_data, test_data  = preprocessor.process(dataset_file)
-    train_x, train_y, test_x, test_y = pp.process(dataset_file, "DraftYear", [2004, 2005, 2006], 2007, "GP_greater_than_0")
+    
+    #select class name
+    class_name = arguments.target_label
+    
+    #select splitting cost function
+    split_function = 'gini'
+    
+    if arguments.use_entropy is True:
+        split_function = 'entropy'
+    
+    elif arguments.use_variance is True:
+        split_function = 'variance'
+        
+    #Test regression with 'sum_7yr_GP'
+    train_data, test_data  = preprocessor.process(dataset_file,class_name)
+    #train_x, train_y, test_x, test_y = pp.process(dataset_file, "DraftYear", [2004, 2005, 2006], 2007, "GP_greater_than_0")
 
     random_forest = RandomForest(
         arguments.number_of_trees,
@@ -90,10 +112,11 @@ def main():
         arguments.n_features,
         arguments.number_of_workers
     )
-    random_forest.train(train_data, "GP_greater_than_0")
+    random_forest.train(train_data, class_name,split_function)
     results = random_forest.bagging_predict(test_data)
-
-    # TODO: Add code to check accuracy.
+    
+    # TODO: Add code to check accuracy. 
+    # TODO: Need separate code for checking regression accuracy
     accuracy = random_forest.evaluate(results, test_data[:,-1])
     print('{}{}'.format("Percent correct: ", accuracy))
 
@@ -104,9 +127,9 @@ def main():
          arguments.min_split_size,
          arguments.n_features
         )
-
-        sk_rf.train(train_data,"GP_greater_than_0")
-
+        
+        sk_rf.train(train_data,class_name)
+        
         accuracy_sk = sk_rf.evaluate(test_data)
 
         print('{}{}'.format('sklearn rf Percent correct: ',accuracy_sk*100))

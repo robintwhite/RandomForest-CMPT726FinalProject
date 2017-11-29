@@ -28,8 +28,24 @@ class Tree():
 
         """
         print("I am tree number: {}".format(self.id))
-
-    def entropy_index(self, groups):
+    
+    def var_index(self,groups):
+#         print("grp set:")
+        tot_var = 0
+        for g in groups:
+#             print("group: ",g)
+#             print("v: ",np.var(g))
+            v = np.var(g)
+            
+            if not g.any():
+                
+                continue
+            
+            tot_var += v
+        
+        return tot_var
+    
+    def entropy_index(self, groups,num_labels):
         """
           Calculate information gain with entropy
         """
@@ -145,8 +161,15 @@ class Tree():
 
         return gini
 
-
-    def get_split(self, dataset, n_features, gini=True):
+    def variance_row_score(self,row,index,dataset):
+        
+        groups = self.test_split_justlabels(index, row[index], dataset)
+        
+        variance = self.var_index(groups)
+        
+        return variance
+        
+    def get_split(self, dataset, n_features, splitf):
         """
         Select the best split point for a dataset.
         This routine and related subroutines convert the dataset
@@ -154,7 +177,7 @@ class Tree():
         So extra computation time is taken at the end of the function to convert dataset back into a python list.
         I think switching rest of the functions to use dataset in the numpy array format will improve runtime.
         """
-        b_index, b_value, b_score, b_groups = 999, 999, 999, None
+        b_index, b_value, b_score, b_groups = 9999999, 99999999, 99999999, None
         dataset_t = np.array(dataset)
         count_all_features = len(dataset[0])-1
         if not n_features:
@@ -172,16 +195,23 @@ class Tree():
 
             scores = None
             #returns all gini index scores of each row for the selected feature
-            if gini is True:
+            if splitf == 'gini':
 
                 scores = np.apply_along_axis(self.gini_row_score,1,dataset_t,index,dataset_t,num_labels)
             #returns all entropy scores of each row for the selected feature
-            else:
+            elif splitf == 'entropy':
 
                 parent_entropy = self.entropy_index(dataset_t,num_labels)
 
                 scores = np.apply_along_axis(self.entropy_row_score,1,dataset_t,index,dataset_t,parent_entropy, num_labels)
 
+            #variance split function for regression tree
+            elif splitf == 'variance':
+                
+                scores = np.apply_along_axis(self.variance_row_score,1,dataset_t,index,dataset_t)
+                
+                #print(scores)
+                
             current_b_score = np.min(scores)
 
             current_b_row = np.argmin(scores)
@@ -199,39 +229,64 @@ class Tree():
 
 
     # Create a terminal node value
-    def to_terminal(self, group):
+    def to_terminal(self, group,splitf):
+        
+        if not group.any():
+            return 0.
+        
+        outcomes = [row[-1] for row in group]
+        
+        if splitf =='variance':
+            mean = np.round(np.mean(outcomes),3)
+            
+            if np.isnan(mean):
+                mean = 0.
+                
+            return mean
+        
         outcomes = [row[-1] for row in group]
         return max(set(outcomes), key=outcomes.count) #majority vote
 
-    def split(self, node, max_depth, min_size, n_features, depth):
+    def split(self, node, max_depth, min_size, n_features, depth,splitf):
         """
         split child nodes starting from root
         """
+        #print("depth: ",depth)
         left, right = node['groups']
         del(node['groups'])
-        # check for a no split
-        if not left.any() or not right.any():
+        
+         # check for a no split
+        if not left.any() and not right.any():
             arr = np.vstack((left,right))
-            node['left'] = node['right'] = self.to_terminal(arr)
+            node['left'] = node['right'] = self.to_terminal(arr,splitf)
             return
+        #check for only empty left group
+        if not left.any():
+            node['left'] = self.to_terminal(left,splitf)
+        
+        #check for only empty right group
+        if not right.any():
+            node['right'] = self.to_terminal(right,splitf)
+       
+        
         # check for max depth
         if max_depth is not None and depth >= max_depth:
-            node['left'], node['right'] = self.to_terminal(left), self.to_terminal(right)
+            node['left'], node['right'] = self.to_terminal(left,splitf), self.to_terminal(right,splitf)
             return
         # process left child
         if len(left) <= min_size:
-            node['left'] = self.to_terminal(left)
+            node['left'] = self.to_terminal(left,splitf)
         else:
-            node['left'] = self.get_split(left, n_features)
-            self.split(node['left'], max_depth, min_size, n_features, depth+1)
+            node['left'] = self.get_split(left, n_features,splitf)
+            self.split(node['left'], max_depth, min_size, n_features, depth+1,splitf)
         # process right child
         if len(right) <= min_size:
-            node['right'] = self.to_terminal(right)
+            node['right'] = self.to_terminal(right,splitf)
         else:
-            node['right'] = self.get_split(right, n_features)
-            self.split(node['right'], max_depth, min_size, n_features, depth+1)
+            node['right'] = self.get_split(right, n_features,splitf)
+            self.split(node['right'], max_depth, min_size, n_features, depth+1,splitf)
 
-    def tree_build_util(self, train_data, target_class):
+    def tree_build_util(self, train_data, target_class,splitf):
         """
         util function to build tree
         @param train_data - training dataset
@@ -240,8 +295,9 @@ class Tree():
         Note: This method is basically the fit() method.
 
         """
-        split_point = self.get_split(train_data, self.n_features)
-        self.split(split_point, self.max_depth, self.min_split_size, self.n_features, 1)
+        split_point = self.get_split(train_data, self.n_features,splitf)
+#         
+        self.split(split_point, self.max_depth, self.min_split_size, self.n_features, 1,splitf)
         self.root = split_point
 
     def predict(self, node, row):
