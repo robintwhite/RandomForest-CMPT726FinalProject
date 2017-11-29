@@ -44,4 +44,6 @@ To add the pre-commit hook, please do the following:
 1. Ensure that you are in the mlclass-1777-randomforest directory.
 2. Run: cp pre-commit .git/hooks -i
 
+In case there is any trouble with the bib file, run pdfLatex + MakeIndex + BibTex to compile.
+
 And you're done!
