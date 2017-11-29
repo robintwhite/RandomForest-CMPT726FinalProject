@@ -3,8 +3,9 @@
 
 # In[ ]:
 
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.metrics import classification_report, mean_squared_error
 from sklearn import datasets
 import preprocessors.HockeyDataSetPreprocessor as HockeyPP
 
@@ -13,7 +14,7 @@ class Sklearn_RF():
     def __init__(self,number_of_trees=None, max_depth=None, min_split_size=None, n_features=None):
         
         if number_of_trees == None or number_of_trees == 0:
-                number_of_trees = 4
+            number_of_trees = 4
                 
         if max_depth==None or max_depth == 0:
             max_depth = None
@@ -56,7 +57,7 @@ class Sklearn_RF():
         
         return score
         
-    def gridSearch(self,data):
+    def gridSearch(self,train_data,test_data,tree_type='classifier'):
         
         """
          GridSearch sklearn rf to find best params
@@ -66,13 +67,29 @@ class Sklearn_RF():
          min_samples_split: min number of samples required to split a node
          min_samples_leaf: min umber of samples required to be a leaf node
         """
-        X = data[:,:-1]
+        X_train = train_data[:,:-1]
         
-        y = data[:,-1]
+        y_train = train_data[:,-1]
         
-        rf = RandomForestClassifier()
+        X_test = test_data[:,:-1]
+        
+        y_test = test_data[:,-1]
+        
+        if tree_type == 'classifier':
+            
+            rf = RandomForestClassifier(n_estimators=self.number_of_trees,
+                                    max_depth=self.max_depth,
+                                    min_samples_split=self.min_split_size,
+                                    max_features=self.n_features)
+        
+        elif tree_type == 'regressor':
+            rf = RandomForestRegressor(n_estimators=self.number_of_trees,
+                                    max_depth=self.max_depth,
+                                    min_samples_split=self.min_split_size,
+                                    max_features=self.n_features)
+            
         params = {'n_estimators':[2,4,8,16,32,64,128],
-                  'max_features':['sqrt','log2','auto'],
+                  #'max_features':['sqrt','log2','auto'],
                   #'max_depth':[2,4,8,16,32,64],
                   #'min_samples_split':[2,4,16,32],
                   #'min_samples_leaf':[2,4,8,16,32,64],
@@ -80,6 +97,39 @@ class Sklearn_RF():
                  }
 
         clf = GridSearchCV(rf,params)
-        clf.fit(X, y)
+        
+        clf.fit(X_train, y_train)
+        
+        print("Parameters for the best {} estimator on the training set:".format(tree_type))
+       
+        print()
+        
+        print(clf.best_params_)
+        
+        print()
+        
+        print("cross-validation accuracy scores:")
+        
+        means = clf.cv_results_["mean_test_score"]
+        
+        stds = clf.cv_results_['std_test_score']
+        
+        for mean, std, param in zip(means, stds, clf.cv_results_['params']):
+            print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, param))
+        
+        print()
+        
+        print("Test set Score:")
+        
+        print()
+        
+        y_true, y_pred = y_test, clf.predict(X_test)
+        
+        if tree_type == 'classifier':
+            print(classification_report(y_true,y_pred))
+        
+        elif tree_type == 'regressor':
+            print("Total mean_squared_error: ",mean_squared_error(y_true,y_pred))
+            
         return  clf.best_score_,clf.best_params_
 

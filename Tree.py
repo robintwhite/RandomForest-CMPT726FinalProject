@@ -1,10 +1,13 @@
 import numpy as np
+import math
 
 class Tree():
     """
     Class to hold logic for a tree in a random forest.
 
     """
+    
+    # TODO: Maybe we need a pruning method?
 
     def __init__(self, tree_id, max_depth, min_split_size, n_features):
         """
@@ -30,11 +33,11 @@ class Tree():
         print("I am tree number: {}".format(self.id))
     
     def var_index(self,groups):
-#         print("grp set:")
+
         tot_var = 0
+        
         for g in groups:
-#             print("group: ",g)
-#             print("v: ",np.var(g))
+
             v = np.var(g)
             
             if not g.any():
@@ -177,7 +180,7 @@ class Tree():
         So extra computation time is taken at the end of the function to convert dataset back into a python list.
         I think switching rest of the functions to use dataset in the numpy array format will improve runtime.
         """
-        b_index, b_value, b_score, b_groups = 9999999, 99999999, 99999999, None
+        b_index, b_value, b_score, b_groups = math.inf, math.inf, math.inf, None
         dataset_t = np.array(dataset)
         count_all_features = len(dataset[0])-1
         if not n_features:
@@ -256,19 +259,11 @@ class Tree():
         del(node['groups'])
         
          # check for a no split
-        if not left.any() and not right.any():
+        if not left.any() or not right.any():
             arr = np.vstack((left,right))
             node['left'] = node['right'] = self.to_terminal(arr,splitf)
             return
-        #check for only empty left group
-        if not left.any():
-            node['left'] = self.to_terminal(left,splitf)
-        
-        #check for only empty right group
-        if not right.any():
-            node['right'] = self.to_terminal(right,splitf)
        
-        
         # check for max depth
         if max_depth is not None and depth >= max_depth:
             node['left'], node['right'] = self.to_terminal(left,splitf), self.to_terminal(right,splitf)
