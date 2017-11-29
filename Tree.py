@@ -259,19 +259,11 @@ class Tree():
         del(node['groups'])
         
          # check for a no split
-        if not left.any() and not right.any():
+        if not left.any() or not right.any():
             arr = np.vstack((left,right))
             node['left'] = node['right'] = self.to_terminal(arr,splitf)
             return
-        #check for only empty left group
-        if not left.any():
-            node['left'] = self.to_terminal(left,splitf)
-        
-        #check for only empty right group
-        if not right.any():
-            node['right'] = self.to_terminal(right,splitf)
        
-        
         # check for max depth
         if max_depth is not None and depth >= max_depth:
             node['left'], node['right'] = self.to_terminal(left,splitf), self.to_terminal(right,splitf)
