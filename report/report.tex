@@ -46,27 +46,31 @@ TODO: Decide if we need this section.
 \section{Introduction}
 
 In machine learning, there is often a tug-of-war between bias and variance; having high accuracy to observed data but not to lose generalization (or over-fit) to unseen data. This is often referred to as the "bias-variance tradeoff" and it's consideration is a significant part of properly engineering machine learning algorithms. Often, regularization is used where there is an addition to the loss function to represent a cost to complexity, or in the way of neural networks, random dropout of neurons to force generalization \cite{Srivastava2014}. Another method is to also use validation datasets so as to understand the loss from unseen data without actually testing on the test set. All of these methods add to the complexity of the algorithm and can also often lead to loss in accuracy of the training data.\\
-In the early 90's, Tin Kam Ho from Bell Labs published a series of papers where he showed surprisingly that by combining independent learners in a unique way increased the accuracy of classifying handwritten digits monotonically; without suffering from over-adaptation to the training data. \cite{Ho93, Ho95, Ho98} The application of this method to decision trees in his '93 paper marked the introduction of Random Forests to the community. \cite{Ho93} Decision trees are simple yet effective classifiers, with high execution speed and easily relatable, however they are limited by their complexity for possible loss of generalization to unseen data. Some methods such as pruning have been used previously to try and increase generalization, however methods such as these usually come with a loss in accuracy toward training data. By using principles of stochastic modeling, Ho showed that tree-based classifiers could be arbitrarily expanded for increases in accuracy on unseen testing data without loss in training data accuracy. A charcterteristic which is still unique amoung machine learning classifiers. The concept is that multiple learners can compensate for the bias of a single learner and so trees are constructed from randomly selecting subsaces of the feature space. In this way, each tree generalizes in a different way. \\
-TODO: Intro conclusion - goals of this work
+In the early 90's, Tin Kam Ho from Bell Labs published a series of papers where he showed surprisingly that by combining independent learners in a unique way increased the accuracy of classifying handwritten digits monotonically; without suffering from over-adaptation to the training data. \cite{Ho93, Ho95, Ho98} The application of this method to decision trees in his '93 paper marked the introduction of Random Forests to the community. \cite{Ho93} Decision trees are simple yet effective classifiers, with high execution speed and easily relatable, however they are limited by their complexity for possible loss of generalization to unseen data. Some methods such as pruning have been used previously to try and increase generalization, however methods such as these usually come with a loss in accuracy toward training data. By using principles of stochastic modeling, Ho showed that tree-based classifiers could be arbitrarily expanded for increases in accuracy on unseen testing data without loss in training data accuracy. A characteristic which is still unique among machine learning classifiers. The concept is that multiple learners can compensate for the bias of a single learner and so trees are constructed from randomly selecting subspaces of the feature space. In this way, each tree generalizes in a different way. \\
+Random Forests have been applied to a variety of machine learning tasks including classifications in ecology and geosciences, image segmentation in medical applications, business and predictions in sports analytics, as well as the unmentioned number of general data science applications. \cite{Cutler2007, Harris2015, Luo2017, Ghatasheh2014, Lock2014}
 
 \subsection{Decision Trees}
-TODO: Adjust titles as necessary and add content specifying other papers.
+TODO: Outline general Decision tree algorithm.
+
+\subsection{Random Forests}
+TODO: Outline general Random forest algorithm. Pseudo code
 
 \subsection{Ensemble Learning}
+TODO: Decide what content to go where
+
+Randomization increases bias but makes it possible to reduce the variance of the corresponding ensemble model through averaging. \cite{formann-roe_2012}
+
 \textbf{Bootstrap Aggregating (Bagging)}
 
 Bootstrap aggregating or bagging is an ensemble learning technique that attempts to reduce variance of the model without increasing the bias by attempting to remove correlation between individual trees. Each tree is limited to evaluating only a random fractional sample of the actual dataset such that no two samples are the same. Bagging has been demonstrated empirically to improve model accuracy. \cite{Aslam07}\\
 
-From the actual dataset D of size n, k bootstrap samples, \[ D_1,D_2,..D_k  \] are randomly selected with repetition from D. 
+From the actual dataset D of size n, k bootstrap samples, \[ D_1,D_2,..D_k  \] are randomly selected with repetition from D.
 
 Then the variance of the ensemble is the average of the sum of the individual trees' variances.
 
 \[ var(L) = \frac{\sum_{i=1}^k var(L_i)}{k}\] where L is the ensemble of individual learners (trees).\\
 
 Each datapoint in D has a probability of \[1-\left(\frac{1}{n}\right)^n = e^{-1} \approx 36.8 \% \] of not being selected in  a sample D\textsubscript{i} and therefore approximately 63.2\% probability of being in a training set D\textsubscript{i}.
-
-\subsection{Random Forests}
-TODO: Adjust titles as necessary and add content specifying other papers.
 
 \section{Approach}
 TODO: Figure out what is supposed to be here.
@@ -93,7 +97,7 @@ Estimating tree agreement between trees i and j as s\textsubscript{i,j}
 
 \[ s_{i,j} = \frac{1}{n}\sum_{k=1}^{n}f(x_k)\]
 \
-\[ where \ f(x_k) = \begin{cases} 
+\[ where \ f(x_k) = \begin{cases}
       1 & if\ class\ decision_i(x_k) = class \ decision_j(x_k) \\
       0 & otherwise
    \end{cases}
@@ -140,8 +144,11 @@ Tensorflow(?) Probably need one more, but not sure which one yet.             &c
 \end{center}
 \end{table}
 
+Random forests have been shown to achieve igh classification performance through ensemble with a set of decision trees that are constructed using randomly selected feature subspaces. The performance of an ensemble learner is dependent on the accuracy of each component learner and the diversity of the components, especially when using a small set of trees which may be limited due to computational cost. The randomization can cause occurence of bad predicting trees as well as correated trees which can lead to poor ensemble decisions, which can be observed when performing multiple training runs using the same parameters which can lead to different accuracy results. Attempts have been made to improve the performance of this model by building a forest of only uncorrelated high performing trees. \cite{Bharathidason2014}
+
 \section{Conclusion}
 TODO: Add content.
+
 
 \subsubsection*{Contributions}
 All authors contributed equally.\\
@@ -154,7 +161,7 @@ See GitLab project here for specific commits:\\
 
 
 \small{
-\bibliography{report} 
+\bibliography{report}
 \bibliographystyle{ieeetr}
 }
 
@@ -164,7 +171,7 @@ References follow the acknowledgments. Use unnumbered third level heading for
 
 the references. {\bf Any choice of citation style is acceptable as long as you are
 
-consistent.} 
+consistent.}
 
 \href{https://github.com/aucsc220/research_paper}{
 Example:}\\
