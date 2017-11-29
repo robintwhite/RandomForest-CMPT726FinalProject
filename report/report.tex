@@ -45,13 +45,15 @@ TODO: Decide if we need this section.
 
 \section{Introduction}
 
+In the early 90's, Tin Kam Ho from Bell Labs published a series of papers where he showed surprisingly that by combining independent learners in a unique way increased the accuracy of classifying handwritten digits monotonically; without suffering from over-adaptation to the training data. \cite{Ho93, Ho95, Ho98} The application of this method to decision trees in his '93 paper marked the introduction of Random Forests to the community. \cite{Ho93} Decision trees are simple yet effective classifiers, with high execution speed and easily relatable, however they are limited by their complexity for possible loss of generalization to unseen data. Some methods such as pruning have been used previously to try and increase generalization, however methods such as these usually come with a loss in accuracy toward training data. By using principles of stochastic modeling, Ho showed that tree-based classifiers could be arbitrarily expanded for increases in accuracy on unseen testing data without loss in training data accuracy. A charcterteristic which is still unique amoung machine learning classifiers. The concept is that multiple learners can compensate for the bias of a single learner and so trees are constructed from randomly selecting subsaces of the feature space. In this way, each tree generalizes in a different way. 
+
 \subsection{Decision Trees}
 TODO: Adjust titles as necessary and add content specifying other papers.
 
 \subsection{Ensemble Learning}
 \textbf{Bootstrap Aggregating (Bagging)}
 
-Bootstrap aggregating or bagging is an ensemble learning technique that attempts to reduce variance of the model without increasing the bias by attempting to remove correlation between individual trees. Each tree is limited to evaluating only a random fractional sample of the actual dataset such that no two samples are the same. Bagging has been demonstrated empirically to improve model accuracy. [2]\\
+Bootstrap aggregating or bagging is an ensemble learning technique that attempts to reduce variance of the model without increasing the bias by attempting to remove correlation between individual trees. Each tree is limited to evaluating only a random fractional sample of the actual dataset such that no two samples are the same. Bagging has been demonstrated empirically to improve model accuracy. \cite{Aslam07}\\
 
 From the actual dataset D of size n, k bootstrap samples, \[ D_1,D_2,..D_k  \] are randomly selected with repetition from D. 
 
@@ -140,6 +142,7 @@ Tensorflow(?) Probably need one more, but not sure which one yet.             &c
 TODO: Add content.
 
 \subsubsection*{Contributions}
+All authors contributed equally.\\
 See GitLab project here for specific commits:\\
 \href{
     https://csil-git1.cs.surrey.sfu.ca/rkm3/mlclass-1777-randomforest
@@ -147,17 +150,29 @@ See GitLab project here for specific commits:\\
     https://csil-git1.cs.surrey.sfu.ca/rkm3/mlclass-1777-randomforest
 }
 
-\subsubsection*{References}
-
 
 \small{
-[1] Leo Breiman. 2001. Random Forests. Machine Learning. 45 1, 5-32.
+\bibliography{report} 
+\bibliographystyle{ieeetr}
+}
 
-[2]  J.A. Aslam, R.A. Popa, R.L. Rivest. 2007. On Estimating the Size and Confidence of a Statistical Audit. Proc. Usenix/Accurate Electronic Voting Technology on Usenix/Accurate Electronic Voting Technology Workshop (EVT 07), pp. 8.
+NIPS style guide:
 
-[3] T. K. Ho. 1998. The random subspace method for constructing decision forests. IEEE Trans. Pattern Anal. Mach. Intell., vol. 20, no. 8, pp. 832-844.
+References follow the acknowledgments. Use unnumbered third level heading for
 
-TODO: Add more citations and fix formatting of existing one if it's incorrect.
+the references. {\bf Any choice of citation style is acceptable as long as you are
+
+consistent.} 
+
+\href{https://github.com/aucsc220/research_paper}{
+Example:}\\
+
+\small{
+[1] Alexander, J.A. \& Mozer, M.C. (1995) Template-based algorithms
+for connectionist rule extraction. In G. Tesauro, D. S. Touretzky
+and T.K. Leen (eds.), {\it Advances in Neural Information Processing
+Systems 7}, pp. 609-616. Cambridge, MA: MIT Press.
+
 }
 
 \end{document}
