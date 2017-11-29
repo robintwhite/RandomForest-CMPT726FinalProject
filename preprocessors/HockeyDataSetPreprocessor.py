@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import copy
 
-def process(dataset_file,classname):
+def process(dataset_file,target_column):
     """
     Process the given hockey dataset so that it can be consumed by the Random Forest.
 
@@ -13,7 +13,6 @@ def process(dataset_file,classname):
     """
     print("Processing the data using Hockey Dataset Preprocessor...")
     
-
     train = None
     test = None
 
@@ -23,7 +22,7 @@ def process(dataset_file,classname):
     df = df.reindex(np.random.permutation(df.index))
     df = df.reset_index(drop=True)
 
-    class_name = classname
+    class_name = target_column
 
     ##Seperate into training and test set
     #Training from yrs 2004, 2005, 2006

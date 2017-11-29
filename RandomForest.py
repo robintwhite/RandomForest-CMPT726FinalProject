@@ -30,7 +30,7 @@ class RandomForest():
         for tree in self.trees:
             tree.printID()
 
-    def _build_tree(self, tree, train_data, target_class, trained_trees,splitf):
+    def _build_tree(self, tree, train_data, target_class, trained_trees, splitf):
         """
         Helper function to use for multi-processing trees during training.
 

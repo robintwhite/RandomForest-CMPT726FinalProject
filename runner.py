@@ -95,10 +95,10 @@ def main():
     #select splitting cost function
     split_function = 'gini'
     
-    if arguments.use_entropy is True:
+    if arguments.use_entropy:
         split_function = 'entropy'
     
-    elif arguments.use_variance is True:
+    elif arguments.use_variance:
         split_function = 'variance'
         
     #Test regression with 'sum_7yr_GP'
@@ -128,11 +128,12 @@ def main():
          arguments.n_features  
         )
         
+        # TODO: Need a sklearn_regression tree as well
         sk_rf.train(train_data,class_name)
         
         accuracy_sk = sk_rf.evaluate(test_data)
         
-        print('{}{}'.format('sklearn rf Percent correct: ',accuracy_sk))
+        print('{}{}'.format('sklearn rf Percent correct: ',accuracy_sk*100))
         
 if __name__ == '__main__':
     main()
