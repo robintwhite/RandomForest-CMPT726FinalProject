@@ -125,7 +125,7 @@ def main():
          arguments.number_of_trees,
          arguments.max_depth,
          arguments.min_split_size,
-         arguments.n_features  
+         arguments.n_features
         )
         
         # TODO: Need a sklearn_regression tree as well
@@ -134,6 +134,6 @@ def main():
         accuracy_sk = sk_rf.evaluate(test_data)
         
         print('{}{}'.format('sklearn rf Percent correct: ',accuracy_sk*100))
-        
+
 if __name__ == '__main__':
     main()

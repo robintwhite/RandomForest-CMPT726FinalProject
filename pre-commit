@@ -3,7 +3,7 @@
 # Script to run runner.py before making a commit so that we enforce people not breaking the project.
 #
 projectRoot=$(git rev-parse --show-toplevel)
-python $projectRoot/runner.py -d preprocessors/hockeydataset.csv --use_hockey_preprocessor
+python $projectRoot/runner.py -d preprocessors/hockeydataset.csv --use_hockey_preprocessor --target_label GP_greater_than_0
 returnCode=$?
 if [[ ${returnCode} -ne 0 ]]
 then
