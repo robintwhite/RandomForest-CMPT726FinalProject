@@ -45,7 +45,9 @@ TODO: Decide if we need this section.
 
 \section{Introduction}
 
-In the early 90's, Tin Kam Ho from Bell Labs published a series of papers where he showed surprisingly that by combining independent learners in a unique way increased the accuracy of classifying handwritten digits monotonically; without suffering from over-adaptation to the training data. \cite{Ho93, Ho95, Ho98} The application of this method to decision trees in his '93 paper marked the introduction of Random Forests to the community. \cite{Ho93} Decision trees are simple yet effective classifiers, with high execution speed and easily relatable, however they are limited by their complexity for possible loss of generalization to unseen data. Some methods such as pruning have been used previously to try and increase generalization, however methods such as these usually come with a loss in accuracy toward training data. By using principles of stochastic modeling, Ho showed that tree-based classifiers could be arbitrarily expanded for increases in accuracy on unseen testing data without loss in training data accuracy. A charcterteristic which is still unique amoung machine learning classifiers. The concept is that multiple learners can compensate for the bias of a single learner and so trees are constructed from randomly selecting subsaces of the feature space. In this way, each tree generalizes in a different way. 
+In machine learning, there is often a tug-of-war between bias and variance; having high accuracy to observed data but not to lose generalization (or over-fit) to unseen data. This is often referred to as the "bias-variance tradeoff" and it's consideration is a significant part of properly engineering machine learning algorithms. Often, regularization is used where there is an addition to the loss function to represent a cost to complexity, or in the way of neural networks, random dropout of neurons to force generalization \cite{Srivastava2014}. Another method is to also use validation datasets so as to understand the loss from unseen data without actually testing on the test set. All of these methods add to the complexity of the algorithm and can also often lead to loss in accuracy of the training data.\\
+In the early 90's, Tin Kam Ho from Bell Labs published a series of papers where he showed surprisingly that by combining independent learners in a unique way increased the accuracy of classifying handwritten digits monotonically; without suffering from over-adaptation to the training data. \cite{Ho93, Ho95, Ho98} The application of this method to decision trees in his '93 paper marked the introduction of Random Forests to the community. \cite{Ho93} Decision trees are simple yet effective classifiers, with high execution speed and easily relatable, however they are limited by their complexity for possible loss of generalization to unseen data. Some methods such as pruning have been used previously to try and increase generalization, however methods such as these usually come with a loss in accuracy toward training data. By using principles of stochastic modeling, Ho showed that tree-based classifiers could be arbitrarily expanded for increases in accuracy on unseen testing data without loss in training data accuracy. A charcterteristic which is still unique amoung machine learning classifiers. The concept is that multiple learners can compensate for the bias of a single learner and so trees are constructed from randomly selecting subsaces of the feature space. In this way, each tree generalizes in a different way. \\
+TODO: Intro conclusion - goals of this work
 
 \subsection{Decision Trees}
 TODO: Adjust titles as necessary and add content specifying other papers.
@@ -86,7 +88,7 @@ Random forest uses a modified splitting algorithm that attempts to further reduc
 
 \[Generalization\ error \leq \frac{corr(1-s^2)}{s^2}\] where corr is the average correlation among the trees and s is the average performance of individual classifiers. Thus, reducing correlation among the individual trees will also lower the generalization error.
 
- Work by Ho has demonstrated that average tree agreement between trees is significantly lowered using the Random subspace method. [3] 
+ Work by Ho has demonstrated that average tree agreement between trees is significantly lowered using the Random subspace method. \cite{Ho98}
 Estimating tree agreement between trees i and j as s\textsubscript{i,j}
 
 \[ s_{i,j} = \frac{1}{n}\sum_{k=1}^{n}f(x_k)\]
@@ -97,7 +99,7 @@ Estimating tree agreement between trees i and j as s\textsubscript{i,j}
    \end{cases}
 \]
 
-Ho's result showed average of s\textsubscript{i,j} of random subspaces method was lower than that of bootstrapping and boosting methods alone. [3]
+Ho's result showed average of s\textsubscript{i,j} of random subspaces method was lower than that of bootstrapping and boosting methods alone. \cite{Ho98}
 
  Thus, limiting a tree's evaluation to only a fixed size subset of the actual features and randomizing the elements in the subset during each splitting process helps to reduce correlation among each trees. The modified splitting algorithm will then split on a single feature with the best information gain ratio or gini impurity to reduce correlation among trees.
 
