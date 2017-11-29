@@ -125,14 +125,14 @@ def main():
          arguments.number_of_trees,
          arguments.max_depth,
          arguments.min_split_size,
-         arguments.n_features  
+         arguments.n_features
         )
         
         sk_rf.train(train_data,class_name)
         
         accuracy_sk = sk_rf.evaluate(test_data)
-        
-        print('{}{}'.format('sklearn rf Percent correct: ',accuracy_sk))
-        
+
+        print('{}{}'.format('sklearn rf Percent correct: ',accuracy_sk*100))
+
 if __name__ == '__main__':
     main()
