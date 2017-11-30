@@ -153,13 +153,13 @@ sum\_7yr\_GP         &8	&sqrt = 5	&4	&2	&64 \\
 \\ \hline \\
 Weka         &56\%	&$<$1sec \\
 scikit-learn             &55\%	&TIME \\
-our implementation             &compare speed and accuracy at least	&TIME \\
+our implementation             &57\%	&~3min \\
 
 \end{tabular}
 \end{center}
 \end{table}
 
-From Table~\ref{clas-table}, it can be seen that all three implementations of Random forest yield similar results. It was noted however that when performing Weka on a unprocessed data set, that is without changing the country group to binary dummy features, as well as without standardization of the feature vectors, the Weka accuracy yielded 69\% accuracy, compared to the 56\% accuracy. (TODO: Comment on possibilities, multi-class splitting? WIll investigate at what point do we see loss in accuracy)
+From Table~\ref{clas-table}, it can be seen that all three implementations of Random forest yield similar results. It was noted however that when performing Weka on a unprocessed data set, that is without changing the country group to binary dummy features, as well as without standardization of the feature vectors, the Weka accuracy yielded 69\% accuracy, compared to the 56\% accuracy. (TODO: Comment on possibilities, multi-class splitting? WIll investigate at what point do we see loss in accuracy). The time taken for completion is difficult to compare since coding implementations are different, however using 4 workers running using the same parameters as shown in table ~\ref{scikit-table} the time of 3 minutes is slow, however not unreasonable. 
 
 Random forests have been shown to achieve high classification performance through ensemble with a set of decision trees that are constructed using randomly selected feature subspaces. The performance of an ensemble learner is dependent on the accuracy of each component learner and the diversity of the components, especially when using a small set of trees which may be limited due to computational cost. The randomization can cause occurence of bad predicting trees as well as correated trees which can lead to poor ensemble decisions, which can be observed when performing multiple training runs using the same parameters which can lead to different accuracy results. Attempts have been made to improve the performance of this model by building a forest of only uncorrelated high performing trees. \cite{Bharathidason2014}
 
