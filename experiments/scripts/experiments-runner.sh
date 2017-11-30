@@ -44,6 +44,7 @@ EXPERIMENTS:
 
 OTHER:
  -i  Input file containing the dataset.
+ -o  Output file name.
  -h  Print this usage message.
 
 EOF
@@ -58,7 +59,7 @@ fi
 
 
 # Parse out the settings for running the script.
-while getopts ":i:gevtdfh" Option
+while getopts ":i:o:gevtdfh" Option
 do
   case $Option in
     i)
@@ -68,6 +69,21 @@ do
         exit 1
       else
         CSV_FILE=${OPTARG}
+      fi;;
+    o)
+      if [[ "${OPTARG}" != *.csv ]]
+      then
+        echo -e "\nA .csv file name must be passed to the -o option!\n"
+        exit 1
+      else
+        OUTPUT_FILE=../results/${OPTARG}
+        if [[ -f $OUTPUT_FILE ]]
+        then
+          RED="\033[0;31m"
+          NO_COLOUR="\033[0m"
+          echo -e "\n${RED}WARNING:${NO_COLOUR} The file $OPTARG already exists in the results directory!\n"
+          read -p "Press [Enter] to append the results to the file or Ctrl+C to abort."
+        fi
       fi;;
     g) USE_GINI=1;;
     e) USE_ENTROPY=1;;
@@ -125,6 +141,12 @@ fi
 echo -e "\nOkay, this part is probably going to take awhile so you will probably want to do something else in the" \
         "meantime.\n"
 echo -e "TIP: Since each experiment uses a single process you might want to run the experiments in parallel.\n"
+
+if [[ -n "$OUTPUT_FILE" ]]
+then
+  BASE_COMMAND="$BASE_COMMAND --output_file $OUTPUT_FILE"
+  echo -e "Results will be written to $OUTPUT_FILE\n"
+fi
 
 if [[ $VARY_NUMBER_OF_TREES -eq 1 ]]
 then
