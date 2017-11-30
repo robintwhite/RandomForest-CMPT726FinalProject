@@ -5,6 +5,9 @@ Script to help run the RandomForest program.
 from RandomForest import RandomForest
 from argparse import ArgumentParser
 from Sklearn_RF import Sklearn_RF
+
+import csv
+import os.path
 import preprocessors.HockeyDataSetPreprocessor as HockeyPP
 import preprocessors.BreastCancerDataSetPreprocessor as BreastCancerPP
 import preprocessors.Preprocessor as pp
@@ -75,12 +78,16 @@ def main():
         help="The number of workers to spawn during training of the random forest.  Specifying None will disable this"
              "feature. (default: None).")
     argument_parser.add_argument(
+        '-o', '--output_file',
+        help="Output file of the results.  If the file exists already, new entries will be appended to the end. (default: None).")
+    argument_parser.add_argument(
         '-h', '--help',
         action='help',
         help="Show this message and exit.")
     arguments = argument_parser.parse_args()
 
     dataset_file = arguments.data_file
+    output_file = arguments.output_file
 
     preprocessor = None
 
@@ -137,6 +144,42 @@ def main():
         accuracy_sk = sk_rf.evaluate(test_data)
 
         print('{}{}'.format('sklearn rf Percent correct: ',accuracy_sk*100))
+
+    # Write out the results to a file, if one is specified, for downstream processing.
+    if output_file:
+        creating_new_file = True
+        if os.path.isfile(output_file):
+            creating_new_file = False
+
+        headers = [
+            "Features",
+            "MaxDepth",
+            "MinSplitThreshold",
+            "Trees",
+            "SplitCriteria",
+            "Target",
+            "TrainAccuracy",
+            "TestAccuracy"
+        ]
+
+        with open(output_file, "a") as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=headers)
+            if creating_new_file:
+                print("Creating a new file {}!\n".format(output_file))
+                writer.writeheader()
+            else:
+                print("Appending to the file {}!\n".format(output_file))
+            writer.writerow({
+                "Features" :  arguments.n_features if arguments.n_features else "ALL",
+                "MaxDepth" : arguments.max_depth if arguments.max_depth else "NOLIMIT",
+                "MinSplitThreshold" : arguments.min_split_size,
+                "Trees" : arguments.number_of_trees,
+                "SplitCriteria" : split_function,
+                "Target" : class_name,
+                "TrainAccuracy" : train_accuracy,
+                "TestAccuracy" : test_accuracy
+            })
+
 
 if __name__ == '__main__':
     main()
