@@ -113,12 +113,15 @@ def main():
         arguments.number_of_workers
     )
     random_forest.train(train_data, class_name,split_function)
-    results = random_forest.bagging_predict(test_data)
+    train_results = random_forest.bagging_predict(train_data)
+    test_results = random_forest.bagging_predict(test_data)
 
-    # TODO: Add code to check accuracy. 
     # TODO: Need separate code for checking regression accuracy
-    accuracy = random_forest.evaluate(results, test_data[:,-1])
-    print('{}{}'.format("Percent correct: ", accuracy))
+    train_accuracy = random_forest.evaluate(train_results, train_data[:,-1])
+    print("\nTrain Percent Correct: {}".format(train_accuracy))
+
+    test_accuracy = random_forest.evaluate(test_results, test_data[:,-1])
+    print("Test Percent Correct: {}\n".format(test_accuracy))
 
     if arguments.sklearn_rf is True:
         sk_rf = Sklearn_RF(
