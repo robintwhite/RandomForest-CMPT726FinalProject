@@ -45,20 +45,10 @@ TODO: Decide if we need this section.
 
 \section{Introduction}
 
-<<<<<<< HEAD
-In machine learning, there is often a tug-of-war between bias and variance; having high accuracy to observed data but not to lose generalization (or over-fit) to unseen data. This is often referred to as the "bias-variance tradeoff" and it's consideration is a significant part of properly engineering machine learning algorithms. Often, regularization is used where there is an addition to the loss function to represent a cost to complexity, or in the way of neural networks, random dropout of neurons to force generalization \cite{Srivastava2014}. Another method is to also use validation datasets so as to understand the loss from unseen data without actually testing on the test set. All of these methods add to the complexity of the algorithm and can also often lead to loss in accuracy of the training data.\\
-<<<<<<< HEAD
-In the early 90's, Tin Kam Ho from Bell Labs published a series of papers where he showed surprisingly that by combining independent learners in a unique way increased the accuracy of classifying handwritten digits monotonically; without suffering from over-adaptation to the training data. \cite{Ho93, Ho95, Ho98} The application of this method to decision trees in his '93 paper marked the introduction of Random Forests to the community. \cite{Ho93} Decision trees are simple yet effective classifiers, with high execution speed and easily relatable, however they are limited by their complexity for possible loss of generalization to unseen data. Some methods such as pruning have been used previously to try and increase generalization, however methods such as these usually come with a loss in accuracy toward training data. By using principles of stochastic modeling, Ho showed that tree-based classifiers could be arbitrarily expanded for increases in accuracy on unseen testing data without loss in training data accuracy. A charcterteristic which is still unique amoung machine learning classifiers. The concept is that multiple learners can compensate for the bias of a single learner and so trees are constructed from randomly selecting subsaces of the feature space. In this way, each tree generalizes in a different way. \\
-TODO: Intro conclusion - goals of this work
-=======
-In the early 90's, Tin Kam Ho from Bell Labs published a series of papers where he showed surprisingly that by combining independent learners in a unique way increased the accuracy of classifying handwritten digits monotonically; without suffering from over-adaptation to the training data. \cite{Ho93, Ho95, Ho98} The application of this method to decision trees in his '93 paper marked the introduction of Random Forests to the community. \cite{Ho93} Decision trees are simple yet effective classifiers, with high execution speed and easily relatable, however they are limited by their complexity for possible loss of generalization to unseen data. Some methods such as pruning have been used previously to try and increase generalization, however methods such as these usually come with a loss in accuracy toward training data. By using principles of stochastic modeling, Ho showed that tree-based classifiers could be arbitrarily expanded for increases in accuracy on unseen testing data without loss in training data accuracy. A characteristic which is still unique among machine learning classifiers. The concept is that multiple learners can compensate for the bias of a single learner and so trees are constructed from randomly selecting subspaces of the feature space. In this way, each tree generalizes in a different way. \\
-Random Forests have been applied to a variety of machine learning tasks including classifications in ecology and geosciences, image segmentation in medical applications, business and predictions in sports analytics, as well as the unmentioned number of general data science applications. \cite{Cutler2007, Harris2015, Luo2017, Ghatasheh2014, Lock2014}
->>>>>>> Update to intro and bib files
-=======
+
 In machine learning, there is often a tug-of-war between bias and variance; having high accuracy to observed data but not to lose generalization (or over-fit) to unseen data. This is often referred to as the "bias-variance tradeoff" and it's consideration is a significant part of properly engineering machine learning algorithms. Often, regularization is used where there is an addition to the loss function to represent a cost to complexity, or in the way of neural networks, random dropout of neurons to force generalization \cite{Srivastava2014}. Another method is to also use validation datasets so as to understand the loss from unseen data without actually testing on the test set. All of these methods add to the complexity of the algorithm and can also often lead to loss in accuracy of the training data.\\
 In the early 90's, Tin Kam Ho from Bell Labs published a series of papers where he showed surprisingly that by combining independent learners in a unique way increased the accuracy of classifying handwritten digits monotonically; without suffering from over-adaptation to the training data. \cite{Ho93, Ho95, Ho98} The application of this method to decision trees in his '93 paper marked the introduction of Random Forests to the community. \cite{Ho93} Decision trees are simple yet effective classifiers, with high execution speed and easily relatable, however they are limited by their complexity for possible loss of generalization to unseen data. Some methods such as pruning have been used previously to try and increase generalization, however methods such as these usually come with a loss in accuracy toward training data. By using principles of stochastic modeling, Ho showed that tree-based classifiers could be arbitrarily expanded for increases in accuracy on unseen testing data without loss in training data accuracy. A characteristic which is still unique among machine learning classifiers. The concept is that multiple learners can compensate for the bias of a single learner and so trees are constructed from randomly selecting subspaces of the feature space. In this way, each tree generalizes in a different way. \\
 Random Forests have been applied to a variety of machine learning tasks including classifications in ecology and geosciences, image segmentation in medical applications, business analytics, sporting analytics, as well as the unmentioned number of general data science applications. \cite{Cutler2007, Harris2015, Luo2017, Ghatasheh2014, Lock2014} In this report we aim to investigate the application of Random forests as classifier and regressor to a hockey player dataset. We present the general algorithm coded in python, as well as investigate the various parameters such as number of trees, number of features per tree, and splitting criteria comparing entropy and Gini impurity for classification, and variance for regression. We also compare results of our algorithm to that of sci-kit learn and Weka, and discuss key similarities and differences. We conclude with discussion on limitations and challenges in present work on Random forests.
->>>>>>> bc8695cbb2edb9bbb2c4c33041bdbcc893f48f6b
 
 \subsection{Decision Trees}
 TODO: Outline general Decision tree algorithm.
@@ -139,21 +129,37 @@ Given k classes and fraction of elements in the leaf node with class i, p\textsu
 \caption{TODO: Use this figure as a template for ours.}
 \end{figure}
 
-Table~\ref{sample-table}.
-
+%Can't get it to center this table...
 \begin{table}[t]
-\caption{TODO: Use this table as a template for ours.}
-\label{sample-table}
+\caption{Optimal values found for sci-kit learn Random forest by grid search}
 \begin{center}
-\begin{tabular}{ll}
-\multicolumn{1}{c}{\bf Machine Learning Package} &\multicolumn{1}{c}{\bf DESCRIPTION}
+\begin{tabular}{cccccc}
+{\bf Target class} &{\bf Max depth} &{\bf Num features} &{\bf Min samples per leaf} &{\bf Min samples for split} &{\bf Num of trees}
 \\ \hline \\
-Weka         &compare speed and accuracy at least \\
-scikit-learn             &compare speed and accuracy at least \\
-Tensorflow(?) Probably need one more, but not sure which one yet.             &compare speed and accuracy at least \\
+GP\_greater\_than\_0         &8	&sqrt = 5	&2	&2	&128 \\
+sum\_7yr\_GP         &8	&sqrt = 5	&4	&2	&64 \\
+\label{scikit-table}
 \end{tabular}
 \end{center}
 \end{table}
+
+
+\begin{table}[t]
+\caption{Comparison of Random forest classifier for GP\_greater\_than\_0}
+\label{clas-table}
+\begin{center}
+\begin{tabular}{lll}
+\multicolumn{1}{c}{\bf Machine Learning Package} &\multicolumn{1}{c}{\bf Accuracy} &\multicolumn{1}{c}{\bf Time}
+\\ \hline \\
+Weka         &56\%	&$<$1sec \\
+scikit-learn             &55\%	&TIME \\
+our implementation             &compare speed and accuracy at least	&TIME \\
+
+\end{tabular}
+\end{center}
+\end{table}
+
+From Table~\ref{clas-table}, it can be seen that all three implementations of Random forest yield similar results. It was noted however that when performing Weka on a unprocessed data set, that is without changing the country group to binary dummy features, as well as without standardization of the feature vectors, the Weka accuracy yielded 69\% accuracy, compared to the 56\% accuracy. (TODO: Comment on possibilities, multi-class splitting? WIll investigate at what point do we see loss in accuracy)
 
 Random forests have been shown to achieve high classification performance through ensemble with a set of decision trees that are constructed using randomly selected feature subspaces. The performance of an ensemble learner is dependent on the accuracy of each component learner and the diversity of the components, especially when using a small set of trees which may be limited due to computational cost. The randomization can cause occurence of bad predicting trees as well as correated trees which can lead to poor ensemble decisions, which can be observed when performing multiple training runs using the same parameters which can lead to different accuracy results. Attempts have been made to improve the performance of this model by building a forest of only uncorrelated high performing trees. \cite{Bharathidason2014}
 
@@ -174,25 +180,6 @@ See GitLab project here for specific commits:\\
 \small{
 \bibliography{report}
 \bibliographystyle{ieeetr}
-}
-
-NIPS style guide:
-
-References follow the acknowledgments. Use unnumbered third level heading for
-
-the references. {\bf Any choice of citation style is acceptable as long as you are
-
-consistent.}
-
-\href{https://github.com/aucsc220/research_paper}{
-Example:}\\
-
-\small{
-[1] Alexander, J.A. \& Mozer, M.C. (1995) Template-based algorithms
-for connectionist rule extraction. In G. Tesauro, D. S. Touretzky
-and T.K. Leen (eds.), {\it Advances in Neural Information Processing
-Systems 7}, pp. 609-616. Cambridge, MA: MIT Press.
-
 }
 
 \end{document}
