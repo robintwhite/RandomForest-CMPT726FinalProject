@@ -45,3 +45,7 @@ To add the pre-commit hook, please do the following:
 2. Run: cp pre-commit .git/hooks -i
 
 And you're done!
+
+Compiling the report
+==============
+In case there is any trouble with the bib file, run pdfLatex + MakeIndex + BibTex to compile.
