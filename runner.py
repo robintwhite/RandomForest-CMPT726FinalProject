@@ -61,6 +61,11 @@ def main():
         help="The number of features to use when building each tree in the random forest.  Specifying None will use all"
               " the features (default: None).")
     argument_parser.add_argument(
+        '-c', '--target_label',
+        type=str,
+        required=True,
+        help="Target label that we want to predict.")
+    argument_parser.add_argument(
         '-k','--sklearn_rf',
         action='store_true',
         help='Train and test dataset on SKlearn Random Forest')
@@ -69,11 +74,6 @@ def main():
         type=int,
         help="The number of workers to spawn during training of the random forest.  Specifying None will disable this"
              "feature. (default: None).")
-    argument_parser.add_argument(
-        '-c', '--target_label',
-        type=str,
-        required=True,
-        help="Target label that we want to predict.")
     argument_parser.add_argument(
         '-h', '--help',
         action='help',
