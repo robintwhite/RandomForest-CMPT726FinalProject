@@ -3,6 +3,7 @@
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{amsmath}
+\usepackage{graphicx}
 %\documentstyle[nips14submit_09,times,art10]{article} % For LaTeX 2.09
 
 
@@ -123,10 +124,12 @@ Given k classes and fraction of elements in the leaf node with class i, p\textsu
 
 \begin{figure}[h]
 \begin{center}
+%\AddToShipoutPicture see eso-pic
+\includegraphics{TrainTestClassifierAcc}
 %\framebox[4.0in]{$\;$}
-\fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+%\fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
 \end{center}
-\caption{TODO: Use this figure as a template for ours.}
+\caption{Showing Random forest inhibition to produce overfitting errors even with incresed complexity by large number of trees.}
 \end{figure}
 
 %Can't get it to center this table...
@@ -136,8 +139,8 @@ Given k classes and fraction of elements in the leaf node with class i, p\textsu
 \begin{tabular}{cccccc}
 {\bf Target class} &{\bf Max depth} &{\bf Num features} &{\bf Min samples per leaf} &{\bf Min samples for split} &{\bf Num of trees}
 \\ \hline \\
-GP\_greater\_than\_0         &8	&sqrt = 5	&2	&2	&128 \\
-sum\_7yr\_GP         &8	&sqrt = 5	&4	&2	&64 \\
+GP\_greater\_than\_0         &8	&5	&2	&2	&128 \\
+sum\_7yr\_GP         &8	&5	&4	&2	&64 \\
 \label{scikit-table}
 \end{tabular}
 \end{center}
@@ -153,7 +156,7 @@ sum\_7yr\_GP         &8	&sqrt = 5	&4	&2	&64 \\
 \\ \hline \\
 Weka         &56\%	&$<$1sec \\
 scikit-learn             &55\%	&TIME \\
-our implementation             &57\%	&~3min \\
+our implementation             &57\%	&$\approx$ 3min \\
 
 \end{tabular}
 \end{center}
