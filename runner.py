@@ -163,7 +163,7 @@ def main():
         ]
 
         with open(output_file, "a") as csv_file:
-            writer = csv.DictWriter(csv_file, fieldnames=headers)
+            writer = csv.DictWriter(csv_file, fieldnames=headers, lineterminator="\n")
             if creating_new_file:
                 print("Creating a new file {}!\n".format(output_file))
                 writer.writeheader()

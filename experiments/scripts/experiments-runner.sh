@@ -24,7 +24,7 @@ NUMBER_OF_FEATURES=13
 
 function usage() {
 cat <<EOF
-Usage: `basename $0` -d DATA_FILE [-g|-e|-v] [-t|-d|-f][-h]
+Usage: `basename $0` -i DATA_FILE [-g|-e|-v] [-t|-d|-f][-h][-o OUTPUT_FILENAME][-r CSV_LIST]
 
 Script to run experiments for various settings of runner.py.
 
@@ -41,6 +41,8 @@ EXPERIMENTS:
  -d  Varying the depth of trees in the random forest.
  -f  Varying the number of features each tree uses in the
      random forest.
+ -r  A CSV of the values to test.  e.g. 2,4,8,16
+     Note: These will override the default values for the experiment being run.
 
 OTHER:
  -i  Input file containing the dataset.
@@ -59,7 +61,7 @@ fi
 
 
 # Parse out the settings for running the script.
-while getopts ":i:o:gevtdfh" Option
+while getopts ":i:o:r:gevtdfh" Option
 do
   case $Option in
     i)
@@ -85,17 +87,35 @@ do
           read -p "Press [Enter] to append the results to the file or Ctrl+C to abort."
         fi
       fi;;
+    r)
+      OLD_IFS=$IFS
+      IFS=','
+      read -r -a CUSTOM_VALUES <<< ${OPTARG}
+      IFS=$OLD_IFS;;
     g) USE_GINI=1;;
     e) USE_ENTROPY=1;;
     v) USE_VARIANCE=1;;
-    t) VARY_NUMBER_OF_TREES=1;;
-    d) VARY_MAX_DEPTH=1;;
-    f) VARY_FEATURES_PER_TREE=1;;
+    t) VARY_NUMBER_OF_TREES=1
+       VALUES_TO_TEST=$(seq 1 $MAX_TREES)
+       RANGE="1 to $MAX_TREES";;
+    d) VARY_MAX_DEPTH=1
+       VALUES_TO_TEST=$(seq 1 $UPPER_DEPTH)
+       RANGE="1 to $UPPER_DEPTH";;
+    f) VARY_FEATURES_PER_TREE=1
+       VALUES_TO_TEST=$(seq 1 $MAX_FEATURES_PER_TREE)
+       RANGE="1 to $MAX_FEATURES_PER_TREE";;
     h) usage;;
     :) echo "-$OPTARG requires an argument!";;
     *) echo "Unknown option $OPTARG given!"; exit 1;;
   esac
 done
+
+# Overwrite the test range if a custom range is given.
+if [[ -n "$CUSTOM_VALUES" ]]
+then
+  VALUES_TO_TEST="${CUSTOM_VALUES[@]}"
+  RANGE="$CUSTOM_VALUES"
+fi
 
 # Validate user input.
 if [[ $((USE_GINI + USE_ENTROPY + USE_VARIANCE)) -gt 1 ]]
@@ -150,8 +170,8 @@ fi
 
 if [[ $VARY_NUMBER_OF_TREES -eq 1 ]]
 then
-  echo -e "Running experiment to vary number of trees from 1 to $MAX_TREES...\n"
-  for value in $(seq 1 $MAX_TREES)
+  echo -e "Running experiment to vary number of trees as $RANGE...\n"
+  for value in $VALUES_TO_TEST
   do
     COMMAND="$BASE_COMMAND --max_depth $MAX_DEPTH --min_split_size $MIN_SPLIT_SIZE --n_features $NUMBER_OF_FEATURES --number_of_trees $value"
     echo -e "Command: $COMMAND\n"
@@ -159,8 +179,8 @@ then
   done
 elif [[ $VARY_MAX_DEPTH -eq 1 ]]
 then
-  echo -e "Running experiment to vary max depth from 1 to $UPPER_DEPTH...\n"
-  for value in $(seq 1 $UPPER_DEPTH)
+  echo -e "Running experiment to vary max depth as $RANGE...\n"
+  for value in $VALUES_TO_TEST
   do
     COMMAND="$BASE_COMMAND --max_depth $value --min_split_size $MIN_SPLIT_SIZE --n_features $NUMBER_OF_FEATURES --number_of_trees $NUMBER_OF_TREES"
     echo -e "Command: $COMMAND\n"
@@ -168,8 +188,8 @@ then
   done
 elif [[ $VARY_FEATURES_PER_TREE -eq 1 ]]
 then
-  echo -e "Running experiment to vary number of features per tree from 1 to $MAX_FEATURES_PER_TREE...\n"
-  for value in $(seq 1 $MAX_FEATURES_PER_TREE...)
+  echo -e "Running experiment to vary number of features per tree as $RANGE...\n"
+  for value in $VALUES_TO_TEST
   do
     COMMAND="$BASE_COMMAND --max_depth $MAX_DEPTH --min_split_size $MIN_SPLIT_SIZE --n_features $value --number_of_trees $NUMBER_OF_TREES"
     echo -e "Command: $COMMAND\n"
