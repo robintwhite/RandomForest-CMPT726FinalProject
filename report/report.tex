@@ -60,8 +60,6 @@ TODO: Outline general Random forest algorithm. Pseudo code
 \subsection{Ensemble Learning}
 TODO: Decide what content to go where
 
-Randomization increases bias but makes it possible to reduce the variance of the corresponding ensemble model through averaging. \cite{formann-roe_2012}
-
 \textbf{Bootstrap Aggregating (Bagging)}
 
 Bootstrap aggregating or bagging is an ensemble learning technique that attempts to reduce variance of the model without increasing the bias by attempting to remove correlation between individual trees. Each tree is limited to evaluating only a random fractional sample of the actual dataset such that no two samples are the same. Bagging has been demonstrated empirically to improve model accuracy. \cite{Aslam07}\\
@@ -76,9 +74,6 @@ Each datapoint in D has a probability of \[1-\left(\frac{1}{n}\right)^n = e^{-1}
 
 \section{Approach}
 TODO: Figure out what is supposed to be here.
-
-\section{Experiments}
-TODO: Add content.
 
 \subsection{Forest Size}
 TODO: Add content.
@@ -107,7 +102,7 @@ Estimating tree agreement between trees i and j as s\textsubscript{i,j}
 
 Ho's result showed average of s\textsubscript{i,j} of random subspaces method was lower than that of bootstrapping and boosting methods alone. \cite{Ho98}
 
- Thus, limiting a tree's evaluation to only a fixed size subset of the actual features and randomizing the elements in the subset during each splitting process helps to reduce correlation among each trees. The modified splitting algorithm will then split on a single feature with the best information gain ratio or gini impurity to reduce correlation among trees.
+ Thus, limiting a tree's evaluation to only a fixed size subset of the actual features and randomizing the elements in the subset during each splitting process helps to reduce correlation among each trees. The modified splitting algorithm will then split on a single feature with the best information gain ratio or Gini impurity to reduce correlation among trees.
 
 \subsubsection{Entropy}
 TODO: Add content.
@@ -120,16 +115,31 @@ Given k classes and fraction of elements in the leaf node with class i, p\textsu
 
 \subsection{Custom Improvement?}
 
-
+\section{Experiments}
+TODO: Add content.
 
 \begin{figure}[h]
 \begin{center}
 %\AddToShipoutPicture see eso-pic
-\includegraphics{n_trees}
+\includegraphics[scale=0.5]{n_trees}
 %\framebox[4.0in]{$\;$}
 %\fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
 \end{center}
-\caption{Showing Random forest inhibition to produce overfitting errors even with incresed complexity by large number of trees.}
+\caption{Showing Random forest inhibition to produce over fitting errors even with increased complexity by large number of trees.}
+\label{fig:n_trees}
+\end{figure}
+
+The ability of Random forests to resist over fitting is largely due to the number of trees and features, which is demonstrated in figure ~\ref{fig:n_trees}. Randomization increases bias but makes it possible to reduce the variance of the corresponding ensemble model through averaging. \cite{formann-roe_2012} It has been shown however that by increasing the maximum depth of each tree, a level of over fitting can be present, and similarly, that having shallow trees can produce low-confidence predictions. \cite{Criminisi2011} It is thus important that an appropriate value of the maximum depth be used, as its optimal value is related to the problem complexity. We investigated the depth of trees on accuracy, shown in figure ~\ref{fig:max_depth} below. We notice a small decrease in the accuracy at 20 features, and therefore choose an optimal at 15. This demonstrates that Random forests are still susceptible to over fitting, albeit less sensitive than many other machine learning algorithms without active regularization.
+
+\begin{figure}[h]
+\begin{center}
+%\AddToShipoutPicture see eso-pic
+\includegraphics[scale=0.5]{max_depth}
+%\framebox[4.0in]{$\;$}
+%\fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+\end{center}
+\caption{Showing accuracy of Random forest with 64 trees with varying maximum depth of each decision tree. It should be noted that there is a slight decrease in the test accuracy at 20 features which can possibly be related to over fitting on the training data which reaches 100\% after 15.}
+\label{fig:max_depth}
 \end{figure}
 
 %Can't get it to center this table...
@@ -164,7 +174,7 @@ our implementation             &68.6\%	&$\approx$ 3min \\
 
 From Table~\ref{clas-table}, it can be seen that all three implementations of Random forest yield similar results. It was noted however that when performing on standardized data so values are centered by their means and divided by the standard deviation, the accuracy was significantly lower for all three implementations, around 55\% accuracy. This can be due to the sensitivity of the splitting using gini impurity or entropy with small values, or perhaps some information is lost on the impact of certain features. The time taken for completion is difficult to compare since coding implementations are different, however using 4 workers running using the same parameters as shown in table ~\ref{scikit-table} the time of 3 minutes is slow, however not unreasonable. 
 
-Random forests have been shown to achieve high classification performance through ensemble with a set of decision trees that are constructed using randomly selected feature subspaces. The performance of an ensemble learner is dependent on the accuracy of each component learner and the diversity of the components, especially when using a small set of trees which may be limited due to computational cost. The randomization can cause occurence of bad predicting trees as well as correated trees which can lead to poor ensemble decisions, which can be observed when performing multiple training runs using the same parameters which can lead to different accuracy results. Attempts have been made to improve the performance of this model by building a forest of only uncorrelated high performing trees. \cite{Bharathidason2014}
+Random forests have been shown to achieve high classification performance through ensemble with a set of decision trees that are constructed using randomly selected feature subspaces. The performance of an ensemble learner is dependent on the accuracy of each component learner and the diversity of the components, especially when using a small set of trees which may be limited due to computational cost. The randomization can cause occurrence of bad predicting trees as well as correlated trees which can lead to poor ensemble decisions, which can be observed when performing multiple training runs using the same parameters which can lead to different accuracy results. Attempts have been made to improve the performance of this model by building a forest of only uncorrelated high performing trees. \cite{Bharathidason2014}
 
 \section{Conclusion}
 TODO: Add content.
