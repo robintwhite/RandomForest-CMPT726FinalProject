@@ -12,7 +12,7 @@ def process(dataset_file,target_column):
 
     """
     print("Processing the data using Hockey Dataset Preprocessor...")
-    
+
     train = None
     test = None
 
@@ -34,11 +34,11 @@ def process(dataset_file,target_column):
     if class_name == 'GP_greater_than_0':
         list_of_dropped_vars = ["id","PlayerName","DraftYear","Country",
                           "Overall","sum_7yr_TOI","sum_7yr_GP"]
-        
+
     elif class_name == 'sum_7yr_GP':
         list_of_dropped_vars = ["id","PlayerName","DraftYear","Country",
                           "Overall","sum_7yr_TOI","GP_greater_than_0"]
-        
+
     #Drop columns as given on course website, returns new dataset
     df_train = df_train.drop(list_of_dropped_vars, axis=1)
     df_test = df_test.drop(list_of_dropped_vars, axis=1)
@@ -56,8 +56,8 @@ def process(dataset_file,target_column):
     #test_data_x = interactions(x_test)
 
     #Normalize
-    x_train = standardize(x_train, col_list_train)
-    x_test = standardize(x_test, col_list_test)
+    #x_train = standardize(x_train, col_list_train)
+    #x_test = standardize(x_test, col_list_test)
 
     #Insert w0 term for weight vector matrix
     #x_train.insert(0, 'w0', np.ones(len(x_train), dtype=np.int))
@@ -75,7 +75,7 @@ def process(dataset_file,target_column):
     #Append target variables back to last column
     x_train.insert(len(x_train.columns), class_name, t_train)
     x_test.insert(len(x_test.columns), class_name, t_test)
-    
+
     train = x_train.values
     test = x_test.values
 
