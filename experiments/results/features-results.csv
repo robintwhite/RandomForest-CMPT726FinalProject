@@ -1,0 +1,7 @@
+Features,MaxDepth,MinSplitThreshold,Trees,SplitCriteria,Target,TrainAccuracy,TestAccuracy
+2,5,2,4,gini,GP_greater_than_0,68.60282574568289,57.06806282722513
+5,5,2,4,gini,GP_greater_than_0,70.48665620094191,62.82722513089005
+8,5,2,4,gini,GP_greater_than_0,70.95761381475667,54.45026178010471
+10,5,2,4,gini,GP_greater_than_0,77.08006279434852,59.68586387434554
+15,5,2,4,gini,GP_greater_than_0,76.60910518053376,64.3979057591623
+23,5,2,4,gini,GP_greater_than_0,72.21350078492935,59.68586387434554
