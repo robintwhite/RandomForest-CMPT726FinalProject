@@ -1,13 +1,10 @@
-
-# coding: utf-8
-
-# In[ ]:
-
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.metrics import classification_report, mean_squared_error
 from sklearn import datasets
 import preprocessors.HockeyDataSetPreprocessor as HockeyPP
+from matplotlib import pyplot as plt
+import numpy as np
 
 class Sklearn_RF():
     
@@ -96,7 +93,10 @@ class Sklearn_RF():
                   'random_state':[1],
                  }
 
-        clf = GridSearchCV(rf,params)
+        if tree_type == 'regressor':
+             clf = GridSearchCV(rf,params,scoring='neg_mean_squared_error')
+        else:
+            clf = GridSearchCV(rf,params)
         
         clf.fit(X_train, y_train)
         
@@ -130,6 +130,36 @@ class Sklearn_RF():
         
         elif tree_type == 'regressor':
             print("Total mean_squared_error: ",mean_squared_error(y_true,y_pred))
-            
-        return  clf.best_score_,clf.best_params_
 
+        res = clf.cv_results_
+        
+        #generate plots
+        plt.figure(figsize=(12,12))
+
+        plt.title("GridSearchCV multiple number of estimators",fontsize=16)
+        plt.xlabel('Number of estimators',fontsize=14)
+       
+        y_label = "Accuracy"
+        
+        if tree_type == 'regressor':
+            y_label = "Accuracy ({})".format("neg_mean_squared_error")
+        
+        elif tree_type == 'classifier':
+            y_label = "Accuracy ({})".format("accuracy_classification_score")
+        
+        plt.ylabel(y_label,fontsize=14)
+        plt.grid()
+
+        ax = plt.axes()
+
+        x_axis = np.array(res['param_n_estimators'].data)
+
+        plt.plot(x_axis,res['mean_train_score'],label='train')
+
+        plt.plot(x_axis,res['mean_test_score'],label='validation')
+        plt.legend(fontsize=12)
+        #plt.show()
+        filename = 'sklearn_rf_{}_cv.jpg'.format(tree_type)
+        plt.savefig(filename)
+        
+        return  clf.cv_results_
