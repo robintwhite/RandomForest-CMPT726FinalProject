@@ -43,14 +43,42 @@ Surrey BC V3T 0A3 \\
 
 In machine learning, there is often a tug-of-war between bias and variance; having high accuracy to observed data but not to lose generalization (or over-fit) to unseen data. This is often referred to as the "bias-variance tradeoff" and it's consideration is a significant part of properly engineering machine learning algorithms. Often, regularization is used where there is an addition to the loss function to represent a cost to complexity, or in the way of neural networks, random dropout of neurons to force generalization \cite{Srivastava2014}. Another method is to also use validation datasets so as to understand the loss from unseen data without actually testing on the test set. All of these methods add to the complexity of the algorithm and can also often lead to loss in accuracy of the training data.\\
 In the early 90's, Tin Kam Ho from Bell Labs published a series of papers where he showed surprisingly that by combining independent learners in a unique way increased the accuracy of classifying handwritten digits monotonically; without suffering from over-adaptation to the training data. \cite{Ho93, Ho95, Ho98} The application of this method to decision trees in his '93 paper marked the introduction of Random Forests to the community. \cite{Ho93} Decision trees are simple yet effective classifiers, with high execution speed and easily relatable, however they are limited by their complexity for possible loss of generalization to unseen data. Some methods such as pruning have been used previously to try and increase generalization, however methods such as these usually come with a loss in accuracy toward training data. By using principles of stochastic modeling, Ho showed that tree-based classifiers could be arbitrarily expanded for increases in accuracy on unseen testing data without loss in training data accuracy. A characteristic which is still unique among machine learning classifiers. The concept is that multiple learners can compensate for the bias of a single learner and so trees are constructed from randomly selecting subspaces of the feature space. In this way, each tree generalizes in a different way. \\
-Random Forests have been applied to a variety of machine learning tasks including classifications in ecology and geosciences, image segmentation in medical applications, business analytics, sporting analytics, as well as the unmentioned number of general data science applications. \cite{Cutler2007, Harris2015, Luo2017, Ghatasheh2014, Lock2014} In this report we aim to investigate the application of Random forests as classifier and regressor to a hockey player dataset. We present the general algorithm coded in python, as well as investigate the various parameters such as number of trees, number of features per tree, and splitting criteria comparing entropy and Gini impurity for classification, and variance for regression. We also compare results of our algorithm to that of sci-kit learn and Weka, and discuss key similarities and differences. We conclude with discussion on limitations and challenges in present work on Random forests.
+Random Forests have been applied to a variety of machine learning tasks including classifications in ecology and geosciences, image segmentation in medical applications, business analytics, sporting analytics, as well as the unmentioned number of general data science applications. \cite{Cutler2007, Harris2015, Luo2017, Ghatasheh2014, Lock2014}.  These traits of high accuracy and resistance to overfitting that random forests possess are fascinating and so we would like to further our knowledge in how they are able to achieve these feats.  TODO: Figure out a better way to connect this section and the next one.
 
 \section{Approach}
 
+TODO: This section is supposed to be about what we want to do and why.
+
+In order to develop our knowledge of random forests and investigate their learning capabilities, we implement the random forest algorithm in python and apply it on a specific dataset.  Our dataset of choice is the hockey player dataset from class as it possesses discrete and continuous variables which allow us to use the random forest algorithm as a classifier and regressor on the same dataset.  In order to determine whether or not our implementation is correct, we compare it against other freely available implementations.  Once we are confident that our implementation is comparable to other implementations, we explore varying specific learning parameters for random forests to learn their impact on random forest's ability to learn.  Finally, armed with knowledge on how random forest's learning parameters should be set, we compare random forest's ability to predict a couple attributes from various hockey players to see how it fairs relative to other well known machine learning algorithms.
 
 
 \section{Experiments}
+TODO: Each subsection for this section should have the following format/flow:
 
+- 1 to 2 sentence description of what we are testing.
+- parameter setup and experimental design (probably enough so that people are able to try and reproduce our results)
+- results (plots and tables)
+- brief discussion of our results with supporting citations of any claims we make
+
+\subsection{Implementation Comparisons}
+TODO: This section should be testing the accuracy of our implementation against Weka and scikit-learn to demonstrate are implementation is correct.  Possibly come up with a better subsection title.
+
+\subsubsection{Accuracy Comparisons}
+TODO: Show that are accuracy is comparable to other implementations.  Possibly remove this subsubsection if we remove the Speed Comparisons one.
+
+\subsubsection{Speed Comparisons}
+TODO: Show that gini is faster than entropy.  Possibly come up with a better subsubsection title or remove this subsection.
+
+\subsection{Parameters Exploration}
+TODO: This section should be exploring how the parameters affect a random forest's ability to learn and our best parameters.  Possibly come up with a better subsection title.
+
+\subsubsection{Number of Trees}
+\subsubsection{Tree Depth}
+\subsubsection{Features Per Tree}
+\subsubsection{Grid Search Parameter Optimization}
+
+\subsection{Machine Learning Algorithm Comparisons}
+TODO:  This section should be comparing our accuracy using best parameters against the best accuracy of other machine learning algorithms (e.g. linear regression, single decision trees, naive bayes, etc.)  Possibly come up with a better subsection title.
 
 
 \begin{figure}[h]
@@ -122,15 +150,16 @@ our implementation             &68.6\%	&$\approx$ 3min \\
 
 From Table~\ref{clas-table}, it can be seen that all three implementations of Random forest yield similar results. It was noted however that when performing on standardized data so values are centered by their means and divided by the standard deviation, the accuracy was significantly lower for all three implementations, around 55\% accuracy. This can be due to the sensitivity of the splitting using gini impurity or entropy with small values, or perhaps some information is lost on the impact of certain features. The time taken for completion is difficult to compare since coding implementations are different, however using 4 workers running using the same parameters as shown in table ~\ref{scikit-table} the time of 3 minutes is slow, however not unreasonable. 
 
+TODO: Figure out if this paragraph should be removed.
 Random forests have been shown to achieve high classification performance through ensemble with a set of decision trees that are constructed using randomly selected feature subspaces. The performance of an ensemble learner is dependent on the accuracy of each component learner and the diversity of the components, especially when using a small set of trees which may be limited due to computational cost. The randomization can cause occurrence of bad predicting trees as well as correlated trees which can lead to poor ensemble decisions, which can be observed when performing multiple training runs using the same parameters which can lead to different accuracy results. Attempts have been made to improve the performance of this model by building a forest of only uncorrelated high performing trees. \cite{Bharathidason2014}
 
 \section{Conclusion}
-TODO: Add content.
+TODO: Summarize our findings and mention future work which is the uncorrelated tree algorithm in the paper I found before.
 
 
 \subsubsection*{Contributions}
 All authors contributed equally.\\
-See GitLab project here for specific commits:\\
+See GitLab repository here for specific commits:\\
 \href{
     https://csil-git1.cs.surrey.sfu.ca/rkm3/mlclass-1777-randomforest
 }{
