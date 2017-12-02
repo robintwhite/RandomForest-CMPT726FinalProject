@@ -2,6 +2,7 @@ from Tree import Tree
 from multiprocessing import Pool
 from multiprocessing import Manager
 from functools import partial
+import numpy as np
 
 class RandomForest():
     """
@@ -94,3 +95,9 @@ class RandomForest():
             if test_data_y[i] == predictions[i]:
                 correct += 1
         return correct / float(len(test_data_y)) * 100.0
+
+    def mse(self, predictions, test_data_y):
+        #mean squared error from regression predictions
+        y = np.array(predictions)
+        t = np.array(test_data_y)
+        return np.mean(np.square(t-y))
