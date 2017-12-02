@@ -142,6 +142,19 @@ The ability of Random forests to resist over fitting is largely due to the numbe
 \label{fig:max_depth}
 \end{figure}
 
+\begin{figure}[h]
+\begin{center}
+%\AddToShipoutPicture see eso-pic
+\includegraphics[scale=0.5]{n_features}
+%\framebox[4.0in]{$\;$}
+%\fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+\end{center}
+\caption{Showing the impact of the number of features used when constructing decision trees in Random forest with 64 trees and max depth 5. The optimal for testing is shown to be 5, which also agrees with literature on square-root of number of features}
+\label{fig:n_features}
+\end{figure}
+
+
+
 %Can't get it to center this table...
 \begin{table}[t]
 \caption{Optimal values found for sci-kit learn Random forest by grid search}
