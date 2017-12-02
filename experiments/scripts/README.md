@@ -16,7 +16,15 @@ experiments-runner.sh
 
 IMPORTANT: Be sure that you are in the directory mlclass-1777-randomforest/experiments/scripts before running the script.
 
+Single Experiment Run:
+
 bash experiments-runner.sh -i ../../preprocessors/hockeydataset.csv -e -t -o sample.csv
+
+Grid Search Run:
+
+bash experiments-runner.sh -s "1,2 3,4 5,6" -e -i ../../preprocessors/hockeydataset.csv -o sample-grid.csv
+
+IMPORTANT: Be sure that the list of CSV for the -s option is quoted!
 
 Please see the help message for details (-h option).
 
