@@ -14,6 +14,8 @@ System Requirements
 - must be run using Python 3.x
 - numpy v 1.12.1
 - pandas v 0.21.0
+- sklearn v 0.19.1
+- matplotlib v 2.1.0
 
 
 How to Run
