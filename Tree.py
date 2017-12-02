@@ -77,7 +77,8 @@ class Tree():
         labels, counts = np.unique(group_t,return_counts=True)
 
         #score is equal to sum((each_label_count/size_group)^2)
-        score_t = (np.log(counts/size,2)*(counts/size)).sum()*-1
+        
+        score_t = (np.log2(counts/size)*(counts/size)).sum()*-1
 
         return score_t
 
