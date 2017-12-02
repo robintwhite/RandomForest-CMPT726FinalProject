@@ -13,6 +13,7 @@ USE_VARIANCE=0
 VARY_NUMBER_OF_TREES=0
 VARY_MAX_DEPTH=0
 VARY_FEATURES_PER_TREE=0
+GRID_SEARCH=0
 
 # Experiment core settings.
 # TODO: Adjust these so they are the same as Weka and Scikit-Learn.
@@ -24,7 +25,7 @@ NUMBER_OF_FEATURES=13
 
 function usage() {
 cat <<EOF
-Usage: `basename $0` -i DATA_FILE [-g|-e|-v] [-t|-d|-f][-h][-o OUTPUT_FILENAME][-r CSV_LIST]
+Usage: `basename $0` -i DATA_FILE [-g|-e|-v] [-t|-d|-f|-s QUOTED_CSV_LIST][-h][-o OUTPUT_FILENAME][-r CSV_LIST]
 
 Script to run experiments for various settings of runner.py.
 
@@ -43,6 +44,9 @@ EXPERIMENTS:
      random forest.
  -r  A CSV of the values to test.  e.g. 2,4,8,16
      Note: These will override the default values for the experiment being run.
+ -s  Run a grid search for the parameters -t, -d, and -f for the specified values.
+     QUOTED_CSV_LIST has the format "t_values d_values f_values", for example you could
+     have something like "2,4,8 1,2,3 5,6,7".
 
 OTHER:
  -i  Input file containing the dataset.
@@ -61,7 +65,7 @@ fi
 
 
 # Parse out the settings for running the script.
-while getopts ":i:o:r:gevtdfh" Option
+while getopts ":i:o:r:s:gevtdfh" Option
 do
   case $Option in
     i)
@@ -95,6 +99,18 @@ do
     g) USE_GINI=1;;
     e) USE_ENTROPY=1;;
     v) USE_VARIANCE=1;;
+    s)
+      GRID_SEARCH=1
+      read -r -a SETTINGS <<< ${OPTARG}
+      TREES_CSV=${SETTINGS[0]}
+      DEPTH_CSV=${SETTINGS[1]}
+      FEATURES_CSV=${SETTINGS[2]}
+      OLD_IFS=$IFS
+      IFS=','
+      read -r -a GRID_TREES <<< $TREES_CSV
+      read -r -a GRID_DEPTH <<< $DEPTH_CSV
+      read -r -a GRID_FEATURES <<< $FEATURES_CSV
+      IFS=$OLD_IFS;;
     t) VARY_NUMBER_OF_TREES=1
        VALUES_TO_TEST=$(seq 1 $MAX_TREES)
        RANGE="1 to $MAX_TREES";;
@@ -126,13 +142,13 @@ elif [[ $((USE_GINI + USE_ENTROPY + USE_VARIANCE)) -eq 0 ]]
 then
   echo "One of the following should be specified [gev]!"
   exit 1
-elif [[ $((VARY_NUMBER_OF_TREES + VARY_MAX_DEPTH + VARY_FEATURES_PER_TREE)) -gt 1 ]]
+elif [[ $((VARY_NUMBER_OF_TREES + VARY_MAX_DEPTH + VARY_FEATURES_PER_TREE + GRID_SEARCH)) -gt 1 ]]
 then
-  echo "Only one of the following should be specified [tdf]!"
+  echo "Only one of the following should be specified [tdfs]!"
   exit 1
-elif [[ $((VARY_NUMBER_OF_TREES + VARY_MAX_DEPTH + VARY_FEATURES_PER_TREE)) -eq 0 ]]
+elif [[ $((VARY_NUMBER_OF_TREES + VARY_MAX_DEPTH + VARY_FEATURES_PER_TREE + GRID_SEARCH)) -eq 0 ]]
 then
-  echo "One of the following should be specified [tdf]!"
+  echo "One of the following should be specified [tdfs]!"
   exit 1
 elif [[ -z "$CSV_FILE" ]]
 then
@@ -194,5 +210,29 @@ then
     COMMAND="$BASE_COMMAND --max_depth $MAX_DEPTH --min_split_size $MIN_SPLIT_SIZE --n_features $value --number_of_trees $NUMBER_OF_TREES"
     echo -e "Command: $COMMAND\n"
     $COMMAND
+  done
+elif [[ $GRID_SEARCH -eq 1 ]]
+then
+  GRID_TREES_VALUES="${GRID_TREES[@]}"
+  GRID_DEPTH_VALUES="${GRID_DEPTH[@]}"
+  GRID_FEATURES_VALUES="${GRID_FEATURES[@]}"
+
+  echo -e "Running grid search with the following values:\n"
+  echo "TREES: $GRID_TREES"
+  echo "DEPTH: $GRID_DEPTH"
+  echo -e "FEATURES: $GRID_FEATURES\n"
+  read -p "Press [Enter] to continue or Ctrl+C to abort."
+
+  for tree in $GRID_TREES_VALUES
+  do
+    for depth in $GRID_DEPTH_VALUES
+    do
+      for feature in $GRID_FEATURES_VALUES
+      do
+        COMMAND="$BASE_COMMAND --max_depth $depth --min_split_size $MIN_SPLIT_SIZE --n_features $feature --number_of_trees $tree"
+        echo -e "Command: $COMMAND\n"
+        $COMMAND
+      done
+    done
   done
 fi
