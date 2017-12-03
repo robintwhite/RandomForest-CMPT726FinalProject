@@ -17,6 +17,7 @@ focus = cols[0]
 x = data_F[cols[1]].tolist()
 y = data_F[cols[3]].tolist()
 z = data_F['TestAccuracy'].tolist()
+cmap = plt.cm.get_cmap("winter")
 
 xi, yi = np.linspace(min(x), max(x), 100), np.linspace(min(y), max(y), 100)
 #xi, yi = np.meshgrid(xi, yi)
@@ -25,7 +26,7 @@ zi = griddata(x, y, z, xi, yi, interp='linear')
 # contour the gridded data, plotting dots at the nonuniform data points.
 CS = plt.contour(xi, yi, zi, 15, linewidths=0.5, colors='k')
 CS = plt.contourf(xi, yi, zi, 15,
-                  vmax=abs(zi).max(), vmin=-abs(zi).max())
+                  vmax=abs(zi).max(), vmin= abs(zi).min(), cmap=cmap)
 plt.colorbar()  # draw colorbar
 # plot data points.
 plt.scatter(x, y, marker='o', s=5, zorder=10)
