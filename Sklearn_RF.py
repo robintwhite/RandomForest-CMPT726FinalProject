@@ -28,12 +28,17 @@ class Sklearn_RF():
         self.n_features = n_features
 
 
-        self.rf = RandomForestClassifier(n_estimators=self.number_of_trees,
+    def train(self,data,n_label):
+        if n_label == 'GP_greater_than_0':
+            self.rf = RandomForestClassifier(n_estimators=self.number_of_trees,
+                                        max_depth=self.max_depth,
+                                        min_samples_split=self.min_split_size,
+                                        max_features=self.n_features)
+        else:
+            self.rf = RandomForestRegressor(n_estimators=self.number_of_trees,
                                     max_depth=self.max_depth,
                                     min_samples_split=self.min_split_size,
                                     max_features=self.n_features)
-
-    def train(self,data,n_label):
         X = data[:,:-1]
         y = data[:,-1]
 
@@ -45,12 +50,18 @@ class Sklearn_RF():
 
         return preds
 
-    def evaluate(self,data):
+    def evaluate(self,data, tree_type):
 
         X = data[:,:-1]
         y = data[:,-1]
+        score = 0
 
-        score = self.rf.score(X,y)
+        if tree_type == 'classifier':
+            score = self.rf.score(X,y)
+
+        elif tree_type == 'regressor':
+            preds = self.rf.predict(data[:,:-1])
+            score = mean_squared_error(y,preds)
 
         return score
 
