@@ -71,8 +71,8 @@ TODO: This section should be testing the accuracy of our implementation against 
 \multicolumn{1}{c}{\bf Machine Learning Package} &\multicolumn{1}{c}{\bf Accuracy} &\multicolumn{1}{c}{\bf Time}
 \\ \hline \\
 Weka         &69.4\%	&$<$1sec \\
-scikit-learn             &70.7\%	&$<$1sec \\
-our implementation             &68.6\%	&1min 55sec \\
+scikit-learn             &65.9\%	&$<$1sec \\
+our implementation             &68.6\%	&14sec \\
 \end{tabular}
 \end{center}
 \end{table}
@@ -84,12 +84,12 @@ was to compare both the parameter values and the accuracy of each optimal models
 
 From Table~\ref{clas-table}, it can be seen that all three implementations of Random forest yield similar results using similar parameter values (as is possible by the user). The parameters for our implementation were:
 \begin{description}
-\item [Trees] 64
-\item [Depth] 15
+\item [Trees] 32
+\item [Depth] 5
 \item [Features] 5
 \item [Split Size] 2
 \end{description} 
-It was noted however that when performing on standardized data, such that values are centered by their means and divided by the standard deviation, the accuracy was significantly lower for all three implementations, around 55\% accuracy (not shown here). This can be due to the sensitivity of the splitting using Gini impurity or entropy with small values, or perhaps some information is lost on the impact of certain features. The time taken for completion is difficult to compare since coding implementations are different (python vs C), however to improve speed, multi-processing was implemented. Using 4 processes running the same parameters as shown in table ~\ref{scikit-table} for target class GP\_greater\_than\_0, the time of $\approx$ 2 minutes is slow, however not unreasonable, this addition was a great improvement over a single process taking 6min 58sec.
+It was noted however that when performing on standardized data, such that values are centered by their means and divided by the standard deviation, the accuracy was significantly lower for all three implementations, around 55\% accuracy (not shown here). This can be due to the sensitivity of the splitting using Gini impurity or entropy with small values, or perhaps some information is lost on the impact of certain features. The time taken for completion is difficult to compare since coding implementations are different (python vs C), however to improve speed, multi-processing was implemented. Using 4 processes running the same parameters as shown above for target class GP\_greater\_than\_0, the time of $\approx$ 40 seconds is slower, however not unreasonable, this addition was a great improvement over a single process taking 41 seconds.
 
 \begin{table}[h]
 \caption{Comparison of Random forest classifier for sum\_7yr\_GP}
@@ -239,6 +239,8 @@ I think we can maybe remove this and speed comparisons and just have everything 
 
 \subsubsection{Speed Comparisons}
 TODO: Show that gini is faster than entropy.  Possibly come up with a better subsubsection title or remove this subsection.
+
+Using optimal values for learning shown in ~\ref{opt-table}, time for 4 processes of 20seconds is a significant improvement over a single process taking 1min 4sec for training GP\_greater\_than\_0. After tarining however, prediction time is considerably lower, taking $\approx$1sec regardless.
 
 
 \subsection{Machine Learning Algorithm Comparisons}
