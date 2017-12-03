@@ -96,11 +96,11 @@ class Sklearn_RF():
                                     min_samples_split=self.min_split_size,
                                     max_features=self.n_features)
 
-        params = {'n_estimators':[2,4,8,16,32,64,128],
-                  #'max_features':['sqrt','log2','auto'],
-                  #'max_depth':[2,4,8,16,32,64],
-                  #'min_samples_split':[2,4,16,32],
-                  #'min_samples_leaf':[2,4,8,16,32,64],
+        params = {'n_estimators':[2,8,16,32,64,128],
+                  'max_features':['sqrt','log2','auto'],
+                  'max_depth':[2,8,16,32,64],
+                  'min_samples_split':[2,4,16,32],
+                  'min_samples_leaf':[2,8,16,32,64],
                   'random_state':[1],
                  }
 
@@ -125,8 +125,8 @@ class Sklearn_RF():
 
         stds = clf.cv_results_['std_test_score']
 
-        for mean, std, param in zip(means, stds, clf.cv_results_['params']):
-            print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, param))
+        #for mean, std, param in zip(means, stds, clf.cv_results_['params']):
+        #    print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, param))
 
         print()
 
