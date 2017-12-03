@@ -17,7 +17,7 @@ GRID_SEARCH=0
 
 # Experiment core settings.
 # TODO: Adjust these so they are the same as Weka and Scikit-Learn.
-NUMBER_OF_TREES=4
+NUMBER_OF_TREES=64
 MAX_DEPTH=5
 MIN_SPLIT_SIZE=2
 NUMBER_OF_FEATURES=13
