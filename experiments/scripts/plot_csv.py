@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from pandas.tools.plotting import scatter_matrix
 
 df = pd.read_csv('../results/features-results.csv')
 df = df.sort_values(['Features'])
