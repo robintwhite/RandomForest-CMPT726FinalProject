@@ -194,8 +194,7 @@ The accuracy of the project’s implementation against Weka and scikit-learn is 
 its correctness. Experiment was designed to first find the optimal parameters for each model
 by searching the parameter space using the k-fold cross-validation score as a metric. The next step
 was to compare both the parameter values and the accuracy of each optimal models. All three models
-were configured as classifiers for this test. As shown in Table~\ref{scikit-table}, ~\ref{clas-table}, optimal parameters
-and scores of the project’s implementation was similar to both Weka and scikit-learn.
+were configured as classifiers for this test.
 
 From Table~\ref{clas-table}, it can be seen that all three implementations of Random forest yield similar results. It was noted however that when performing on standardized data, such that values are centered by their means and divided by the standard deviation, the accuracy was significantly lower for all three implementations, around 55\% accuracy (not shown here). This can be due to the sensitivity of the splitting using Gini impurity or entropy with small values, or perhaps some information is lost on the impact of certain features. The time taken for completion is difficult to compare since coding implementations are different (python vs C), however to improve speed, multi-processing was implemented. Using 4 processes running the same parameters as shown in table ~\ref{scikit-table} for target class GP\_greater\_than\_0, the time of $\approx$ 2 minutes is slow, however not unreasonable, this addition was a great improvement over a single process taking 6min 58sec
 
