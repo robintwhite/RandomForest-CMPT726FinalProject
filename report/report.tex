@@ -140,7 +140,8 @@ sum\_7yr\_GP         &8	&5	&64 \\
 \end{table}
 
 \subsubsection{Splitting criteria}
-TODO: Add accuracy comparison, suggest why we see the opposite result for entropy and gini impurity (Gini is slower)
+TODO: Add accuracy comparison, suggest why we see the opposite result for entropy and gini impurity (Gini is slower - follow up by Jae)
+
 When building a decision tree, the splitting criteria by which each level is formed to yield the greatest information gain can be calculated by two common methods; Entropy and Gini impurity. It has been discussed in literature that there exists a minimal difference between the effect of accuracy, however Gini
 impurity function is computationally less expensive than Entropy since Entropy requires additionally calculating the logarithm of percentage of each class labels in the child nodes. The difference between the splitting criteria is investigated through the implementation of both entropy and Gini impurity in our implementation of Random forest, with results shown in table ~\ref{ent-gini}. Both models were run on a single process.
 
@@ -185,7 +186,7 @@ sum\_7yr\_GP         &8	&5	&4	&2	&64 \\
 \\ \hline \\
 Weka         &69.4\%	&$<$1sec \\
 scikit-learn             &70.7\%	&$<$1sec \\
-our implementation             &68.6\%	&$\approx$ 1min 55sec \\
+our implementation             &68.6\%	&1min 55sec \\
 \end{tabular}
 \end{center}
 \end{table}
@@ -197,7 +198,7 @@ was to compare both the parameter values and the accuracy of each optimal models
 were configured as classifiers for this test. As shown in Table~\ref{scikit-table}, ~\ref{clas-table}, optimal parameters
 and scores of the project’s implementation was similar to both Weka and scikit-learn.
 
-From Table~\ref{clas-table}, it can be seen that all three implementations of Random forest yield similar results. It was noted however that when performing on standardized data, such that values are centered by their means and divided by the standard deviation, the accuracy was significantly lower for all three implementations, around 55\% accuracy (not shown here). This can be due to the sensitivity of the splitting using Gini impurity or entropy with small values, or perhaps some information is lost on the impact of certain features. The time taken for completion is difficult to compare since coding implementations are different (python vs C), however to improve speed, multi-processing was implemented. Using 4 processes running the same parameters as shown in table ~\ref{scikit-table} for target class GP\_greater\_than\_0, the time of \approx 2 minutes is slow, however not unreasonable, this addition was a great improvement over a single process taking 6min 58sec
+From Table~\ref{clas-table}, it can be seen that all three implementations of Random forest yield similar results. It was noted however that when performing on standardized data, such that values are centered by their means and divided by the standard deviation, the accuracy was significantly lower for all three implementations, around 55\% accuracy (not shown here). This can be due to the sensitivity of the splitting using Gini impurity or entropy with small values, or perhaps some information is lost on the impact of certain features. The time taken for completion is difficult to compare since coding implementations are different (python vs C), however to improve speed, multi-processing was implemented. Using 4 processes running the same parameters as shown in table ~\ref{scikit-table} for target class GP\_greater\_than\_0, the time of $\approx$ 2 minutes is slow, however not unreasonable, this addition was a great improvement over a single process taking 6min 58sec
 
 \subsubsection{Accuracy Comparisons}
 
