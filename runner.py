@@ -5,6 +5,7 @@ Script to help run the RandomForest program.
 from RandomForest import RandomForest
 from argparse import ArgumentParser
 from Sklearn_RF import Sklearn_RF
+from datetime import datetime
 
 import csv
 import os.path
@@ -119,9 +120,16 @@ def main():
         arguments.n_features,
         arguments.number_of_workers
     )
+
+    t0 = datetime.now()
     random_forest.train(train_data, class_name,split_function)
+    diff = datetime.now()-t0
+    t = divmod(diff.days * 86400 + diff.seconds, 60)
     train_results = random_forest.bagging_predict(train_data)
+    t0 = datetime.now()
     test_results = random_forest.bagging_predict(test_data)
+    diff = datetime.now()-t0
+    tp = divmod(diff.days * 86400 + diff.seconds, 60)
 
     if arguments.use_variance:
         train_accuracy = random_forest.mse(train_results, train_data[:,-1])
@@ -136,6 +144,8 @@ def main():
         test_accuracy = random_forest.evaluate(test_results, test_data[:,-1])
         print("Test Percent Correct: {}\n".format(test_accuracy))
 
+    print("\nTime for train: {}min {}sec".format(t[0],t[1]))
+    print("Time for prediction: {}min {}sec\n".format(tp[0],tp[1]))
 
     if arguments.sklearn_rf is True:
         sk_rf = Sklearn_RF(
