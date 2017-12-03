@@ -141,7 +141,8 @@ sum\_7yr\_GP         &8	&5	&64 \\
 
 \subsubsection{Splitting criteria}
 TODO: Add accuracy comparison, suggest why we see the opposite result for entropy and gini impurity (Gini is slower)
-When building a decision tree, the splitting criteria by which each level is formed to yield the greatest information gain can be calculated by two common methods; Entropy and Gini impurity. It has been discussed in literature that there exists a minimal different between the effect of accuracy, however since entropy requires calculating logs, Gini impurity is considered faster. The difference between the splitting criteria is investigated through the implementation of both entropy and Gini impurity in our implementation of Random forest, with results shown in ~\ref{ent-gini}.
+When building a decision tree, the splitting criteria by which each level is formed to yield the greatest information gain can be calculated by two common methods; Entropy and Gini impurity. It has been discussed in literature that there exists a minimal difference between the effect of accuracy, however Gini
+impurity function is computationally less expensive than Entropy since Entropy requires additionally calculating the logarithm of percentage of each class labels in the child nodes. The difference between the splitting criteria is investigated through the implementation of both entropy and Gini impurity in our implementation of Random forest, with results shown in table ~\ref{ent-gini}. Both models were run on a single process.
 
 \begin{table}[t]
 \caption{Comparison of Entropy and Gini impurity for splitting criteria}
@@ -156,6 +157,8 @@ When building a decision tree, the splitting criteria by which each level is for
 \end{tabular}
 \end{center}
 \end{table}
+
+As shown in table ~\ref{ent-gini}, using the Gini index as the score function is indeed noticeably faster than Entropy.
 
 \subsection{Implementation Comparisons}
 TODO: This section should be testing the accuracy of our implementation against Weka and scikit-learn to demonstrate are implementation is correct.  Possibly come up with a better subsection title.
@@ -181,16 +184,24 @@ sum\_7yr\_GP         &8	&5	&4	&2	&64 \\
 \multicolumn{1}{c}{\bf Machine Learning Package} &\multicolumn{1}{c}{\bf Accuracy} &\multicolumn{1}{c}{\bf Time}
 \\ \hline \\
 Weka         &69.4\%	&$<$1sec \\
-scikit-learn             &70.7\%	&TIME \\
-our implementation             &68.6\%	&$\approx$ 3min \\
+scikit-learn             &70.7\%	&$<$1sec \\
+our implementation             &68.6\%	&$\approx$ 1min 55sec \\
 \end{tabular}
 \end{center}
 \end{table}
 
-From Table~\ref{clas-table}, it can be seen that all three implementations of Random forest yield similar results. It was noted however that when performing on standardized data so values are centered by their means and divided by the standard deviation, the accuracy was significantly lower for all three implementations, around 55\% accuracy. This can be due to the sensitivity of the splitting using gini impurity or entropy with small values, or perhaps some information is lost on the impact of certain features. The time taken for completion is difficult to compare since coding implementations are different, however using 4 workers running using the same parameters as shown in table ~\ref{scikit-table} the time of 3 minutes is slow, however not unreasonable. 
+The accuracy of the project’s implementation against Weka and scikit-learn is compared to demonstrate
+its correctness. Experiment was designed to first find the optimal parameters for each model
+by searching the parameter space using the k-fold cross-validation score as a metric. The next step
+was to compare both the parameter values and the accuracy of each optimal models. All three models
+were configured as classifiers for this test. As shown in Table~\ref{scikit-table}, ~\ref{clas-table}, optimal parameters
+and scores of the project’s implementation was similar to both Weka and scikit-learn.
+
+From Table~\ref{clas-table}, it can be seen that all three implementations of Random forest yield similar results. It was noted however that when performing on standardized data, such that values are centered by their means and divided by the standard deviation, the accuracy was significantly lower for all three implementations, around 55\% accuracy (not shown here). This can be due to the sensitivity of the splitting using Gini impurity or entropy with small values, or perhaps some information is lost on the impact of certain features. The time taken for completion is difficult to compare since coding implementations are different (python vs C), however to improve speed, multi-processing was implemented. Using 4 processes running the same parameters as shown in table ~\ref{scikit-table} for target class GP\_greater\_than\_0, the time of \approx 2 minutes is slow, however not unreasonable, this addition was a great improvement over a single process taking 6min 58sec
 
 \subsubsection{Accuracy Comparisons}
-TODO: Show that are accuracy is comparable to other implementations.  Possibly remove this subsubsection if we remove the Speed Comparisons one.
+
+I think we can maybe remove this and speed comparisons and just have everything in implementation comparison without subdividing - it becomes difficult to discuss otherwise.
 
 \subsubsection{Speed Comparisons}
 TODO: Show that gini is faster than entropy.  Possibly come up with a better subsubsection title or remove this subsection.
