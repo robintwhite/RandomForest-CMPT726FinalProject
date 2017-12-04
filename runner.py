@@ -123,7 +123,7 @@ def main():
     )
 
     t0 = datetime.now()
-    random_forest.train(train_data, class_name,split_function)
+    random_forest.train(train_data, class_name)
     diff = datetime.now()-t0
     t = divmod(diff.days * 86400 + diff.seconds, 60)
     train_results = random_forest.bagging_predict(train_data)
