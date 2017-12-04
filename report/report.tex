@@ -49,7 +49,7 @@ Random Forests have been applied to a variety of machine learning tasks includin
 
 TODO: This section is supposed to be about what we want to do and why.
 
-In order to develop our knowledge of random forests and investigate their learning capabilities, we implement the random forest algorithm in python and apply it on a specific dataset.  Our dataset of choice is the hockey player dataset from class as it possesses discrete and continuous variables which allow us to use the random forest algorithm as a classifier and regressor on the same dataset.  In order to determine whether or not our implementation is correct, we compare it against other freely available implementations.  Once we are confident that our implementation is comparable to other implementations, we explore varying specific learning parameters for random forests to learn their impact on random forest's ability to learn.  Finally, armed with knowledge on how random forest's learning parameters should be set, we compare random forest's ability to predict a couple attributes from various hockey players to see how it fairs relative to other well known machine learning algorithms.
+In order to develop our knowledge of random forests and investigate their learning capabilities, we implement the random forest algorithm in python and apply it on a specific dataset.  Our dataset of choice is the hockey player dataset from class as it possesses discrete and continuous variables which allow us to use the random forest algorithm as a classifier and regressor on the same dataset.  In order to determine whether or not our implementation is correct, we compare it against other freely available implementations.  Once we are confident that our implementation is comparable to other implementations, we explore varying specific learning parameters for random forests to learn their impact on random forest's ability to learn.  Finally, armed with knowledge on how random forest's learning parameters should be set, we compare random forest's ability to predict a couple attributes from various hockey players to see how it fairs relative to other well-known machine learning algorithms.
 
 
 \section{Experiments}
@@ -126,7 +126,7 @@ Random forests utilize an ensemble method where by a collection of weak learners
 \label{fig:n_trees}
 \end{figure}
 
-The ability of Random forests to resist over fitting is largely due to the number of trees and features, which is demonstrated in figure ~\ref{fig:n_trees}. Randomization increases bias but makes it possible to reduce the variance of the corresponding ensemble model through averaging. \cite{formann-roe_2012}
+The ability of Random forests to resist over fitting is largely due to the number of trees and features, which is demonstrated in Figure ~\ref{fig:n_trees}. Randomization increases bias but makes it possible to reduce the variance of the corresponding ensemble model through averaging. \cite{formann-roe_2012}
 
 \subsubsection{Tree Depth}
 
@@ -143,11 +143,11 @@ The depth of each decision tree used to make up the ensemble used in Random fore
 \label{fig:max_depth}
 \end{figure}
 
-It has been shown that by increasing the maximum depth of each tree, a level of over fitting can be present, and similarly, having shallow trees can produce low-confidence predictions. \cite{Criminisi2011} It is thus important that an appropriate value of the maximum depth be used, as its optimal value is related to the problem complexity. We notice a small decrease in the accuracy at 20 features, as shown in figure ~\ref{fig:max_depth} which suggests that Random forests are still susceptible to over fitting, albeit less sensitive than many other machine learning algorithms without active regularization.
+It has been shown that by increasing the maximum depth of each tree, a level of over fitting can be present, and similarly, having shallow trees can produce low-confidence predictions. \cite{Criminisi2011} It is thus important that an appropriate value of the maximum depth be used, as its optimal value is related to the problem complexity. We notice a small decrease in the accuracy at 20 features, as shown in Figure ~\ref{fig:max_depth} which suggests that Random forests are still susceptible to over fitting, albeit less sensitive than many other machine learning algorithms without active regularization.
 
 \subsubsection{Features Per Tree}
 
-It is discussed in literature that a optimal value for the number of features to be used is $\frac{\text{ln}(M)}{\text{ln}(2)}$ of the total number of features, M. \cite{Brieman01} To investigate this we compare the classification accuracy while varying the number of features, with all other parameters such as number of trees, maximum depth, and minimum split size constant, with values 64, 5, 2 respectively. 
+It is discussed in literature that an optimal value for the number of features to be used is $\frac{\text{ln}(M)}{\text{ln}(2)}$ of the total number of features, M. \cite{Brieman01} To investigate this we compare the classification accuracy while varying the number of features, with all other parameters such as number of trees, maximum depth, and minimum split size constant, with values 64, 5, 2 respectively. 
 
 \begin{figure}[ht]
 \begin{center}
@@ -160,7 +160,7 @@ It is discussed in literature that a optimal value for the number of features to
 \label{fig:n_features}
 \end{figure}
 
-Following our results, shown in figure ~\ref{fig:n_features}, we observe a maximum train accuracy for 5 features, which agrees with literature for an optimal number of features. We observe, however, that the number of features used has less of an impact on the total accuracy when comparing to the above observations for varying number of trees and maximum tree depth. The maximum depth for optimal test accuracy also does not agree with the training value, and the variance between each run makes a conclusive result difficult on the over-all impact.  
+Following our results, shown in figure 3, we observe a maximum train accuracy for 5 features, which agrees with literature for an optimal number of features. We observe, however, that the number of features used has less of an impact on the total accuracy when comparing to the above observations for varying number of trees and maximum tree depth. The maximum depth for optimal test accuracy also does not agree with the training value, and the variance between each run makes drawing a conclusion on the over-all impact of this parameter difficult.
 
 \subsubsection{Grid Search Parameter Optimization}
 
@@ -172,7 +172,7 @@ Following the observations after varying each parameter individually, a grid sea
 \item [Features] 2,5,8,10,15,23
 \end{description}
 
-With optimal values shown in table ~\ref{opt-table}. Figure ~\ref{fig:gridSClass} shows the effect of the different parameters on the accuracy of the classifier for the test set. As can be observed, there are some local regions of high accuracy. In particular, when looking at the number of features for values $\frac{\text{ln}(M)}{\text{ln}(2)}$ which in this case correspond to a vlaue of approximately 5. It is surprising that the optimal number of features is very low with a value of 2. This may be a result of creating a higher chance of uncorrelated trees which has been shown to improve accuracy. \cite{Bharathidason2014}
+With optimal values shown in table ~\ref{opt-table}. Figure ~\ref{fig:gridSClass} shows the effect of the different parameters on the accuracy of the classifier for the test set. As can be observed, there are some local regions of high accuracy. In particular, when looking at the number of features for values $\frac{\text{ln}(M)}{\text{ln}(2)}$ which in this case correspond to a value of approximately 5. It is surprising that the optimal number of features is very low with a value of 2. This may be a result of creating a higher chance of uncorrelated trees which has been shown to improve accuracy. \cite{Bharathidason2014}
 
 \begin{table}[h]
 \caption{Optimal values found for project's Random forest by grid search}
