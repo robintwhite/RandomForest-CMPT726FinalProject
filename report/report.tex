@@ -106,10 +106,7 @@ our implementation             &12529.5	&30sec \\
 \end{table}
 
 Note: Needed to use Weka Random forest, not bagging with J48 since can't be used for regression, instead REPTree is used.
-Regression splitting using variance. TODO some explanation and references here. It is noted the regressor implementation has a significantly
-higher mean square error compared to Weka and scikit-learn. This could be attributed to the greater variation in the tree depths and node sizes
-observed in the other two implementations. For example, scikit-learn's optimal random forest regressor contains trees varying in depth from 5 to 16 and
-varing in minimum node size from 1 to 4. 
+Regression splitting using variance. TODO some explanation and references here. It is noted the regressor implementation has a higher mean square error compared to Weka and scikit-learn.
 
 \subsection{Parameters Exploration}
 TODO: This section should be exploring how the parameters affect a random forest's ability to learn and our best parameters.  Possibly come up with a better subsection title.
@@ -244,8 +241,7 @@ TODO: Summarize our findings and mention future work which is the uncorrelated t
 
 TODO: Figure out if this paragraph should be removed.
 Random forests have been shown to achieve high classification performance through ensemble with a set of decision trees that are constructed using randomly selected feature subspaces. The performance of an ensemble learner is dependent on the accuracy of each component learner and the diversity of the components, especially when using a small set of trees which may be limited due to computational cost. The randomization can cause occurrence of bad predicting trees as well as correlated trees which can lead to poor ensemble decisions, which can be observed when performing multiple training runs using the same parameters which can lead to different accuracy results. Attempts have been made to improve the performance of this model by building a forest of only uncorrelated high performing trees. \cite{Bharathidason2014}
-Also, the running time can be decreased by optimizing split function subroutines and the data structures to use Cython or C. Once the running time is improved,
-it will also be feasible to increase tree depth and attempt to fit a better regression model on the data.
+Also, the running time can be decreased by optimizing split function subroutines and the data structures to use Cython or C. 
 
 \subsubsection*{Contributions}
 All authors contributed equally.\\
