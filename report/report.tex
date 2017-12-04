@@ -106,7 +106,10 @@ our implementation             &12529.5	&30sec \\
 \end{table}
 
 Note: Needed to use Weka Random forest, not bagging with J48 since can't be used for regression, instead REPTree is used.
-Regression splitting using variance. TODO some explanation and references here.
+Regression splitting using variance. TODO some explanation and references here. It is noted the regressor implementation has a significantly
+higher mean square error compared to Weka and scikit-learn. This could be attributed to the greater variation in the tree depths and node sizes
+observed in the other two implementations. For example, scikit-learn's optimal random forest regressor contains trees varying in depth from 5 to 16 and
+varing in minimum node size from 1 to 4. 
 
 \subsection{Parameters Exploration}
 TODO: This section should be exploring how the parameters affect a random forest's ability to learn and our best parameters.  Possibly come up with a better subsection title.
@@ -196,18 +199,6 @@ sum\_7yr\_GP         &8	&5	&64 &?\\
 \label{fig:gridSClass}
 \end{figure}
 
-\begin{table}[h]
-\caption{Optimal values found for sci-kit learn Random forest by grid search TODO Fix the lay-out of this}
-\begin{center}
-\begin{tabular}{cccccc}
-{\bf Target class} &{\bf Max depth} &{\bf Num features} &{\bf Min samples per leaf} &{\bf Min samples for split} &{\bf Num of trees}
-\\ \hline \\
-GP\_greater\_than\_0         &8	&5	&2	&2	&128 \\
-sum\_7yr\_GP         &8	&5	&4	&2	&64 \\
-\label{scikit-table}
-\end{tabular}
-\end{center}
-\end{table}
 
 Comparing the project's implementation of Random forest to that of scikit-learn implementation, we further compare against the optimal values found by grid search, shown in table ~\ref{scikit-table}, and ~\ref{opt-table}. As can be seen, the values are quite different, although result in similar accuracy. A high number of trees is consistent between both showing the over-all effect of the Random forest algorithm on improving performance. The difference between the values can be due to the different algorithms used and shows that finding optimal values for the specific algorithm is an important consideration when running any machine learning algorithm implementation. 
 
@@ -240,18 +231,21 @@ I think we can maybe remove this and speed comparisons and just have everything 
 \subsubsection{Speed Comparisons}
 TODO: Show that gini is faster than entropy.  Possibly come up with a better subsubsection title or remove this subsection.
 
-Gini index and Entropy effectively calculate the ’purity’ of the children nodes which allows the algorithm to select the most homogeneous splits and effectively decrease tree depth. However, Gini index function is computationally less expensive than Entropy since Entropy requires additionally calculating the logarithm of percentage of each class labels in the child nodes. Speed of two random forest models each using Gini index and Entropy were timed with varying number of estimators. Both models were run on a single process. As shown in Table 4, using the Gini index as the score function is indeed noticeably faster than Entropy.
+Using optimal values for learning shown in ~\ref{opt-table}, time for 4 processes of 20seconds is a significant improvement over a single process taking 1min 4sec for training GP\_greater\_than\_0. After tarining however, prediction time is considerably lower, taking $\approx$1sec regardless.
 
 
 \subsection{Machine Learning Algorithm Comparisons}
 TODO:  This section should be comparing our accuracy using best parameters against the best accuracy of other machine learning algorithms (e.g. linear regression, single decision trees, naive bayes, etc.)  Possibly come up with a better subsection title.
-
+For comparison, Decision tree classifier and Support Vector Machine (SVM) were fitted and tested on the data. The test set accuracy of the decision tree was 64\% while the test accuracy
+of the SVM was 53\%. 
 
 \section{Conclusion}
 TODO: Summarize our findings and mention future work which is the uncorrelated tree algorithm in the paper I found before.
 
 TODO: Figure out if this paragraph should be removed.
-Random forest is an ensemble learning method which has been shown to achieve high classification performance by introducing randomization in two separate stages of the learning process: bagging fits trees on randomly generated training sets and random subspace method allows evaluation only on a random subset of the features during each split of the tree’s learning process. Both techniques attempt to reduce the learner’s variance and increase its stability. The performance of an ensemble learner is dependent on the accuracy of each component learner and the diversity of the components, especially when using a small set of trees which may be limited due to computational cost. Moreover, randomization can cause occurrences of poorly performing as well as correlated trees which can lead to poor ensemble decisions. This was observed when performing multiple training runs using the same parameters leading to different accuracy results. Attempts have been made to improve the performance of this model by building a forest of only uncorrelated high performing trees. \cite{Bharathidason2014}
+Random forests have been shown to achieve high classification performance through ensemble with a set of decision trees that are constructed using randomly selected feature subspaces. The performance of an ensemble learner is dependent on the accuracy of each component learner and the diversity of the components, especially when using a small set of trees which may be limited due to computational cost. The randomization can cause occurrence of bad predicting trees as well as correlated trees which can lead to poor ensemble decisions, which can be observed when performing multiple training runs using the same parameters which can lead to different accuracy results. Attempts have been made to improve the performance of this model by building a forest of only uncorrelated high performing trees. \cite{Bharathidason2014}
+Also, the running time can be decreased by optimizing split function subroutines and the data structures to use Cython or C. Once the running time is improved,
+it will also be feasible to increase tree depth and attempt to fit a better regression model on the data.
 
 \subsubsection*{Contributions}
 All authors contributed equally.\\
