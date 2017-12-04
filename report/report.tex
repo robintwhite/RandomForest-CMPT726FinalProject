@@ -80,7 +80,7 @@ our implementation             &68.6\%	&14sec \\
 The accuracy of the project’s implementation against Weka and scikit-learn is compared to demonstrate
 its correctness. Experiment was designed to first find the optimal parameters for each model
 by searching the parameter space using the k-fold cross-validation score as a metric. The next step
-was to compare both the parameter values and the accuracy of each optimal models. The Weka implementation used bagging of J48 decision trees to best correlate to the implementation used in this project. The Weka Random forest implementation uses other additions such as choosing uncorrelated trees to optimize the results. The Weka platform does not give an option for maximum tree depth, but again, to better compare to this project's implementation, binary splitting was used. 
+was to compare both the parameter values and the accuracy of each optimal models. The Weka implementation used bagging of J48 decision trees to best correlate to the implementation used in this project. The Weka Random forest implementation uses other additions such as choosing uncorrelated trees to optimize the results. The Weka platform does not give an option for maximum tree depth, but again, to better compare to this project's implementation, binary splitting was used.
 
 From Table~\ref{clas-table}, it can be seen that all three implementations of Random forest yield similar results using similar parameter values (as is possible by the user). The parameters for our implementation were:
 \begin{description}
@@ -88,7 +88,7 @@ From Table~\ref{clas-table}, it can be seen that all three implementations of Ra
 \item [Depth] 5
 \item [Features] 5
 \item [Split Size] 2
-\end{description} 
+\end{description}
 It was noted however that when performing on standardized data, such that values are centered by their means and divided by the standard deviation, the accuracy was significantly lower for all three implementations, around 55\% accuracy (not shown here). This can be due to the sensitivity of the splitting using Gini impurity or entropy with small values, or perhaps some information is lost on the impact of certain features. The time taken for completion is difficult to compare since coding implementations are different (python vs C), however to improve speed, multi-processing was implemented. Using 4 processes running the same parameters as shown above for target class GP\_greater\_than\_0, the time of $\approx$ 40 seconds is slower, however not unreasonable, this addition was a great improvement over a single process taking 41 seconds.
 
 \begin{table}[h]
@@ -113,7 +113,7 @@ TODO: This section should be exploring how the parameters affect a random forest
 
 \subsubsection{Number of Trees}
 
-Random forests utilize an ensemble method where by a collection of weak learners is combined to produce a more accurate and robust model. We explore this by investigating the classification accuracy of our random forests implementation by varying the number of decision trees which are combined to produce the final prediction of our model. We keep parameters such as maximum tree depth, number of features, and minimum split size constant, with values 5, 5, 2 respectively. 
+Random forests utilize an ensemble method where by a collection of weak learners is combined to produce a more accurate and robust model. We explore this by investigating the classification accuracy of our random forests implementation by varying the number of decision trees which are combined to produce the final prediction of our model. We keep parameters such as maximum tree depth, number of features, and minimum split size constant, with values 5, 5, 2 respectively.
 
 \begin{figure}[ht]
 \begin{center}
@@ -130,7 +130,7 @@ The ability of Random forests to resist over fitting is largely due to the numbe
 
 \subsubsection{Tree Depth}
 
-The depth of each decision tree used to make up the ensemble used in Random forests has a large impact on the accuracy of the model. We investigate this by comparing the accuracy of our model implementation as a function of the maximum depth of each tree. That is, the tree can have a depth that is less than this value, depending on the features used to build the tree, however once it reaches this maximum depth, the leaf is forced to be a terminal and predict the target class. We keep other parameters such as number of trees, number of features, and minimum split size constant, with values 64, 5, 2 respectively. 
+The depth of each decision tree used to make up the ensemble used in Random forests has a large impact on the accuracy of the model. We investigate this by comparing the accuracy of our model implementation as a function of the maximum depth of each tree. That is, the tree can have a depth that is less than this value, depending on the features used to build the tree, however once it reaches this maximum depth, the leaf is forced to be a terminal and predict the target class. We keep other parameters such as number of trees, number of features, and minimum split size constant, with values 64, 5, 2 respectively.
 
 \begin{figure}[ht]
 \begin{center}
@@ -147,7 +147,7 @@ It has been shown that by increasing the maximum depth of each tree, a level of 
 
 \subsubsection{Features Per Tree}
 
-It is discussed in literature that an optimal value for the number of features to be used is $\frac{\text{ln}(M)}{\text{ln}(2)}$ of the total number of features, M. \cite{Brieman01} To investigate this we compare the classification accuracy while varying the number of features, with all other parameters such as number of trees, maximum depth, and minimum split size constant, with values 64, 5, 2 respectively. 
+It is discussed in literature that an optimal value for the number of features to be used is $\frac{\text{ln}(M)}{\text{ln}(2)}$ of the total number of features, M. \cite{Brieman01} To investigate this we compare the classification accuracy while varying the number of features, with all other parameters such as number of trees, maximum depth, and minimum split size constant, with values 64, 5, 2 respectively.
 
 \begin{figure}[ht]
 \begin{center}
@@ -181,7 +181,7 @@ With optimal values shown in table ~\ref{opt-table}. Figure ~\ref{fig:gridSClass
 {\bf Target class} &{\bf Max depth} &{\bf Num features} &{\bf Num of trees}&{\bf Accuracy measure}
 \\ \hline \\
 GP\_greater\_than\_0         &15	&2	&64 &71.2\%\\
-sum\_7yr\_GP         &8	&5	&64 &?\\
+sum\_7yr\_GP         &5	&5	&2 		&11912\\
 \label{opt-table}
 \end{tabular}
 \end{center}
@@ -209,7 +209,7 @@ sum\_7yr\_GP         &8	&5 &64 \\
 \end{center}
 \end{table}
 
-Comparing the project's implementation of Random forest to that of scikit-learn implementation, we further compare against the optimal values found by grid search, shown in table ~\ref{scikit-table}, and ~\ref{opt-table}. As can be seen, the values are quite different, although result in similar accuracy. A high number of trees is consistent between both showing the over-all effect of the Random forest algorithm on improving performance. The difference between the values can be due to the different algorithms used and shows that finding optimal values for the specific algorithm is an important consideration when running any machine learning algorithm implementation. 
+Comparing the project's implementation of Random forest to that of scikit-learn implementation, we further compare against the optimal values found by grid search, shown in table ~\ref{scikit-table}, and ~\ref{opt-table}. As can be seen, the values are quite different, although result in similar accuracy. A high number of trees is consistent between both showing the over-all effect of the Random forest algorithm on improving performance. The difference between the values can be due to the different algorithms used and shows that finding optimal values for the specific algorithm is an important consideration when running any machine learning algorithm implementation.
 
 \subsubsection{Splitting criteria}
 
@@ -246,14 +246,14 @@ Using optimal values for learning shown in ~\ref{opt-table}, time for 4 processe
 \subsection{Machine Learning Algorithm Comparisons}
 TODO:  This section should be comparing our accuracy using best parameters against the best accuracy of other machine learning algorithms (e.g. linear regression, single decision trees, naive bayes, etc.)  Possibly come up with a better subsection title.
 For comparison, a decision tree classifier and a Support Vector Machine (SVM) were fitted and tested on the data. The test set accuracy of the decision tree was 64\% while the test accuracy
-of the SVM was 53\%. 
+of the SVM was 53\%.
 
 \section{Conclusion}
 TODO: Summarize our findings and mention future work which is the uncorrelated tree algorithm in the paper I found before.
 
 TODO: Figure out if this paragraph should be removed.
 Random forests have been shown to achieve high classification performance through ensemble with a set of decision trees that are constructed using randomly selected feature subspaces. The performance of an ensemble learner is dependent on the accuracy of each component learner and the diversity of the components, especially when using a small set of trees which may be limited due to computational cost. The randomization can cause occurrence of bad predicting trees as well as correlated trees which can lead to poor ensemble decisions, which can be observed when performing multiple training runs using the same parameters which can lead to different accuracy results. Attempts have been made to improve the performance of this model by building a forest of only uncorrelated high performing trees. \cite{Bharathidason2014}
-Also, the running time can be decreased by optimizing split function subroutines and the data structures to use Cython or C. 
+Also, the running time can be decreased by optimizing split function subroutines and the data structures to use Cython or C.
 
 \subsubsection*{Contributions}
 All authors contributed equally.\\

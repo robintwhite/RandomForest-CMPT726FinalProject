@@ -3,11 +3,12 @@ import matplotlib.pyplot as plt
 from matplotlib.mlab import griddata
 import numpy as np
 
-df = pd.read_csv('../results/grid-results.csv')
-
+df = pd.read_csv('../results/grid-results-R.csv')
+#idxmin for regression, idxmax for classification
 cols = list(df.columns)
-bestF, bestM, bestMS, bestT = df[df.columns[:4]].iloc[df['TestAccuracy'].idxmax()] #values with best test accuracy
+bestF, bestM, bestMS, bestT = df[df.columns[:4]].iloc[df['TestAccuracy'].idxmin()] #values with best test accuracy
 print('Best Test Accuracy values: {} Features, {} Max depth, {} Number of trees'.format(bestF, bestM, bestT))
+print('Best Test Accuracy: {}'.format(df['TestAccuracy'].min()))
 data_F = df.loc[df[cols[0]] == bestF] #values with best num features
 data_M = df.loc[df[cols[1]] == bestM] #values with best max depth
 data_T = df.loc[df[cols[3]] == bestT] #values with best num trees
@@ -30,6 +31,7 @@ CS = ax1.contourf(xi, yi, zi, 15,
                   vmax=abs(zi).max(), vmin= abs(zi).min(), cmap=cmap)
 # plot data points.
 ax1.scatter(x, y, marker='o', s=5, zorder=10)
+ax1.scatter(bestM, bestT, marker='o',color='red', s=5, zorder=10)
 #ax1.xlim(min(x), max(x))
 #ax1.ylim(min(y), max(y))
 ax1.set_xlabel('Maximum Tree Depth')
@@ -49,6 +51,7 @@ CS = ax2.contourf(xi, yi, zi, 15,
 
 # plot data points.
 ax2.scatter(x, y, marker='o', s=5, zorder=10)
+ax2.scatter(bestF, bestT, marker='o',color='red', s=5, zorder=10)
 #ax2.xlim(min(x), max(x))
 #ax2.ylim(min(y), max(y))
 ax2.set_xlabel('Number of Features')
@@ -69,6 +72,7 @@ CS = ax3.contourf(xi, yi, zi, 15,
 
 # plot data points.
 ax3.scatter(x, y, marker='o', s=5, zorder=10)
+ax3.scatter(bestF, bestM, marker='o',color='red', s=5, zorder=10)
 ax3.set_xlabel('Number of Features')
 ax3.set_ylabel('Maximum Tree Depth')
 #ax3.yaxis.set_label_position("right")
