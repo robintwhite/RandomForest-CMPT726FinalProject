@@ -48,7 +48,7 @@ class RandomForest():
         trained_trees.append(tree)
 
     #Specify split function (splitf) parameter for classification or regression: gini, entropy, variance
-    def train(self, train_data, target_class,splitf):
+    def train(self, train_data, target_class):
         """
         Train the random forest on the given data.
 
@@ -58,13 +58,13 @@ class RandomForest():
         """
         if self.workers:
             trained_trees = Manager().list()
-            partial_function = partial(self._build_tree, train_data=train_data, target_class=target_class,  trained_trees=trained_trees,splitf=splitf)
+            partial_function = partial(self._build_tree, train_data=train_data, target_class=target_class,  trained_trees=trained_trees,splitf=self.split_function)
             with Pool(processes=self.workers) as workers:
                 workers.map(partial_function, self.trees)
             self.trees = trained_trees
         else:
             for tree in self.trees:
-                tree.tree_build_util(train_data, target_class,splitf)
+                tree.tree_build_util(train_data, target_class,self.split_function)
 
 
     def bagging_predict(self, test_data):
