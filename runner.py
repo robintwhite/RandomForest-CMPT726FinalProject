@@ -118,7 +118,8 @@ def main():
         arguments.max_depth,
         arguments.min_split_size,
         arguments.n_features,
-        arguments.number_of_workers
+        arguments.number_of_workers,
+        split_function
     )
 
     t0 = datetime.now()
