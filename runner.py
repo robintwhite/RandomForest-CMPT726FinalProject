@@ -5,6 +5,7 @@ Script to help run the RandomForest program.
 from RandomForest import RandomForest
 from argparse import ArgumentParser
 from Sklearn_RF import Sklearn_RF
+from datetime import datetime
 
 import csv
 import os.path
@@ -117,18 +118,35 @@ def main():
         arguments.max_depth,
         arguments.min_split_size,
         arguments.n_features,
-        arguments.number_of_workers
+        arguments.number_of_workers,
+        split_function
     )
+
+    t0 = datetime.now()
     random_forest.train(train_data, class_name,split_function)
+    diff = datetime.now()-t0
+    t = divmod(diff.days * 86400 + diff.seconds, 60)
     train_results = random_forest.bagging_predict(train_data)
+    t0 = datetime.now()
     test_results = random_forest.bagging_predict(test_data)
+    diff = datetime.now()-t0
+    tp = divmod(diff.days * 86400 + diff.seconds, 60)
 
-    # TODO: Need separate code for checking regression accuracy
-    train_accuracy = random_forest.evaluate(train_results, train_data[:,-1])
-    print("\nTrain Percent Correct: {}".format(train_accuracy))
+    if arguments.use_variance:
+        train_accuracy = random_forest.mse(train_results, train_data[:,-1])
+        print("\nTrain Mean squared error: {}".format(train_accuracy))
 
-    test_accuracy = random_forest.evaluate(test_results, test_data[:,-1])
-    print("Test Percent Correct: {}\n".format(test_accuracy))
+        test_accuracy = random_forest.mse(test_results, test_data[:,-1])
+        print("Test Mean squared error: {}\n".format(test_accuracy))
+    else:
+        train_accuracy = random_forest.evaluate(train_results, train_data[:,-1])
+        print("\nTrain Percent Correct: {}".format(train_accuracy))
+
+        test_accuracy = random_forest.evaluate(test_results, test_data[:,-1])
+        print("Test Percent Correct: {}\n".format(test_accuracy))
+
+    print("\nTime for train: {}min {}sec".format(t[0],t[1]))
+    print("Time for prediction: {}min {}sec\n".format(tp[0],tp[1]))
 
     if arguments.sklearn_rf is True:
         sk_rf = Sklearn_RF(
@@ -141,9 +159,12 @@ def main():
         # TODO: Need a sklearn_regression tree as well
         sk_rf.train(train_data,class_name)
 
-        accuracy_sk = sk_rf.evaluate(test_data)
+        accuracy_sk = sk_rf.evaluate(test_data, tree_type = 'regressor' if arguments.use_variance else 'classifier')
 
-        print('{}{}'.format('sklearn rf Percent correct: ',accuracy_sk*100))
+        if arguments.use_variance:
+            print('{}{}'.format('sklearn rf MSE: ',accuracy_sk))
+        else:
+            print('{}{}'.format('sklearn rf Percent correct: ',accuracy_sk*100))
 
     # Write out the results to a file, if one is specified, for downstream processing.
     if output_file:
