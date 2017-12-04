@@ -11,7 +11,7 @@ class RandomForest():
     """
 
 
-    def __init__(self, number_of_trees, max_depth, min_split_size, n_features, workers):
+    def __init__(self, number_of_trees, max_depth, min_split_size, n_features, workers,split_function):
         """
         Initialize instance of a RandomForest.
 
@@ -23,7 +23,7 @@ class RandomForest():
         """
         self.workers = workers
         self.trees = []
-
+        self.split_function = split_function
         for value in range(number_of_trees):
             self.trees.append(Tree(value, max_depth, min_split_size, n_features))
 
@@ -81,13 +81,22 @@ class RandomForest():
         test_data_y = test_data[:,-1]
         predictions = []
         # TODO: Add logic here.
-        for row in test_data_x:
-            #for each test case, majority vote for trees
-            prediction = [tree.predict(tree.root, row) for tree in self.trees] #array with prediction from each tree
-            predictions.append(max(set(prediction), key=prediction.count)) #Majority vote and store prediction
+        if self.split_function !='variance':
+            for row in test_data_x:
+                #for each test case, majority vote for trees
+                prediction = [tree.predict(tree.root, row) for tree in self.trees] #array with prediction from each tree
+                predictions.append(max(set(prediction), key=prediction.count)) #Majority vote and store prediction
 
-        return predictions
+            return predictions
+        else:
+            for row in test_data_x:
+                #for each test case, majority vote for trees
+                prediction = [tree.predict(tree.root, row) for tree in self.trees] #array with prediction from each tree
+                mean = np.mean(prediction)
+                predictions.append(mean) #Majority vote and store prediction
 
+            return predictions
+            
     def evaluate(self, predictions, test_data_y):
         #check prediction of each row against test data test_data_y = test_data[:,-1]
         correct = 0
