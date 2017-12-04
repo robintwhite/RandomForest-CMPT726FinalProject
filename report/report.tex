@@ -196,6 +196,18 @@ sum\_7yr\_GP         &8	&5	&64 &?\\
 \label{fig:gridSClass}
 \end{figure}
 
+\begin{table}[h]
+\caption{Optimal values found for sci-kit learn Random forest by grid search}
+\begin{center}
+\begin{tabular}{cccc}
+{\bf Target class} &{\bf Max depth} &{\bf Num features} &{\bf Num of trees}
+\\ \hline \\
+GP\_greater\_than\_0         &8	&5 &128 \\
+sum\_7yr\_GP         &8	&5 &64 \\
+\label{scikit-table}
+\end{tabular}
+\end{center}
+\end{table}
 
 Comparing the project's implementation of Random forest to that of scikit-learn implementation, we further compare against the optimal values found by grid search, shown in table ~\ref{scikit-table}, and ~\ref{opt-table}. As can be seen, the values are quite different, although result in similar accuracy. A high number of trees is consistent between both showing the over-all effect of the Random forest algorithm on improving performance. The difference between the values can be due to the different algorithms used and shows that finding optimal values for the specific algorithm is an important consideration when running any machine learning algorithm implementation. 
 
