@@ -175,13 +175,13 @@ Following the observations after varying each parameter individually, a grid sea
 With optimal values shown in table ~\ref{opt-table}. Figure ~\ref{fig:gridSClass} shows the effect of the different parameters on the accuracy of the classifier for the test set. As can be observed, there are some local regions of high accuracy. In particular, when looking at the number of features for values $\frac{\text{ln}(M)}{\text{ln}(2)}$ which in this case correspond to a vlaue of approximately 5. It is surprising that the optimal number of features is very low with a value of 2. This may be a result of creating a higher chance of uncorrelated trees which has been shown to improve accuracy. \cite{Bharathidason2014}
 
 \begin{table}[h]
-\caption{Optimal values found for project's Random forest by grid search}
+\caption{Optimal values found for project's Random forest by grid search, Accuracy measure for classification is percent correct, and for regression is mean squared error}
 \begin{center}
 \begin{tabular}{ccccc}
 {\bf Target class} &{\bf Max depth} &{\bf Num features} &{\bf Num of trees}&{\bf Accuracy measure}
 \\ \hline \\
-GP\_greater\_than\_0         &15	&2	&64 &71.2\%\\
-sum\_7yr\_GP         &8	&5	&64 &?\\
+GP\_greater\_than\_0         &15		&64 		&71.2\%\\
+sum\_7yr\_GP         &5	&5	&2 		&11912\\
 \label{opt-table}
 \end{tabular}
 \end{center}

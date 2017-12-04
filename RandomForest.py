@@ -3,6 +3,7 @@ from multiprocessing import Pool
 from multiprocessing import Manager
 from functools import partial
 import numpy as np
+from scipy import stats
 
 class RandomForest():
     """
@@ -93,10 +94,11 @@ class RandomForest():
                 #for each test case, majority vote for trees
                 prediction = [tree.predict(tree.root, row) for tree in self.trees] #array with prediction from each tree
                 mean = np.mean(prediction)
+                #mode = stats.mode(prediction)
                 predictions.append(mean) #Majority vote and store prediction
 
             return predictions
-            
+
     def evaluate(self, predictions, test_data_y):
         #check prediction of each row against test data test_data_y = test_data[:,-1]
         correct = 0
