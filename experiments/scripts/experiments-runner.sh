@@ -163,13 +163,13 @@ fi
 # Generate core command string.
 BASE_COMMAND="python ../../runner.py -d $CSV_FILE --use_hockey_preprocessor"
 
-if [[ $USE_GINI ]]
+if [[ $USE_GINI == 1 ]]
 then
   BASE_COMMAND="$BASE_COMMAND --use_gini --target_label GP_greater_than_0"
-elif [[ $USE_ENTROPY ]]
+elif [[ $USE_ENTROPY == 1 ]]
 then
   BASE_COMMAND="$BASE_COMMAND --use_entropy --target_label GP_greater_than_0"
-elif [[ $USE_VARIANCE ]]
+elif [[ $USE_VARIANCE == 1 ]]
 then
   BASE_COMMAND="$BASE_COMMAND --use_variance --target_label sum_7yr_GP"
 fi
