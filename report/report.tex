@@ -43,7 +43,7 @@ Surrey BC V3T 0A3 \\
 
 In machine learning, there is often a tug-of-war between bias and variance; having high accuracy to observed data but not to lose generalization (or over-fit) to unseen data. This is often referred to as the "bias-variance tradeoff" and it's consideration is a significant part of properly engineering machine learning algorithms. Often, regularization is used where there is an addition to the loss function to represent a cost to complexity, or in the way of neural networks, random dropout of neurons to force generalization \cite{Srivastava2014}. Another method is to also use validation datasets so as to understand the loss from unseen data without actually testing on the test set. All of these methods add to the complexity of the algorithm and can also often lead to loss in accuracy of the training data.\\
 In the early 90's, Tin Kam Ho from Bell Labs published a series of papers where he showed surprisingly that by combining independent learners in a unique way increased the accuracy of classifying handwritten digits monotonically; without suffering from over-adaptation to the training data. \cite{Ho93, Ho95, Ho98} The application of this method to decision trees in his '93 paper marked the introduction of random forests to the community. \cite{Ho93} Decision trees are simple yet effective classifiers, with high execution speed and easily relatable, however they are limited by their complexity for possible loss of generalization to unseen data. Some methods such as pruning have been used previously to try and increase generalization, however methods such as these usually come with a loss in accuracy toward training data. By using principles of stochastic modeling, Ho showed that tree-based classifiers could be arbitrarily expanded for increases in accuracy on unseen testing data without loss in training data accuracy. A characteristic which is still unique among machine learning classifiers. The concept is that multiple learners can compensate for the bias of a single learner and so trees are constructed from randomly selecting subspaces of the feature space. In this way, each tree generalizes in a different way. \\
-Random forests have been applied to a variety of machine learning tasks including classifications in ecology and geosciences, image segmentation in medical applications, business analytics, sporting analytics, as well as the unmentioned number of general data science applications. \cite{Cutler2007, Harris2015, Luo2017, Ghatasheh2014, Lock2014}.  These traits of high accuracy and resistance to overfitting that random forests possess are fascinating and so we would like to further our knowledge in how they are able to achieve these feats. 
+Random forests have been applied to a variety of machine learning tasks including classifications in ecology and geosciences, image segmentation in medical applications, business analytics, sporting analytics, as well as the unmentioned number of general data science applications. \cite{Cutler2007, Harris2015, Luo2017, Ghatasheh2014, Lock2014}.  These traits of high accuracy and resistance to overfitting that random forests possess are fascinating and so we would like to further our knowledge in how they are able to achieve these feats.
 
 \section{Approach}
 
@@ -72,13 +72,7 @@ our implementation             &68.6\%	&14sec \\
 \end{table}
 
 The accuracy of the project’s implementation against Weka and scikit-learn is compared to demonstrate
-<<<<<<< HEAD
-its correctness. Experiment was designed to first find the optimal parameters for each model
-by searching the parameter space using the k-fold cross-validation score as a metric. The next step
-was to compare both the parameter values and the accuracy of each optimal models. The Weka implementation used bagging of J48 decision trees to best correlate to the implementation used in this project. The Weka random forest implementation uses other additions such as choosing uncorrelated trees to optimize the results. The Weka platform does not give an option for maximum tree depth, but again, to better compare to this project's implementation, binary splitting was used.
-=======
-its correctness.  Initial values were used to compare the level of accuracy to other implementations shown in ~\ref{clas-table}. The Weka implementation used bagging of J48 decision trees to best correlate to the implementation used in this project. The Weka Random forest implementation uses other additions such as choosing uncorrelated trees to optimize the results. The Weka platform does not give an option for maximum tree depth, but again, to better compare to this project's implementation, binary splitting was used.
->>>>>>> small corrections to approach section and experiemnts
+its correctness.  Initial values were used to compare the level of accuracy to other implementations shown in ~\ref{clas-table}. The Weka implementation used bagging of J48 decision trees to best correlate to the implementation used in this project. The Weka random forest implementation uses other additions such as choosing uncorrelated trees to optimize the results. The Weka platform does not give an option for maximum tree depth, but again, to better compare to this project's implementation, binary splitting was used.
 
 From Table~\ref{clas-table}, it can be seen that all three implementations of random forest yield similar results using similar parameter values (as is possible by the user). The parameters for our implementation were:
 \begin{description}
@@ -231,7 +225,7 @@ As shown in table ~\ref{ent-gini}, using the Gini index as the score function is
 
 
 \subsection{Machine Learning Algorithm Comparisons}
-TODO:  This section should be comparing our accuracy using best parameters against the best accuracy of other machine learning algorithms (e.g. linear regression, single decision trees, naive bayes, etc.)  
+TODO:  This section should be comparing our accuracy using best parameters against the best accuracy of other machine learning algorithms (e.g. linear regression, single decision trees, naive bayes, etc.)
 Needs to be more discussion here. It is simply a list with no explanation on why the difference. Why is SVM so low? Comparison of regression results?
 
 For comparison, a decision tree classifier and a Support Vector Machine (SVM) were fitted and tested on the data. The test set accuracy of the decision tree was 64\% while the test accuracy of the SVM was 53\%.
