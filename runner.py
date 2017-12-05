@@ -6,12 +6,11 @@ from RandomForest import RandomForest
 from argparse import ArgumentParser
 from Sklearn_RF import Sklearn_RF
 from datetime import datetime
+from importlib import import_module
 
 import csv
 import os.path
 import preprocessors.HockeyDataSetPreprocessor as HockeyPP
-import preprocessors.BreastCancerDataSetPreprocessor as BreastCancerPP
-import preprocessors.Preprocessor as pp
 
 
 
@@ -36,11 +35,11 @@ def main():
     mutually_exclusive_group2.add_argument(
         '--use_hockey_preprocessor',
         action='store_true',
-        help="Use hockey dataset preprocessing logic on the given dataset.")
+        help="Use hockey dataset preprocessing logic on the given dataset. (default)")
     mutually_exclusive_group2.add_argument(
-        '--use_breast_cancer_preprocessor',
-        action='store_true',
-        help="Use breast cancer dataset preprocessing logic on the given dataset.")
+        '--use_custom_preprocessor',
+        help="Use custom dataset preprocessing logic on the given dataset.  Where USE_CUSTOM_PREPROCESSOR is the"
+             "filename of the preprocessor file in the preprocessors directory to use, e.g. TemplateDataSetPreprocessor.")
     argument_parser.add_argument(
         '-d', '--data_file',
         required=True,
@@ -92,10 +91,10 @@ def main():
 
     preprocessor = None
 
-    if arguments.use_hockey_preprocessor:
-        preprocessor = HockeyPP
+    if arguments.use_custom_preprocessor:
+        preprocessor = import_module("preprocessors." + arguments.use_custom_preprocessor)
     else:
-        preprocessor = BreastCancerPP
+        preprocessor = HockeyPP
 
     #select class name
     class_name = arguments.target_label
@@ -111,7 +110,6 @@ def main():
 
     #Test regression with 'sum_7yr_GP'
     train_data, test_data  = preprocessor.process(dataset_file,class_name)
-    #train_x, train_y, test_x, test_y = pp.process(dataset_file, "DraftYear", [2004, 2005, 2006], 2007, "GP_greater_than_0")
 
     random_forest = RandomForest(
         arguments.number_of_trees,

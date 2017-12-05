@@ -1,7 +1,7 @@
 FILES
 =====
-- BreastCancerDataSetPreprocessor.py - contains logic to take the breast cancer dataset and extract it into training and
-                                       test sets.
+- TemplateDataSetPreprocessor.py - contains a template to follow for additional preprocessors to work with our random
+                                   forest implementation.
 - HockeyDataSetPreprocessor.py - contains logic to take the hockey dataset and extract it into training and test sets.
 - RandomForest.py - contains logic for orchestrating learning and predicting with multiple trees.
 - README.md - this read me file.
@@ -20,7 +20,14 @@ System Requirements
 
 How to Run
 ==========
-python runner.py -d \<inputfile\> --use_hockey_preprocessor
+python runner.py -d \<inputfile\> -c \<targetColumnName\> --use_hockey_preprocessor
+
+or if you want to use a custom preprocessor:
+
+python runner.py -d \<inputfile\> -c \<targetColumnName\> --use_custom_preprocessor \<preprocessorFileName\>
+
+
+Please use the -h/--help option for additional details.
 
 
 Output
@@ -31,8 +38,15 @@ I am tree number: 0
 I am tree number: 1
 I am tree number: 2
 I am tree number: 3
-Training on the given dataset!
 Predicting on the given dataset!
+Predicting on the given dataset!
+
+Train Percent Correct: 100.0
+Test Percent Correct: 62.30366492146597
+
+
+Time for train: 1min 4sec
+Time for prediction: 0min 0sec
 ```
 
 
@@ -47,6 +61,7 @@ To add the pre-commit hook, please do the following:
 2. Run: cp pre-commit .git/hooks -i
 
 And you're done!
+
 
 Compiling the report
 ==============
