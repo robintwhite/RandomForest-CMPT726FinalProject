@@ -1,22 +1,19 @@
-def process(dataset_file):
+def process(dataset_file, target_column):
    """
-   Process the given breast cancer dataset so that it can be consumed by the Random Forest.
+   Process the given dataset so that it can be consumed by the Random Forest.
 
-   @param dataset_file - filepath to breast cancer dataset.
+   @param dataset_file - filepath to the dataset.
+   @param target_column - the name of the column in the given dataset that we want to predict.
 
-   TODO: Rename this file if we decide to use a different dataset.
-
-   @return preprocessed data.
+   @return preprocessed data where last column has target that we want to predict.
 
    """
-   print("Processing the data using Breast Cancer Dataset Preprocessor...")
+   print("Processing the data using <Data Type> Dataset Preprocessor...")
 
-   test_data_x = None
-   test_data_y = None
-   train_data_x = None
-   train_data_y = None
+   test_data = None
+   train_data = None
 
    with open(dataset_file) as file_stream:
       None
 
-   return train_data_x, train_data_y, test_data_x, test_data_y
+   return train_data, test_data
