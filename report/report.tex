@@ -175,13 +175,13 @@ Following the observations after varying each parameter individually, a grid sea
 With optimal values shown in table ~\ref{opt-table}. Figure ~\ref{fig:gridSClass} shows the effect of the different parameters on the accuracy of the classifier for the test set. As can be observed, there are some local regions of high accuracy. In particular, when looking at the number of features for values $\frac{\text{ln}(M)}{\text{ln}(2)}$ which in this case correspond to a vlaue of approximately 5. It is surprising that the optimal number of features is very low with a value of 2. This may be a result of creating a higher chance of uncorrelated trees which has been shown to improve accuracy. \cite{Bharathidason2014}
 
 \begin{table}[h]
-\caption{Optimal values found for project's Random forest by grid search}
+\caption{Optimal values found for project's Random forest by grid search, Accuracy measure for classification is percent correct, and for regression is mean squared error}
 \begin{center}
 \begin{tabular}{ccccc}
 {\bf Target class} &{\bf Max depth} &{\bf Num features} &{\bf Num of trees}&{\bf Accuracy measure}
 \\ \hline \\
-GP\_greater\_than\_0         &15	&2	&64 &71.2\%\\
-sum\_7yr\_GP         &8	&5	&64 &?\\
+GP\_greater\_than\_0         &15		&64 		&71.2\%\\
+sum\_7yr\_GP         &5	&5	&2 		&11912\\
 \label{opt-table}
 \end{tabular}
 \end{center}
@@ -240,7 +240,7 @@ I think we can maybe remove this and speed comparisons and just have everything 
 \subsubsection{Speed Comparisons}
 TODO: Show that gini is faster than entropy.  Possibly come up with a better subsubsection title or remove this subsection.
 
-Gini index and Entropy effectively calculate the ’purity’ of the children nodes which allows the algorithm to select the most homogeneous splits and effectively decrease tree depth. However, Gini index function is computationally less expensive than Entropy since Entropy requires additionally calculating the logarithm of percentage of each class labels in the child nodes. Speed of two random forest models each using Gini index and Entropy were timed with varying number of estimators. Both models were run on a single process. As shown in Table 4, using the Gini index as the score function is indeed noticeably faster than Entropy.
+Using optimal values for learning shown in ~\ref{opt-table}, time for 4 processes of 20seconds is a significant improvement over a single process taking 1min 4sec for training GP\_greater\_than\_0. After tarining however, prediction time is considerably lower, taking $\approx$1sec regardless.
 
 
 \subsection{Machine Learning Algorithm Comparisons}
@@ -251,7 +251,8 @@ TODO:  This section should be comparing our accuracy using best parameters again
 TODO: Summarize our findings and mention future work which is the uncorrelated tree algorithm in the paper I found before.
 
 TODO: Figure out if this paragraph should be removed.
-Random forest is an ensemble learning method which has been shown to achieve high classification performance by introducing randomization in two separate stages of the learning process: bagging fits trees on randomly generated training sets and random subspace method allows evaluation only on a random subset of the features during each split of the tree’s learning process. Both techniques attempt to reduce the learner’s variance and increase its stability. The performance of an ensemble learner is dependent on the accuracy of each component learner and the diversity of the components, especially when using a small set of trees which may be limited due to computational cost. Moreover, randomization can cause occurrences of poorly performing as well as correlated trees which can lead to poor ensemble decisions. This was observed when performing multiple training runs using the same parameters leading to different accuracy results. Attempts have been made to improve the performance of this model by building a forest of only uncorrelated high performing trees. \cite{Bharathidason2014}
+Random forests have been shown to achieve high classification performance through ensemble with a set of decision trees that are constructed using randomly selected feature subspaces. The performance of an ensemble learner is dependent on the accuracy of each component learner and the diversity of the components, especially when using a small set of trees which may be limited due to computational cost. The randomization can cause occurrence of bad predicting trees as well as correlated trees which can lead to poor ensemble decisions, which can be observed when performing multiple training runs using the same parameters which can lead to different accuracy results. Attempts have been made to improve the performance of this model by building a forest of only uncorrelated high performing trees. \cite{Bharathidason2014}
+
 
 \subsubsection*{Contributions}
 All authors contributed equally.\\
