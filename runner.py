@@ -11,7 +11,6 @@ from importlib import import_module
 import csv
 import os.path
 import preprocessors.HockeyDataSetPreprocessor as HockeyPP
-import preprocessors.Preprocessor as pp
 
 
 
@@ -111,7 +110,6 @@ def main():
 
     #Test regression with 'sum_7yr_GP'
     train_data, test_data  = preprocessor.process(dataset_file,class_name)
-    #train_x, train_y, test_x, test_y = pp.process(dataset_file, "DraftYear", [2004, 2005, 2006], 2007, "GP_greater_than_0")
 
     random_forest = RandomForest(
         arguments.number_of_trees,
