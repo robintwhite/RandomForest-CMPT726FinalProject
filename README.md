@@ -1,7 +1,7 @@
 FILES
 =====
-- BreastCancerDataSetPreprocessor.py - contains logic to take the breast cancer dataset and extract it into training and
-                                       test sets.
+- TemplateDataSetPreprocessor.py - contains a template to follow for additional preprocessors to work with our random
+                                   forest implementation.
 - HockeyDataSetPreprocessor.py - contains logic to take the hockey dataset and extract it into training and test sets.
 - RandomForest.py - contains logic for orchestrating learning and predicting with multiple trees.
 - README.md - this read me file.
@@ -21,6 +21,11 @@ System Requirements
 How to Run
 ==========
 python runner.py -d \<inputfile\> -c \<targetColumnName\> --use_hockey_preprocessor
+
+or if you want to use a custom preprocessor:
+
+python runner.py -d \<inputfile\> -c \<targetColumnName\> --use_custom_preprocessor \<preprocessorFileName\>
+
 
 Please use the -h/--help option for additional details.
 
