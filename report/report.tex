@@ -47,7 +47,7 @@ Random forests have been applied to a variety of machine learning tasks includin
 
 \section{Approach}
 
-In order to develop our knowledge of random forests and investigate their learning capabilities, we implement the random forest algorithm in python and apply it on a specific dataset.  Our dataset of choice is the hockey player dataset from class as it possesses discrete and continuous variables which allow us to use the random forest algorithm as a classifier and regressor on the same dataset.  In order to determine whether or not our implementation is correct, we compare it against other freely available implementations.  Once we are confident that our implementation is comparable to other implementations, we explore varying specific learning parameters for random forests to learn their impact on random forest's ability to learn.  Finally, armed with knowledge on how random forest's learning parameters should be set, we compare random forest's ability to predict a couple attributes from various hockey players to see how it fairs relative to other well-known machine learning algorithms.
+In order to develop our knowledge of random forests and investigate their learning capabilities, we implement the random forest algorithm in python and apply it on a specific dataset.  Our dataset of choice is the hockey player dataset from class as it possesses discrete and continuous variables which allow us to use the random forest algorithm as a classifier and regressor on the same dataset.  In order to determine whether or not our implementation is correct, we compare it against other freely available implementations.  Once we are confident that our implementation is correct in applying ensembe learning, we explore varying specific learning parameters for random forests to understand their impact on random forest's ability to learn from a training set and predict on a test set.  Finally, armed with knowledge on how random forest's learning parameters should be set for optimal results, we compare random forest's ability to predict attributes from various hockey players to see how it fairs relative to other well-known machine learning algorithms.
 
 
 \section{Experiments}
@@ -72,9 +72,13 @@ our implementation             &68.6\%	&14sec \\
 \end{table}
 
 The accuracy of the project’s implementation against Weka and scikit-learn is compared to demonstrate
+<<<<<<< HEAD
 its correctness. Experiment was designed to first find the optimal parameters for each model
 by searching the parameter space using the k-fold cross-validation score as a metric. The next step
 was to compare both the parameter values and the accuracy of each optimal models. The Weka implementation used bagging of J48 decision trees to best correlate to the implementation used in this project. The Weka random forest implementation uses other additions such as choosing uncorrelated trees to optimize the results. The Weka platform does not give an option for maximum tree depth, but again, to better compare to this project's implementation, binary splitting was used.
+=======
+its correctness.  Initial values were used to compare the level of accuracy to other implementations shown in ~\ref{clas-table}. The Weka implementation used bagging of J48 decision trees to best correlate to the implementation used in this project. The Weka Random forest implementation uses other additions such as choosing uncorrelated trees to optimize the results. The Weka platform does not give an option for maximum tree depth, but again, to better compare to this project's implementation, binary splitting was used.
+>>>>>>> small corrections to approach section and experiemnts
 
 From Table~\ref{clas-table}, it can be seen that all three implementations of random forest yield similar results using similar parameter values (as is possible by the user). The parameters for our implementation were:
 \begin{description}
