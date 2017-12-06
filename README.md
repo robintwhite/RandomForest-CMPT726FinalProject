@@ -1,3 +1,5 @@
+Backup from original repository https://csil-git1.cs.surrey.sfu.ca/rkm3/mlclass-1777-randomforest/tree/master Contributors: Richard Mar, Jae Lee, and Robin White
+
 FILES
 =====
 - TemplateDataSetPreprocessor.py - contains a template to follow for additional preprocessors to work with our random
