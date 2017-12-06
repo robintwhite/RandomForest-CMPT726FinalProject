@@ -3,12 +3,12 @@ import matplotlib.pyplot as plt
 from matplotlib.mlab import griddata
 import numpy as np
 
-df = pd.read_csv('../results/grid-results-R.csv')
+df = pd.read_csv('../results/grid-results.csv')
 #idxmin for regression, idxmax for classification
 cols = list(df.columns)
-bestF, bestM, bestMS, bestT = df[df.columns[:4]].iloc[df['TestAccuracy'].idxmin()] #values with best test accuracy
+bestF, bestM, bestMS, bestT = df[df.columns[:4]].iloc[df['TestAccuracy'].idxmax()] #values with best test accuracy
 print('Best Test Accuracy values: {} Features, {} Max depth, {} Number of trees'.format(bestF, bestM, bestT))
-print('Best Test Accuracy: {}'.format(df['TestAccuracy'].min()))
+print('Best Test Accuracy: {}'.format(df['TestAccuracy'].max())) #max for classification, min for regression
 data_F = df.loc[df[cols[0]] == bestF] #values with best num features
 data_M = df.loc[df[cols[1]] == bestM] #values with best max depth
 data_T = df.loc[df[cols[3]] == bestT] #values with best num trees
@@ -82,4 +82,5 @@ ax3.set_title('{} = {}'.format(focus, bestT))
 f.subplots_adjust(right=0.8)
 cbar_ax = f.add_axes([0.82, 0.15, 0.01, 0.7])
 f.colorbar(CS, cax=cbar_ax)
+cbar_ax.set_ylabel('Accuracy (%)')
 plt.show()
