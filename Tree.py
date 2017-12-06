@@ -37,12 +37,14 @@ class Tree():
         tot_var = 0
         
         for g in groups:
-
-            v = np.var(g)
             
             if not g.any():
                 
                 continue
+            
+            mean = np.mean(g)
+
+            v = ((g-mean)**2).sum()
             
             tot_var += v
         
