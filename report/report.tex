@@ -234,9 +234,21 @@ This also uses regularization in the algorithm implementation.
 
 \section{Conclusion}
 
-Random forests have been shown to achieve high classification performance through ensemble with a set of decision trees that are constructed using randomly selected features. To investigate Random forest we constructed the algorithm from scratch to provide the ability to better understand the impact of parameters and splitting methods. We compared our algorithm to two common machine learning libraries; Weka and Scikit-Learn. Using somewhat arbitrary values, we demonstrated that our algorithm is able to predict with similar accuracy and that the implementation is correct. Next we were able to explore the effect of parameters individually, by holding others constant. For simplicity we only considered the classifier type for this. We noted that there was an improvement with added number trees and also that typical overfitting was not observed as the complexity was increased, unlike many other machine learning algorithms. We did note however, that the maximum depth parameter can be used as regularization where we saw slight overfitting at a high number, which was consistent with discussion in literature. Following this, we then investigated varying all parameters to find optimal values. We noted that some surprising results emerged, where by the number of features for maximum accuracy for classification was only 2. This may have been a result on creating uncorrelated trees where there is low chance of having similar features used in this case. Finally we compared the Random forest algorthm to other machine learning algorthms. For a single decision tree the accuracy was indeed lower and SVM predicted with similiar accuracy as a random forest.
-From our experiments we observed several areas where improvement can be made in future work. The running time can be decreased by optimizing split function subroutines and the data structures to use Cython or C.
-TODO: FINISH THIS PARAGRAPH
+Through this project, we have explored and discovered many characteristics of random forests ability to learn.
+We compared our algorithm to two common machine learning libraries, Weka and Scikit-Learn, and demonstrated that our algorithm is able to predict with similar accuracy and that the implementation captures the principles behind random forests properly.
+Next we were able to explore the effect of parameters individually, by holding others constant.
+For simplicity we only considered classification.
+We observed that there was an improvement in prediction accuracy with an increased number of trees and that no overfitting was not observed as the number was increased, which is unlike many other machine learning algorithms.
+Similarly, as we increased the number of features used to learn per tree, no overfitting was apparent.
+However, increasing the maximum depth of the trees in the forest revealed that mild overfitting does occur at a high depth, which is consistent with what is found in literature.
+After learning the effect of adjusting three of the learning parameters individually, a grid search using these same three parameters to find optimal values for high prediction accuracy was performed.
+Surprisingly, the number of features for maximum classification accuracy was only 2.
+This may be a result of creating uncorrelated trees where there is low chance of having similar features when only 2 features are used per tree.
+Finally, we compared the random forest algorithm to other machine learning algorithms.
+For a single decision tree the accuracy was indeed lower as well as for SVM, which was most likely attributed to overfitting.
+From our experiments we observed several areas where improvement can be made in future work.
+The running time can be decreased by optimizing split function subroutines and modifying the data structures to use Cython or C.
+In addition, it would be interesting to implement algorithms found in literature designed to minimize the correlation between the trees in the random forest, which may improve the accuracy of our random forest implementation.
 
 \subsubsection*{Contributions}
 All authors contributed equally.\\
