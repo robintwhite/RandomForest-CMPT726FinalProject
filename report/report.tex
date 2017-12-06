@@ -183,7 +183,7 @@ sum\_7yr\_GP         		&5	&13	&10 	&9946\\
 \includegraphics[width=1.1\textwidth]{gridSClass}
 %\framebox[4.0in]{$\;$}
 %\fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-\caption{Showing results from grid search with effect on test set accuracy of project's random forest implementation}
+\caption{Showing results from grid search with effect on test set accuracy of project's random forest implementation when predicting GP\_greater\_than\_0}
 \label{fig:gridSClass}
 \end{figure}
 
@@ -238,7 +238,7 @@ Through this project, we have explored and discovered many characteristics of ra
 We compared our algorithm to two common machine learning libraries, Weka and Scikit-Learn, and demonstrated that our algorithm is able to predict with similar accuracy and that the implementation captures the principles behind random forests properly.
 Next we were able to explore the effect of parameters individually, by holding others constant.
 For simplicity we only considered classification.
-We observed that there was an improvement in prediction accuracy with an increased number of trees and that no overfitting was not observed as the number was increased, which is unlike many other machine learning algorithms.
+We observed that there was an improvement in prediction accuracy with an increased number of trees, and that no overfitting was observed as the number was increased, which is unlike many other machine learning algorithms.
 Similarly, as we increased the number of features used to learn per tree, no overfitting was apparent.
 However, increasing the maximum depth of the trees in the forest revealed that mild overfitting does occur at a high depth, which is consistent with what is found in literature.
 After learning the effect of adjusting three of the learning parameters individually, a grid search using these same three parameters to find optimal values for high prediction accuracy was performed.
